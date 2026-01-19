@@ -5,35 +5,13 @@ const roles = {
     3: "ADMIN",
 };
 
-const users = [
-    {
-        id: 1,
-        login: "user1",
-        password: "user1",
-        roleID: 1,
-    },
-    {
-        id: 2,
-        login: "manager1",
-        password: "manager1",
-        roleID: 2,
-    },
-    {
-        id: 3,
-        login: "admin1",
-        password: "admin1",
-        roleID: 3,
-    },
-];
-
-const orders = [
-
-];
-const baskets = [
-
-];
-
-const goods = [
+  const users = [
+    { id: 1, login: "user1", password: "user1", roleID: 1 },
+    { id: 2, login: "manager1", password: "manager1", roleID: 2 },
+    { id: 3, login: "admin1", password: "admin1", roleID: 3 },
+  ];
+  
+  const goods = [
     { id: 1, title: 'good1', desc: 'good 2 desc', price: 100, image: 'https://picsum.photos/seed/1/300/300' },
     { id: 2, title: 'good2', desc: 'good 3 desc', price: 300, image: 'https://picsum.photos/seed/2/300/300' },
     { id: 3, title: 'good3', desc: 'good 2 desc', price: 400, image: 'https://picsum.photos/seed/3/300/300' },
@@ -65,64 +43,74 @@ const goods = [
     { id: 29, title: 'Tablet Stylus', desc: 'Precision pen for drawing and note-taking on touchscreens.', price: 1700, image: 'https://picsum.photos/seed/29/300/300' },
     { id: 30, title: 'Wireless Keyboard', desc: 'Slim low-profile keyboard with quiet keys and long battery.', price: 2200, image: 'https://picsum.photos/seed/30/300/300' }
 ]
-
-export async function login(login, password) {
-    const user = users.find(user => user.login == login);
-    if (user){
-        const {password, ...dtoUser} = user
-        dtoUser.role = roles[user.roleID] || "UNKNOWN";
-        if (dtoUser.role === "UNKNOWN") {
-            Promise.reject("user role not found")
-        }
-        return Promise.resolve(dtoUser)
+  
+  export async function login(login, password) {
+    const user = users.find(u => u.login === login);
+    if (!user) {
+      throw new Error("User not found");
     }
     if (user.password !== password) {
-        Promise.reject("user wrong password or not found")
-    } 
-    // Promise.reject("user  ")
-}
-
-export async function register(email, password, confpassword) {
-    const user = users.find(user => user.login == email);
-    if (user){
-        return Promise.reject("There is already a user with the same email address.")
+      throw new Error("Wrong password");
     }
+  
+    const { passwordOn, ...dtoUser } = user;
+    dtoUser.role = roles[user.roleID] || "UNKNOWN";
+    return dtoUser;
+  }
+  
+  export async function register(email, password, confpassword) {
     if (password !== confpassword) {
-        return Promise.reject("The passwords don't match")
+      throw new Error("The passwords don't match");
     }
-
-    const userNew = {id: Date.now(), login: email, password: password, roleID: 1}
-
-    users.push(userNew)
-
-    const {passwordNew, ...dtoUser} = userNew;
-    return Promise.resolve(dtoUser)
-}
-
-export async function addBasket(idUser, idGood) {
-    const item = { id: 1,idUser: idUser, idGood: idGood};
-    const basket = baskets.find(basket => basket.id == idUser);
-    basket.push(item);
-    return Promise.resolve(item);
-}
-
-// export async function removeBasket(idUser, idGood) {
-//     const item = { id: 1,idUser: idUser, idGood: idGood};
-//     const basket = baskets.find(basket => basket.id == idUser);
-//     basket.push(item);
-//     return Promise.resolve(item);
-// }
-
-export async function addOrder(idUser, idGood) {
-    const order = { id: 1,idUser: idUser, idGood: idGood};
-    orders.push(order);
-    return Promise.resolve(order);
-}
-
-export async function getGoods() {
-    return Promise.resolve(goods)
-}
-
-export async function getOrders() {
-    return Promise.resolve(orders)
-}
+  
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, confpassword }),
+      });
+  
+      if (!response.ok) {
+        let errorMessage = 'Registration failed';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch {
+          errorMessage = await response.text() || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+  
+      const dtoUser = await response.json();
+      return dtoUser; // должен содержать id, login, role и т.д. (без пароля)
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  // ======================
+  // MOCK DATA FUNCTIONS (временно, пока нет бэкенда для них)
+  // ======================
+  
+  let baskets = []; // [{ idUser, items: [{ idGood, quantity }] }]
+  
+  export async function addBasket(idUser, idGood) {
+    let basket = baskets.find(b => b.idUser === idUser);
+    if (!basket) {
+      basket = { idUser, items: [] };
+      baskets.push(basket);
+    }
+    // Проверим, есть ли уже такой товар
+    const existing = basket.items.find(item => item.idGood === idGood);
+    if (existing) {
+      existing.quantity = (existing.quantity || 1) + 1;
+    } else {
+      basket.items.push({ idGood, quantity: 1 });
+    }
+    return basket;
+  }
+  
+  export async function getGoods() {
+    return goods;
+  }

@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+  
+datasource db {
+  provider = "postgresql"
+}
+  
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  roleID    Int      @default(1)
+  role      Role     @relation(fields: [roleID], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  baskets   Basket[]
+  orders    Order[]
+}
+  
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+
+  users User[]
+}
+  
+model Good {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @map("desc")
+  price       Int
+  image       String?
+  createdAt   DateTime @default(now())
+
+  basketItems BasketItem[]
+  orderItems  OrderItem[]
+}
+  
+model Basket {
+  id      Int         @id @default(autoincrement())
+  userId  Int
+  user    User        @relation(fields: [userId], references: [id])
+  items   BasketItem[]
+
+  @@unique([userId])
+}
+  
+model BasketItem {
+  id       Int   @id @default(autoincrement())
+  basketId Int
+  goodId   Int
+  quantity Int   @default(1)
+
+  basket   Basket @relation(fields: [basketId], references: [id])
+  good     Good   @relation(fields: [goodId], references: [id])
+
+  @@unique([basketId, goodId])
+}
+  
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  status    String      @default("created")
+  createdAt DateTime   @default(now())
+}
+  
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  orderId  Int
+  goodId   Int
+  quantity Int   @default(1)
+
+  order    Order @relation(fields: [orderId], references: [id])
+  good     Good  @relation(fields: [goodId], references: [id])
+}
