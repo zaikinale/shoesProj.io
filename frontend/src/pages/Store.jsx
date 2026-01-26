@@ -32,9 +32,12 @@ export default function Store() {
         setSortOrder(e.target.value);
     };
 
-    const changeInputForm = (input, value) => {
-        setFormAdd(obj => obj[input] = value)
-    }
+    const changeInputForm = (field, value) => {
+        setFormAdd(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
 
     const addGood = async () => {
         console.log('Новый товар: ',formAdd)
@@ -43,15 +46,14 @@ export default function Store() {
     const addForm = () => {
         return (
         <div className="formAdd">
-            <button className="showForm" onClick={() => setShowForm(!showForm)}>{showForm ? '-' : '+'}</button>
+            <button className="showForm" onClick={() => setShowForm(!showForm)}>{showForm ? 'Скрыть форму' : 'Добавить товар'}</button>
             {
                 showForm && (
-                    <form action="#" className="formAdd">
-                        <label htmlFor="formAdd">Add good</label>
-                        <input type="text" placeholder="title" onChange={(e) => changeInputForm('title', e.target.value)}/>
-                        <input type="text" placeholder="description" onChange={(e) => changeInputForm('description', e.target.value)}/>
-                        <input type="text" placeholder="price" onChange={(e) => changeInputForm('price', e.target.value)}/>
-                        <input type="text" placeholder="image link" onChange={(e) => changeInputForm('image', e.target.value)}/>
+                    <form onSubmit={(e) => {e.preventDefault();addGood(); }} className="form">
+                        <input type="text" value={formAdd.title || ''} placeholder="title" onChange={(e) => changeInputForm('title', e.target.value)}/>
+                        <input type="text" value={formAdd.description || ''} placeholder="description" onChange={(e) => changeInputForm('description', e.target.value)}/>
+                        <input type="text" value={formAdd.price || ''} placeholder="price" onChange={(e) => changeInputForm('price', e.target.value)}/>
+                        <input type="text" value={formAdd.image || ''} placeholder="image link" onChange={(e) => changeInputForm('image', e.target.value)}/>
                         <button className="submitForm" onClick={addGood}>submit</button>
                     </form>
                 )
