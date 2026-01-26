@@ -1,22 +1,33 @@
+// prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.role.createMany({
-        data: [
-            { id: 1, name: 'USER' },
-            { id: 2, name: 'MANAGER' },
-            { id: 3, name: 'ADMIN' },
-        ],
-        skipDuplicates: true,
+    await prisma.role.upsert({
+        where: { id: 1 },
+        update: {},
+        create: { id: 1, name: 'User' },
+    });
+
+    await prisma.role.upsert({
+        where: { id: 2 },
+        update: {},
+        create: { id: 2, name: 'Manager' },
+    });
+
+    await prisma.role.upsert({
+        where: { id: 3 },
+        update: {},
+        create: { id: 3, name: 'Admin' },
     });
 }
 
 main()
-    .then(async () => await prisma.$disconnect())
-    .catch(async (e) => {
+    .catch(e => {
         console.error(e);
-        await prisma.$disconnect();
         process.exit(1);
-});
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });

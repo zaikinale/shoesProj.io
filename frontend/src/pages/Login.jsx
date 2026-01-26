@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from './api/auth.js';
-import './App.css';
-import { useStore } from './store/useUserContext.jsx'; 
+import { login } from '../api/auth.js';
+import '../App.css';
+import { useStore } from '../store/useUserContext.jsx'; 
 
 function Login() {
   const navigate = useNavigate();
@@ -18,7 +18,8 @@ function Login() {
     try {
       const user = await login(userLogin, userPassword);
       console.log("Успешный вход:", user);
-      setUser(user);
+      setUser(user.user);
+      localStorage.setItem('token', user.token)
       navigate('/store');
     } catch (error) {
       console.error("Ошибка входа:", error);

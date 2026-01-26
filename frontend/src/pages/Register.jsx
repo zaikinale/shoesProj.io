@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from './api/auth.js';
-import './App.css';
-import { useStore } from './store/useUserContext.jsx'; 
+import { register } from '../api/auth.js';
+import '../App.css';
+import { useStore } from '../store/useUserContext.jsx'; 
 
 export default function Register() {
     const navigate = useNavigate();
     const [shown, setShown] = useState(false);
+    const [userName, setUserName] = useState('');
     const [userLogin, setUserLogin] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [userPasswordConf, setUserPasswordConf] = useState('');
@@ -17,7 +18,7 @@ export default function Register() {
     const submitForm = async (e) => {
         e.preventDefault();
         try {
-            const user = await register(userLogin, userPassword, userPasswordConf);
+            const user = await register(userName, userLogin, userPassword, userPasswordConf);
             console.log("Успешный вход:", user);
             setUser(user);
             navigate('/');
@@ -36,6 +37,12 @@ export default function Register() {
         <section className='login'>
             <form className="form" onSubmit={submitForm}>
                 <h3>Registration form</h3>
+                <input
+                    type="text"
+                    placeholder="username"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                />
                 <input
                     type="email"
                     placeholder="email"

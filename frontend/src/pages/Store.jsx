@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import { getGoods } from "./api/auth.js";
+// import { getGoods } from "./api/auth.js";
 import { useNavigate } from 'react-router-dom';
-import Card from "./Card.jsx";
-import { useStore } from './store/useUserContext.jsx';
+import Card from "../components/Card.jsx";
+import { useStore } from '../store/useUserContext.jsx';
 
 export default function Store() {
     const navigate = useNavigate();
-    const userRole = useStore((state) => state.user?.role);
+    const userRole = useStore((state) => state.user?.roleID);
     const [originalGoods, setOriginalGoods] = useState([]); 
     const [sortOrder, setSortOrder] = useState('original');
+    const [showForm, setShowForm] = useState(false);
+    const [formAdd, setFormAdd] = useState({});
     
     useEffect(() => {
         const loadGoods = async () => {
@@ -29,6 +31,33 @@ export default function Store() {
     const handleSortChange = (e) => {
         setSortOrder(e.target.value);
     };
+
+    const changeInputForm = (input, value) => {
+        setFormAdd(obj => obj[input] = value)
+    }
+
+    const addGood = async () => {
+        console.log('Новый товар: ',formAdd)
+    }
+
+    const addForm = () => {
+        return (
+        <div className="formAdd">
+            <button className="showForm" onClick={() => setShowForm(!showForm)}>{showForm ? '-' : '+'}</button>
+            {
+                showForm && (
+                    <form action="#" className="formAdd">
+                        <label htmlFor="formAdd">Add good</label>
+                        <input type="text" placeholder="title" onChange={(e) => changeInputForm('title', e.target.value)}/>
+                        <input type="text" placeholder="description" onChange={(e) => changeInputForm('description', e.target.value)}/>
+                        <input type="text" placeholder="price" onChange={(e) => changeInputForm('price', e.target.value)}/>
+                        <input type="text" placeholder="image link" onChange={(e) => changeInputForm('image', e.target.value)}/>
+                        <button className="submitForm" onClick={addGood}>submit</button>
+                    </form>
+                )
+            }
+        </div>)
+    }
 
     const Filter = () => (
         <div className="filter">
@@ -66,7 +95,7 @@ export default function Store() {
         </div>
     );
 
-    if (userRole === "USER") {
+    if (userRole === 1) {
         return (
             <section className="store">
                 <h1 className="head">
@@ -78,7 +107,7 @@ export default function Store() {
         );
     }
 
-    if (userRole === "MANAGER") {
+    if (userRole === 2) {
         return (
             <section className="store">
                 <h1 className="head">
@@ -91,13 +120,16 @@ export default function Store() {
         );
     }
 
-    if (userRole === "ADMIN") {
+    if (userRole === 3) {
         return (
-            <section className="store">
-                <h1>Store</h1>
-                <Filter />
-                {renderGoods('admin')}
-            </section>
+            <>
+                <section className="store">
+                    <h1>Store</h1>
+                    {addForm()}
+                    <Filter />
+                    {renderGoods('admin')}
+                </section>
+            </>
         );
     }
 

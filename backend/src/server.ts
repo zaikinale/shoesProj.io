@@ -1,27 +1,23 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import authRoutes from './routes/auth.routes';
+// import express from 'express';
+// import { PrismaClient } from '@prisma/client';
 
-dotenv.config();
+// const prisma = new PrismaClient();
+// const app = express();
+// app.use(express.json());
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// app.get('/', async (req, res) => {
+//   // const users = await prisma.user.findMany();
+//   res.json('Live')
+// });
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-  })
-);
+// app.listen(3000, () => {
+//   console.log('✅ Сервер запущен на http://localhost:3000');
+// });
+import app from './app';
+import { PORT } from './config/env';
 
-app.use('/api/auth', authRoutes);
+const port = PORT || 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.json({ status: 'ONSEE backend is running!' });
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`✅ Сервер запущен на http://localhost:${port}`);
 });

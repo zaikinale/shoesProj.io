@@ -4,10 +4,12 @@ generator client {
   
 datasource db {
   provider = "postgresql"
+  url = env("DATABASE_URL")
 }
   
 model User {
   id        Int      @id @default(autoincrement())
+  username  String
   email     String   @unique
   password  String
   roleID    Int      @default(1)
@@ -22,7 +24,6 @@ model User {
 model Role {
   id    Int    @id @default(autoincrement())
   name  String @unique
-
   users User[]
 }
   
@@ -37,7 +38,7 @@ model Good {
   basketItems BasketItem[]
   orderItems  OrderItem[]
 }
-  
+
 model Basket {
   id      Int         @id @default(autoincrement())
   userId  Int
@@ -67,7 +68,7 @@ model Order {
   status    String      @default("created")
   createdAt DateTime   @default(now())
 }
-  
+
 model OrderItem {
   id       Int   @id @default(autoincrement())
   orderId  Int

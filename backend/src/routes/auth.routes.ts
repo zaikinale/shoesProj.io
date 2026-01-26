@@ -2,18 +2,26 @@ import { Router, Request, Response } from 'express';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { prisma } from '../utils/prismaClient';
+import { JWT_SECRET } from '../config/env';
+
+interface RegisterBody {
+  username: string;
+  email: string;
+  password: string;
+}
+
+interface LoginBody {
+  email: string;
+  password: string;
+}
 
 const router = Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
 
-router.post('/register', async (req: Request, res: Response) => {
-  const { email, password, confpassword } = req.body;
+router.post('/register', async (req: Request<{}, {}, RegisterBody>, res: Response) => {
+  const { username, email, password } = req.body;
 
-  if (!email || !password || !confpassword) {
-    return res.status(400).json({ error: 'Email and passwords are required' });
-  }
-  if (password !== confpassword) {
-    return res.status(400).json({ error: 'Passwords do not match' });
+  if (!username || !email || !password) {
+    return res.status(400).json({ error: 'Username, email and password are required' });
   }
 
   const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -24,14 +32,16 @@ router.post('/register', async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
     data: {
-      email,
+      username: username,
+      email: email,
       password: hashedPassword,
-      roleId: 1, // USER
+      roleID: 1,
     },
     select: {
+      username: true,
       id: true,
       email: true,
-      roleId: true,
+      roleID: true,
     },
   });
 
@@ -40,7 +50,7 @@ router.post('/register', async (req: Request, res: Response) => {
   return res.status(201).json({ user, token });
 });
 
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', async (req: Request<{}, {}, LoginBody>, res: Response) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -62,8 +72,9 @@ router.post('/login', async (req: Request, res: Response) => {
   return res.json({
     user: {
       id: user.id,
+      username: user.username,
       email: user.email,
-      roleId: user.roleId,
+      roleID: user.roleID,
     },
     token,
   });
