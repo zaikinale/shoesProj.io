@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -11,6 +11,13 @@ h1, h2, h3, h4 {
 
 h1 {
   font-size: 32px;
+}
+
+select {
+  border: 0;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .login {
@@ -25,6 +32,9 @@ h1 {
   width: 100%;
 }
 
+.linkBtnNavigate {
+  width: 300px;
+}
 
 .form {
   box-sizing: border-box;
@@ -74,6 +84,9 @@ h1 {
 }
 
 .store {
+  width: 100%;
+  height: 100vw;
+  padding: 10px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,7 +96,7 @@ h1 {
 .head {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -97,7 +110,7 @@ h1 {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .container {
@@ -135,6 +148,13 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  position: relative;
+}
+
+.formAddGoods {
+  position: absolute;
+  top: 60px;
+  right: 0;
 }
 
 /* 

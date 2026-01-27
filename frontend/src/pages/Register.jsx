@@ -71,7 +71,7 @@ export default function Register() {
             <div className={error !== "" && "error"}> 
                 { error !== "" && error}
             </div>
-            <button onClick={() => navigate('/')}>login</button>
+            <button onClick={() => navigate('/')} className='linkBtnNavigate'>login</button>
             <a onClick={() => guestGo()}>guest version</a>
         </section>
     );

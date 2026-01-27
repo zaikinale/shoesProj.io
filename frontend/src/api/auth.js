@@ -1,9 +1,9 @@
-const roles = {
-    0: "LOGIN",
-    1: "USER",
-    2: "MANAGER",
-    3: "ADMIN",
-};
+// const roles = {
+//     0: "LOGIN",
+//     1: "USER",
+//     2: "MANAGER",
+//     3: "ADMIN",
+// };
 
 
 const BASEURL = 'http://localhost:3000/'

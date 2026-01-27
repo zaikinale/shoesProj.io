@@ -59,7 +59,7 @@ function Login() {
     <div className={error !== "" && "error"}> 
       { error !== "" && error}
     </div>
-    <button onClick={() => navigate('/register')}>registration</button>
+    <button onClick={() => navigate('/register')} className='linkBtnNavigate'>registration</button>
     <a onClick={() => guestGo()}>guest version</a>
     </section>
   );

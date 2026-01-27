@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { getGoods } from "./api/auth.js";
+import { getGoods, addGood as apiAddGood } from "../api/goods.js";
 import { useNavigate } from 'react-router-dom';
 import Card from "../components/Card.jsx";
 import { useStore } from '../store/useUserContext.jsx';
@@ -10,17 +10,23 @@ export default function Store() {
     const [originalGoods, setOriginalGoods] = useState([]); 
     const [sortOrder, setSortOrder] = useState('original');
     const [showForm, setShowForm] = useState(false);
-    const [formAdd, setFormAdd] = useState({});
-    
+    const [formAdd, setFormAdd] = useState({
+        title: '',
+        description: '',
+        price: '',
+        image: ''
+    });
+
+    const loadGoods = async () => {
+        try {
+            const data = await getGoods();
+            setOriginalGoods(data);
+        } catch (error) {
+            console.error('Ошибка загрузки товаров:', error);
+        }
+    };
+
     useEffect(() => {
-        const loadGoods = async () => {
-            try {
-                const data = await getGoods();
-                setOriginalGoods(data);
-            } catch (error) {
-                console.error('Ошибка загрузки товаров:', error);
-            }
-        };
         loadGoods();
     }, []);
 
@@ -39,22 +45,46 @@ export default function Store() {
         }));
     };
 
-    const addGood = async () => {
-        console.log('Новый товар: ',formAdd)
+    const handleAddGood = async () => { 
+        console.log('Новый товар:', formAdd);
+        const payload = {
+            title: formAdd.title || '',
+            description: formAdd.description || '',
+            price: Number(formAdd.price),
+            image: formAdd.image || null
+        };
+        
+        if (isNaN(payload.price)) {
+            alert('Цена должна быть числом');
+            return;
+        }
+        try {
+            const resp = await apiAddGood(formAdd);
+            console.log('Товар добавлен:', resp);
+            loadGoods(); 
+            setShowForm(false); 
+            setFormAdd({});
+        } catch (error) {
+            console.error('Ошибка отправки товара:', error);
+        }
+      };
+    
+    const clearForm = () => {
+        setFormAdd({})
     }
 
     const addForm = () => {
         return (
         <div className="formAdd">
-            <button className="showForm" onClick={() => setShowForm(!showForm)}>{showForm ? 'Скрыть форму' : 'Добавить товар'}</button>
+            <button className="showForm" onClick={() => (setShowForm(!showForm), clearForm())}>{showForm ? 'Скрыть и очистить форму' : 'Добавить товар'}</button>
             {
                 showForm && (
-                    <form onSubmit={(e) => {e.preventDefault();addGood(); }} className="form">
+                    <form onSubmit={(e) => {e.preventDefault();handleAddGood(); }} className="form formAddGoods">
                         <input type="text" value={formAdd.title || ''} placeholder="title" onChange={(e) => changeInputForm('title', e.target.value)}/>
                         <input type="text" value={formAdd.description || ''} placeholder="description" onChange={(e) => changeInputForm('description', e.target.value)}/>
                         <input type="text" value={formAdd.price || ''} placeholder="price" onChange={(e) => changeInputForm('price', e.target.value)}/>
                         <input type="text" value={formAdd.image || ''} placeholder="image link" onChange={(e) => changeInputForm('image', e.target.value)}/>
-                        <button className="submitForm" onClick={addGood}>submit</button>
+                        <button className="submitForm">submit</button>
                     </form>
                 )
             }
@@ -126,8 +156,10 @@ export default function Store() {
         return (
             <>
                 <section className="store">
-                    <h1>Store</h1>
-                    {addForm()}
+                    <div className="head">
+                        <h1>Store</h1>
+                        {addForm()}
+                    </div>
                     <Filter />
                     {renderGoods('admin')}
                 </section>
