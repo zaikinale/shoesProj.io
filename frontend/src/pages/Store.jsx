@@ -59,7 +59,7 @@ export default function Store() {
             return;
         }
         try {
-            const resp = await apiAddGood(formAdd);
+            const resp = await apiAddGood(payload);
             console.log('Товар добавлен:', resp);
             loadGoods(); 
             setShowForm(false); 
