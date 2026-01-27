@@ -67,7 +67,7 @@ export default function Store() {
         } catch (error) {
             console.error('Ошибка отправки товара:', error);
         }
-      };
+    };
     
     const clearForm = () => {
         setFormAdd({})
@@ -115,7 +115,7 @@ export default function Store() {
                         key={good.id}
                         id={good.id}
                         title={good.title}
-                        desc={good.desc}
+                        desc={good.description}
                         price={good.price}
                         image={good.image}
                         type={type}

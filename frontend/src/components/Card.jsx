@@ -28,7 +28,6 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add">Добавить товар</button>
                 <button className="change">Изменить товар</button>
                 <button className="add">Удалить товар</button>
             </div>
