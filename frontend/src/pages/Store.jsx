@@ -94,6 +94,11 @@ export default function Store() {
         }
     }
 
+// // В случае ошибки
+//     navigate('/denied', { 
+//         state: { status: 403, error: 'Access denied' } 
+//     });
+
     const addForm = () => {
         return (
         <div className="formAdd">
@@ -172,6 +177,7 @@ export default function Store() {
                 <h1 className="head">
                     <span>Store</span>
                     {navigateTo("basket")}
+                    {navigateTo("logout")}
                 </h1>
                 {renderGoods('user')}
             </section>
@@ -184,6 +190,7 @@ export default function Store() {
                 <h1 className="head">
                     <span>Store</span>
                     {navigateTo("orders")}
+                    {navigateTo("logout")}
                 </h1>
                 <Filter />
                 {renderGoods('manager')}
@@ -198,8 +205,9 @@ export default function Store() {
                     <div className="head">
                         <h1>Store</h1>
                         <div className="controls">
-                            {addForm()}
-                            {staffForm()}
+                            {!showFormStaff && addForm()}
+                            {!showForm && staffForm()}
+                            {navigateTo("logout")}
                         </div>
                     </div>
                     <Filter />

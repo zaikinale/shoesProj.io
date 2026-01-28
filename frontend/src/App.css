@@ -168,6 +168,14 @@ input {
   gap: 10px;
 }
 
+.status {
+  color: rgb(204, 0, 0);
+}
+
+.section > h1  {
+  margin-bottom: 20px;
+}
+
 /* 
 .logo {
   height: 6em;
