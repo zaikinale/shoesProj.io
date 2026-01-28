@@ -10,11 +10,17 @@ export default function Store() {
     const [originalGoods, setOriginalGoods] = useState([]); 
     const [sortOrder, setSortOrder] = useState('original');
     const [showForm, setShowForm] = useState(false);
+    const [showFormStaff, setShowFormStaff] = useState(false);
     const [formAdd, setFormAdd] = useState({
         title: '',
         description: '',
         price: '',
         image: ''
+    });
+    const [formStaff, setFormStaff] = useState({
+        login: '',
+        emil: '',
+        password: ''
     });
 
     const loadGoods = async () => {
@@ -22,7 +28,7 @@ export default function Store() {
             const data = await getGoods();
             setOriginalGoods(data);
         } catch (error) {
-            console.error('Ошибка загрузки товаров:', error);
+            console.error('Error loading goods: ', error);
         }
     };
 
@@ -45,8 +51,15 @@ export default function Store() {
         }));
     };
 
+    const changeInputFormStaff = (field, value) => {
+        setFormStaff(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
     const handleAddGood = async () => { 
-        console.log('Новый товар:', formAdd);
+        // console.log('Новый товар:', formAdd);
         const payload = {
             title: formAdd.title || '',
             description: formAdd.description || '',
@@ -55,28 +68,36 @@ export default function Store() {
         };
         
         if (isNaN(payload.price)) {
-            alert('Цена должна быть числом');
+            alert('The price must be a number');
             return;
         }
         try {
             const resp = await apiAddGood(payload);
-            console.log('Товар добавлен:', resp);
+            console.log('Product added:', resp);
             loadGoods(); 
             setShowForm(false); 
             setFormAdd({});
         } catch (error) {
-            console.error('Ошибка отправки товара:', error);
+            console.error('Error sending item: ', error);
         }
     };
+
+    const handleAddStaff = () => {
+        console.log("Data sent:", formStaff)
+    }
     
-    const clearForm = () => {
-        setFormAdd({})
+    const clearForm = (type) => {
+        if(type === 'staff') {
+            setFormStaff({}) 
+        } else if(type === 'goods') {
+            setFormAdd({}) 
+        }
     }
 
     const addForm = () => {
         return (
         <div className="formAdd">
-            <button className="showForm" onClick={() => (setShowForm(!showForm), clearForm())}>{showForm ? 'Скрыть и очистить форму' : 'Добавить товар'}</button>
+            <button className="showForm" onClick={() => (setShowForm(!showForm), clearForm('goods'))}>{showForm ? 'Hide and clear the form' : 'Add product'}</button>
             {
                 showForm && (
                     <form onSubmit={(e) => {e.preventDefault();handleAddGood(); }} className="form formAddGoods">
@@ -91,9 +112,27 @@ export default function Store() {
         </div>)
     }
 
+    const staffForm = () => {
+        return (
+            <div className="formAdd">
+            <button className="showForm" onClick={() => (setShowFormStaff(!showFormStaff), clearForm('staff'))}>{showFormStaff ? 'Hide and clear the form' : 'Add staff'}</button>
+            {
+                showFormStaff && (
+                    <form onSubmit={(e) => {e.preventDefault();handleAddStaff(); }} className="form formAddGoods">
+                        <input type="text" value={formStaff.login || ''} placeholder="login" onChange={(e) => changeInputFormStaff('login', e.target.value)}/>
+                        <input type="text" value={formStaff.email || ''} placeholder="email" onChange={(e) => changeInputFormStaff('email', e.target.value)}/>
+                        <input type="text" value={formStaff.password || ''} placeholder="password" onChange={(e) => changeInputFormStaff('password', e.target.value)}/>
+                        <button className="submitForm">submit</button>
+                    </form>
+                )
+            }
+        </div>
+        )
+    }
+
     const Filter = () => (
         <div className="filter">
-            <h2>Фильтр</h2>
+            <h2>Filter</h2>
             <select value={sortOrder} onChange={handleSortChange}>
                 <option value="original">original</option>
                 <option value="alphabet">alphabet</option>
@@ -122,7 +161,7 @@ export default function Store() {
                     />
                 ))
                 ) : (
-                    <p>Нет товаров</p>
+                    <p>No products</p>
             )}
         </div>
     );
@@ -158,7 +197,10 @@ export default function Store() {
                 <section className="store">
                     <div className="head">
                         <h1>Store</h1>
-                        {addForm()}
+                        <div className="controls">
+                            {addForm()}
+                            {staffForm()}
+                        </div>
                     </div>
                     <Filter />
                     {renderGoods('admin')}

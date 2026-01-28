@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { deleteGood, updateGood } from '../api/goods.js'
 
+// eslint-disable-next-line react/prop-types
 export default function Card ({id, title, desc, price, image, type}) {
     const [isChange, setIsChange] = useState(false);
     const [form, setForm] = useState({
@@ -27,12 +28,12 @@ export default function Card ({id, title, desc, price, image, type}) {
     const handleDelete = async () => {
         try {
             const resp = await deleteGood(id);
-            console.log('Товар удален:', resp);
+            console.log('Product removed: ', resp);
             // loadGoods(); 
             // setShowForm(false); 
             // setFormAdd({});
         } catch (error) {
-            console.error('Ошибка удаления товара:', error);
+            console.error('Product deletion error: ', error);
         }
     }
 
@@ -45,16 +46,16 @@ export default function Card ({id, title, desc, price, image, type}) {
         };
         
         if (isNaN(payload.price)) {
-            alert('Цена должна быть числом');
+            alert('The price must be a number');
             return;
         }
 
         try {
             const resp = await updateGood(id, payload);
-            console.log('Товар изменен:', resp);
+            console.log('Product changed:', resp);
             handleChange()
         } catch (error) {
-            console.error('Ошибка изменения товара:', error);
+            console.error('Product change error: ', error);
         }
     }
 
@@ -72,7 +73,7 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add">Добавить товар</button>
+                <button className="add">Add product</button>
             </div>
         )
     } else if (type ==="manager") {
@@ -82,7 +83,7 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add">Добавить товар</button>
+                <button className="add">Add product</button>
             </div>
         )
     } else if (type ==="admin") {
@@ -110,8 +111,8 @@ export default function Card ({id, title, desc, price, image, type}) {
                 )
 
                 }
-                <button className="change" onClick={handleChange}>{isChange ? 'Скрыть форму' : 'Изменить товар'}</button>
-                <button className="add" onClick={isChange ? handleСancellation : handleDelete}>{ isChange ? 'Отменить изменения':'Удалить товар'}</button>
+                <button className="change" onClick={handleChange}>{isChange ? 'Hide form' : 'Change product'}</button>
+                <button className="add" onClick={isChange ? handleСancellation : handleDelete}>{ isChange ? 'Cancel changes':'Remove product'}</button>
             </div>
         )   
     } else {
