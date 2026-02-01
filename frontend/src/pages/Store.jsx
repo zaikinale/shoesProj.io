@@ -225,7 +225,13 @@ export default function Store() {
 
     return (
         <section className="store">
-            <h1>Store</h1>
+            <div className="head">
+                <h1>Store</h1>
+                <div className="controls">
+                    < NavigateTo path="register"/>
+                    < NavigateTo path="login"/>
+                </div>
+            </div>
             {renderGoods('login')}
         </section>
     );
