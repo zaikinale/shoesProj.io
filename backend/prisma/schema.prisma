@@ -19,6 +19,15 @@ model User {
 
   baskets   Basket[]
   orders    Order[]
+  tokens    Token[]
+}
+
+model Token {
+  id           Int      @id @default(autoincrement())
+  refreshToken String   @unique
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
 }
   
 model Role {

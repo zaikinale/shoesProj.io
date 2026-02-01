@@ -176,8 +176,10 @@ export default function Store() {
             <section className="store">
                 <h1 className="head">
                     <span>Store</span>
-                    {navigateTo("basket")}
-                    {navigateTo("logout")}
+                        <div className="controllers">
+                            {navigateTo("basket")}
+                            {navigateTo("logout")}
+                        </div>
                 </h1>
                 {renderGoods('user')}
             </section>
@@ -189,8 +191,10 @@ export default function Store() {
             <section className="store">
                 <h1 className="head">
                     <span>Store</span>
-                    {navigateTo("orders")}
-                    {navigateTo("logout")}
+                        <div className="controls">
+                            {navigateTo("orders")}
+                            {navigateTo("logout")}
+                        </div>
                 </h1>
                 <Filter />
                 {renderGoods('manager')}

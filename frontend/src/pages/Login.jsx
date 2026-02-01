@@ -19,7 +19,7 @@ function Login() {
       const user = await login(userLogin, userPassword);
       console.log("Успешный вход:", user);
       setUser(user.user);
-      localStorage.setItem('token', user.token)
+      localStorage.setItem('token', user.accessToken)
       navigate('/store');
     } catch (error) {
       console.error("Ошибка входа:", error);

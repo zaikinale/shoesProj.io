@@ -1,23 +1,45 @@
-import { Request, Response, NextFunction } from 'express'; 
-import jwt from 'jsonwebtoken'; 
-import { prisma } from '../utils/prismaClient'; 
-import { JWT_SECRET } from '../config/env'; 
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { JWT_ACCESS_SECRET } from '../config/env';
+import { prisma } from '../utils/prismaClient';
+// В мидлваре добавьте логирование
+export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+    console.log('Authorization header:', authHeader);
+    
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log('Extracted token:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
 
-export const authenticateToken = async ( req: Request, res: Response, next: NextFunction ) => { 
-    const authHeader = req.headers['authorization']; 
-    const token = authHeader && authHeader.split(' ')[1]; 
-    if (!token) { 
-        return res.status(401).json({ error: 'Access token required' }); 
-    } 
-    try { 
-        const decoded = jwt.verify(token, JWT_SECRET) as { userId: number }; 
-        const user = await prisma.user.findUnique({ where: { id: decoded.userId } }); 
-        if (!user) { 
-            return res.status(401).json({ error: 'User not found' }); 
-        } // Прикрепляем пользователя к запросу 
-        (req as any).user = user; 
-        next(); 
-    } catch (err) { 
-        return res.status(403).json({ error: 'Invalid token' }); 
-    } 
+    if (!token) {
+        console.log('No token provided');
+        return res.status(401).json({ error: 'Access token required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, JWT_ACCESS_SECRET!) as { userId: number };
+        console.log('Decoded token:', decoded);
+
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.userId },
+            select: { id: true, roleID: true, email: true }
+        });
+
+        console.log('Found user:', user);
+
+        if (!user) {
+            console.log('User not found in database');
+            return res.status(403).json({ error: 'Invalid or expired token' });
+        }
+
+        (req as any).user = user;
+        next();
+    } catch (err) {
+        console.error('Token verification error:', err);
+        if (err instanceof jwt.TokenExpiredError) {
+            console.log('Token expired');
+        } else if (err instanceof jwt.JsonWebTokenError) {
+            console.log('Invalid token signature');
+        }
+        return res.status(403).json({ error: 'Invalid or expired token' });
+    }
 };
