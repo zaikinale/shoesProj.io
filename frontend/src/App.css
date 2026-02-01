@@ -84,7 +84,7 @@ input {
   opacity: 0.5;
 }
 
-.store {
+.store, .basket {
   width: 100%;
   height: 100vw;
   padding: 10px 20px;
@@ -99,6 +99,7 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .nav {
@@ -121,6 +122,14 @@ input {
   gap: 5px;
   align-items: center;
   justify-content: center;
+}
+
+.containerColumn {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
 }
 
 .card {
@@ -174,6 +183,38 @@ input {
 
 .section > h1  {
   margin-bottom: 20px;
+}
+
+.controllers {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.basketItem {
+  width: 400px;
+  padding: 10px;
+  background-color: rgb(57, 57, 57);
+  border-radius: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* .card >* {
+  width: 100%;
+  text-align: start;
+} */
+
+.basketImg {
+  width: 150px;
+  height: 150px;
+}
+
+.basketInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  gap: 5px;
 }
 
 /* 

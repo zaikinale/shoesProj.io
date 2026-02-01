@@ -3,6 +3,7 @@ import { getGoods, addGood as apiAddGood } from "../api/goods.js";
 import { useNavigate } from 'react-router-dom';
 import Card from "../components/Card.jsx";
 import { useStore } from '../store/useUserContext.jsx';
+import NavigateTo from '../utils/navBtn.jsx'
 
 export default function Store() {
     const navigate = useNavigate();
@@ -145,11 +146,11 @@ export default function Store() {
         </div>
     );
 
-    const navigateTo = (path) => (
-        <button className="nav" onClick={() => navigate(`/${path}`)}>
-            {path}
-        </button>
-    );
+    // const navigateTo = (path) => (
+    //     <button className="nav" onClick={() => navigate(`/${path}`)}>
+    //         {path}
+    //     </button>
+    // );
 
     const renderGoods = (type) => (
         <div className="container">
@@ -177,8 +178,9 @@ export default function Store() {
                 <h1 className="head">
                     <span>Store</span>
                         <div className="controllers">
-                            {navigateTo("basket")}
-                            {navigateTo("logout")}
+                            < NavigateTo path="basket"/>
+                            < NavigateTo path="orders"/>
+                            < NavigateTo path="logout"/>
                         </div>
                 </h1>
                 {renderGoods('user')}
@@ -192,8 +194,8 @@ export default function Store() {
                 <h1 className="head">
                     <span>Store</span>
                         <div className="controls">
-                            {navigateTo("orders")}
-                            {navigateTo("logout")}
+                            < NavigateTo path="orders"/>
+                            < NavigateTo path="logout"/>
                         </div>
                 </h1>
                 <Filter />
@@ -211,7 +213,7 @@ export default function Store() {
                         <div className="controls">
                             {!showFormStaff && addForm()}
                             {!showForm && staffForm()}
-                            {navigateTo("logout")}
+                            < NavigateTo path="logout"/>
                         </div>
                     </div>
                     <Filter />
