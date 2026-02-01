@@ -192,6 +192,7 @@ input {
 }
 
 .basketItem {
+  position: relative;
   width: 400px;
   padding: 10px;
   background-color: rgb(57, 57, 57);
@@ -216,6 +217,19 @@ input {
   text-align: start;
   gap: 5px;
 }
+
+.controlItem {
+  position: absolute;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.check {
+  max-width: 25px;
+  height: 25px;
+} 
 
 /* 
 .logo {

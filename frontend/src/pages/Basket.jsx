@@ -28,23 +28,35 @@ const testData = [
 ]
 
 export default function Basket () {
+    const orderBlock = () => {
+        return (
+            <div className="container">
+                <button className="order">Order</button>
+                <p className="totalSum">500</p>
+            </div>
+        )
+    }
+
     const renderBasketBody = (type) => {
         if (type === "user") {
             return (
                 <div className="containerColumn">
                     {testData.length > 0 ? (
-                        testData.map((good) => (
-                            <BasketCard
-                                key={good.id}
-                                id={good.id}
-                                title={good.title}
-                                desc={good.description}
-                                price={good.price}
-                                image={good.image}
-                                type={type}
-                                quantity={good.quantity}
-                            />
-                        ))
+                        <>
+                            {testData.map((good) => (
+                                <BasketCard
+                                    key={good.id}
+                                    id={good.id}
+                                    title={good.title}
+                                    desc={good.description}
+                                    price={good.price}
+                                    image={good.image}
+                                    type={type}
+                                    quantity={good.quantity}
+                                />
+                            ))}
+                            {orderBlock()}
+                        </>
                     ) : (
                         <p>No products in basket</p>        
                     )}
