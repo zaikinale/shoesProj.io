@@ -3,8 +3,10 @@ export default function BasketCard ({id, title, desc, price, image, type, quanti
         return (
             <div className="controlItem">
                 <input type="checkbox" className="check" />
-                <div className="control">
+                <div className="controls">
                     <button className="delete">×</button>
+                    <button className="low">-</button>
+                    <button className="add">+</button>
                 </div>
             </div>
         )

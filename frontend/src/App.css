@@ -147,6 +147,25 @@ input {
   text-align: start;
 }
 
+.cardSmall {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  background-color: rgb(57, 57, 57);
+  border-radius: 10px;
+}
+
+.order {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: rgb(21, 21, 21);
+  border-radius: 10px;
+}
+
 .card .img {
   width: 100%;
   height: 200px;
@@ -171,7 +190,7 @@ input {
   border-radius: 10px;
 }
 
-.controls {
+.controls, .controllers, .goodsList {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -181,14 +200,13 @@ input {
   color: rgb(204, 0, 0);
 }
 
+.imgSmall {
+  width: 100px;
+  height: 100px;
+} 
+
 .section > h1  {
   margin-bottom: 20px;
-}
-
-.controllers {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .basketItem {
