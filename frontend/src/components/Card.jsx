@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { deleteGood, updateGood } from '../api/goods.js'
+import { addGood } from "../api/basket.js";
 
 // eslint-disable-next-line react/prop-types
 export default function Card ({id, title, desc, price, image, type}) {
@@ -59,6 +60,15 @@ export default function Card ({id, title, desc, price, image, type}) {
         }
     }
 
+    const handleAddGoodInBasket = async () => {
+        try {
+            const resp = await addGood(id);
+            console.log('Product added in basket: ', resp);
+        } catch (error) {
+            console.error('Product added error: ', error);
+        }
+    }
+
     const changeInputForm = (field, value) => {
         setForm(prev => ({
             ...prev,
@@ -73,7 +83,7 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add">Add product</button>
+                <button className="add" onClick={handleAddGoodInBasket}>Add product</button>
             </div>
         )
     } else if (type ==="manager") {
@@ -83,7 +93,7 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add">Add product</button>
+                <button className="add" onClick={handleAddGoodInBasket}>Add product</button>
             </div>
         )
     } else if (type ==="admin") {
