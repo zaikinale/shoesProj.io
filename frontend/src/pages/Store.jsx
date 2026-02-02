@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getGoods, addGood as apiAddGood } from "../api/goods.js";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import Card from "../components/Card.jsx";
 import { useStore } from '../store/useUserContext.jsx';
 import NavigateTo from '../utils/navBtn.jsx'
 
 export default function Store() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const userRole = useStore((state) => state.user?.roleID);
     const [originalGoods, setOriginalGoods] = useState([]); 
     const [sortOrder, setSortOrder] = useState('original');
@@ -176,7 +176,7 @@ export default function Store() {
         return (
             <section className="store">
                 <h1 className="head">
-                    <span>Store</span>
+                < NavigateTo path="store"/>
                         <div className="controllers">
                             < NavigateTo path="basket"/>
                             < NavigateTo path="orders"/>
@@ -192,7 +192,7 @@ export default function Store() {
         return (
             <section className="store">
                 <h1 className="head">
-                    <span>Store</span>
+                < NavigateTo path="store"/>
                         <div className="controls">
                             < NavigateTo path="orders"/>
                             < NavigateTo path="logout"/>
@@ -209,7 +209,7 @@ export default function Store() {
             <>
                 <section className="store">
                     <div className="head">
-                        <h1>Store</h1>
+                    < NavigateTo path="store"/>
                         <div className="controls">
                             {!showFormStaff && addForm()}
                             {!showForm && staffForm()}
@@ -226,7 +226,7 @@ export default function Store() {
     return (
         <section className="store">
             <div className="head">
-                <h1>Store</h1>
+            < NavigateTo path="store"/>
                 <div className="controls">
                     < NavigateTo path="register"/>
                     < NavigateTo path="login"/>

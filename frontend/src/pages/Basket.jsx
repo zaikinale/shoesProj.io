@@ -3,7 +3,7 @@ import NavigateTo from '../utils/navBtn.jsx'
 const testData = [
     {
         id: 1,
-        image: '',
+        image: "https://i.ibb.co/qLhFKfGv/watch-10-46-rose-gold-light-blush-band-1-1000x1000.jpg",
         title: 'test',
         description: 'desc test good',
         price: 3000,
@@ -11,7 +11,7 @@ const testData = [
     },
     {
         id: 2,
-        image: '',
+        image: "https://i.ibb.co/qLhFKfGv/watch-10-46-rose-gold-light-blush-band-1-1000x1000.jpg",
         title: 'test1',
         description: 'desc test good2',
         price: 100,
@@ -19,7 +19,7 @@ const testData = [
     },
     {
         id: 3,
-        image: '',
+        image: "https://i.ibb.co/qLhFKfGv/watch-10-46-rose-gold-light-blush-band-1-1000x1000.jpg",
         title: 'test21',
         description: 'desc te213st good2',
         price: 56600,
@@ -29,10 +29,13 @@ const testData = [
 
 export default function Basket () {
     const orderBlock = () => {
+        const totalPrise = 10000;
+        const totalCount = 5;
         return (
-            <div className="container">
-                <button className="order">Order</button>
-                <p className="totalSum">500</p>
+            <div className="sectionOrder">
+                <p className="totalCount">{`Общее количество товаров: ${totalCount}`}</p>
+                <p className="totalSum">{`Общая сумма: ${totalPrise}`}</p>
+                <NavigateTo path={'orders'}/>
             </div>
         )
     }
@@ -69,7 +72,7 @@ export default function Basket () {
     return (
         <section className="basket">
             <h1 className="head">
-                <span>Store</span>
+                < NavigateTo path="basket"/>
                 <div className="controllers">
                     < NavigateTo path="store"/>
                     < NavigateTo path="orders"/>

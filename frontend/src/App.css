@@ -219,10 +219,16 @@ input {
   gap: 10px;
 }
 
-/* .card >* {
-  width: 100%;
+.sectionOrder {
   text-align: start;
-} */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 400px;
+  padding: 10px;
+  background-color: rgb(57, 57, 57);
+  border-radius: 20px;
+}
 
 .basketImg {
   width: 150px;
@@ -238,7 +244,9 @@ input {
 
 .controlItem {
   position: absolute;
-  width: 95%;
+  width: 93%;
+  bottom: 6px;
+  left: 3%;
   display: flex;
   align-items: center;
   justify-content: space-between;
