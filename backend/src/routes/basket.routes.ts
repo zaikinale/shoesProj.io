@@ -46,7 +46,6 @@ router.post('/add-good', authenticateToken, async (req: Request, res: Response) 
     const user = (req as any).user;
     const { goodId, quantity = 1 } = req.body;
 
-  // Валидация
     if (!goodId || typeof goodId !== 'number' || goodId <= 0) {
         return res.status(400).json({ error: 'goodId must be a positive number' });
     }
