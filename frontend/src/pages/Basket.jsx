@@ -1,4 +1,4 @@
-import { getBasket } from '../api/basket.js';
+import { getBasket, deleteBasket } from '../api/basket.js';
 import { useEffect, useState } from 'react';
 import BasketCard from '../components/BasketCard.jsx'
 import NavigateTo from '../utils/navBtn.jsx'
@@ -46,6 +46,16 @@ export default function Basket () {
         loadGoods();
     }, []);
 
+    const handleClearBasket = async () => {
+        try {
+            const resp = await deleteBasket();
+            console.log('Success on delete basket',resp)
+            loadGoods();
+        } catch {
+            console.error('Error delete basket: ', error);
+        }
+    }
+
 
     const orderBlock = () => {
         const totalPrise = 10000;
@@ -63,6 +73,7 @@ export default function Basket () {
         if (type === "user") {
             return (
                 <div className="containerColumn">
+                    <button className="clear" onClick={handleClearBasket}>Clear basket</button>
                     {goods.length > 0 ? (
                         <>
                             {goods.map((goodItem) => (
