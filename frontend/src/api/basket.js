@@ -1,6 +1,5 @@
 const BASE_URL = 'http://localhost:3000/api/basket';
 
-
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};
@@ -54,7 +53,6 @@ export async function addGood(goodId) {
     }
     return response.json();
 }
-
 
 export async function changeQuantityGoods(id, quantity) {
     const response = await fetch(`${BASE_URL}/update-good/${id}`, {

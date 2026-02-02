@@ -1,15 +1,41 @@
-
+import { deleteGood, changeQuantityGoods } from "../api/basket"
 
 /* eslint-disable react/prop-types */
 export default function BasketCard ({id, title, desc, price, image, type, quantity}) {
+    const handleChangeQuantityGood = async (type) => {
+        let quantityNew = quantity
+        if (type === "add") {
+            quantityNew  += 1
+        } else if (type === "deduct") {
+            quantityNew -= 1
+        }
+
+        try {
+            const resp = await changeQuantityGoods(id, quantityNew);
+            console.log('Product change quantity in basket: ', resp);
+        } catch (error) {
+            console.error('Product deletion quantity in basket error: ', error);
+        }
+    }
+    
+    const handleDelete = async () => {
+        try {
+            const resp = await deleteGood(id);
+            console.log('Product removed in basket: ', resp);
+        } catch (error) {
+            console.error('Product deletion in basket error: ', error);
+        }
+    }
+
+
     const controlBlock = () => {
         return (
             <div className="controlItem">
                 <input type="checkbox" className="check" />
                 <div className="controls">
-                    <button className="low">-</button>
-                    <button className="add">+</button>
-                    <button className="delete">×</button>
+                    <button className="low" onClick={() => handleChangeQuantityGood('deduct')}>-</button>
+                    <button className="add" onClick={() => handleChangeQuantityGood('add')}>+</button>
+                    <button className="delete" onClick={handleDelete}>×</button>
                 </div>
             </div>
         )
