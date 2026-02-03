@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 export default function OrderList({ id, data, status, list }) {
-    const renderListGood = (good) => {
+    const renderListGood = (goodItem) => {
         return (
-            <div className="cardSmall" key={good.id}>
-                <img src={good.image} alt={good.title} className="imgSmall" />
-                <h3 className="title">{good.title}</h3>
+            <div className="cardSmall" key={goodItem.id}>
+                <img src={goodItem.good.image} alt={goodItem.good.title} className="imgSmall" />
+                <h3 className="title">{goodItem.good.title}</h3>
             </div>
         )
     }
