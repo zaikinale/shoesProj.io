@@ -53,7 +53,6 @@ export const login = async (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Удаляем старые токены при логине (опционально, для чистоты)
     await prisma.token.deleteMany({ where: { userId: user.id } });
 
     const accessToken = await generateAndSaveTokens(user.id, res);
@@ -64,7 +63,6 @@ export const login = async (req: Request, res: Response) => {
     });
 };
 
-// Хелпер для создания токенов
 const generateTokens = (userId: number) => {
     const accessToken = jwt.sign({ userId }, JWT_ACCESS_SECRET!, { expiresIn: '15m' });
     const refreshToken = jwt.sign({ userId }, JWT_REFRESH_SECRET!, { expiresIn: '7d' });

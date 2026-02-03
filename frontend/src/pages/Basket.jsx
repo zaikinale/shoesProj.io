@@ -1,4 +1,5 @@
 import { getBasket, deleteBasket } from '../api/basket.js';
+import { createOrder } from '../api/orders.js'
 import { useEffect, useState } from 'react';
 import BasketCard from '../components/BasketCard.jsx'
 import NavigateTo from '../utils/navBtn.jsx'
@@ -30,6 +31,16 @@ export default function Basket () {
         }
     }
 
+    const handleCreateOrder = async () => {
+        try {
+            const resp = await createOrder();
+            console.log('Success on create order',resp)
+            loadGoods();
+        } catch (error) {
+            console.error('Error create order: ', error);
+        }
+    }
+
 
     const orderBlock = () => {
         const totalPrise = 10000;
@@ -38,7 +49,8 @@ export default function Basket () {
             <div className="sectionOrder">
                 <p className="totalCount">{`Общее количество товаров: ${totalCount}`}</p>
                 <p className="totalSum">{`Общая сумма: ${totalPrise}`}</p>
-                <NavigateTo path={'orders'}/>
+                <button className="create" onClick={handleCreateOrder}>crete order</button>
+                {/* <NavigateTo path={'orders'}/> */}
             </div>
         )
     }
