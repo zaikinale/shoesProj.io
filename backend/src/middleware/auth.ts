@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_ACCESS_SECRET } from '../config/env';
 import { prisma } from '../utils/prismaClient';
-// В мидлваре добавьте логирование
+
 export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     console.log('Authorization header:', authHeader);
