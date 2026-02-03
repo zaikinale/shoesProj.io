@@ -60,7 +60,6 @@ export default function Store() {
     };
 
     const handleAddGood = async () => { 
-        // console.log('Новый товар:', formAdd);
         const payload = {
             title: formAdd.title || '',
             description: formAdd.description || '',
@@ -213,6 +212,7 @@ export default function Store() {
                         <div className="controls">
                             {!showFormStaff && addForm()}
                             {!showForm && staffForm()}
+                            < NavigateTo path="orders"/>
                             < NavigateTo path="logout"/>
                         </div>
                     </div>

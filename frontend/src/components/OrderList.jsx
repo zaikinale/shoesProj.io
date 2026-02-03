@@ -1,5 +1,56 @@
+import { useState } from 'react';
+import { useStore } from '../store/useUserContext.jsx';
+import { cancelOrder, changeStatusOrder } from "../api/orders"
+
 /* eslint-disable react/prop-types */
 export default function OrderList({ id, data, status, list }) {
+    const [selectedValue, setSelectedValue] = useState(status);
+    const userRole = useStore((state) => state.user?.roleID);
+
+    const renderControl = () => {
+        if (userRole === 2 || userRole === 3) { 
+            return (
+                <select value={selectedValue} name="select" onChange={(e) => handleChangeStatus(e.target.value)}>
+                    <option value="created" selected>created</option>
+                    <option value="processing">processing</option>
+                    <option value="shipped">shipped</option>
+                    <option value="delivered">delivered</option>
+                    <option value="cancelled">cancelled</option>
+                </select>
+            )
+        } else {
+            return null
+        }
+    }
+
+    const handleChangeStatus = async (statusNew) => {
+        setSelectedValue(statusNew);
+        try {
+            const resp = await changeStatusOrder(id, statusNew);
+            console.log('Change status order success: ', resp);
+        } catch (error) {
+            console.error('Change status order error: ', error);
+        }
+    }
+
+    const handleCancelOrder = async () => {
+        try {
+            const resp = await cancelOrder(id);
+            console.log('Cancel order: ', resp);
+        } catch (error) {
+            console.error('Cancel order error: ', error);
+        }
+    }
+
+    const renderCancelBtn = () => {
+        if (status !== 'shipped' && status !== 'delivered' && status !== 'cancelled') {
+            return (
+                <button className="status" onClick={handleCancelOrder}>Cancel order</button>
+            )
+        }
+        return null
+    }
+
     const renderListGood = (goodItem) => {
         return (
             <div className="cardSmall" key={goodItem.id}>
@@ -12,9 +63,13 @@ export default function OrderList({ id, data, status, list }) {
     return (
         <div className="order">
             <h2 className="title">{`Заказ от ${data}`}</h2>
-            <span className="status">{status}</span>
+            <span className="status">{selectedValue}</span>
             <div className="goodsList">
                 {list.map((good) => renderListGood(good))}
+            </div>
+            <div className="controlsOrder">
+                {renderCancelBtn()}
+                {renderControl()}
             </div>
         </div>
     )
