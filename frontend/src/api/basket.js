@@ -71,11 +71,12 @@ export async function deleteGood(id) {
     const response = await fetch(`${BASE_URL}/delete-good/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
-    })
+    });
 
     if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to fetch on change quantity good in basket');
+        throw new Error(error.error || 'Failed to delete from basket');
     }
-    return response.json();
+
+    return { success: true };
 }
