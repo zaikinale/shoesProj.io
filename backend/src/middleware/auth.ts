@@ -11,8 +11,9 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
     console.log('Extracted token:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
 
     if (!token) {
-        console.log('No token provided');
-        return res.status(401).json({ error: 'Access token required' });
+        console.log('No token provided - allowing public access');
+        (req as any).user = null; 
+        return next(); 
     }
 
     try {

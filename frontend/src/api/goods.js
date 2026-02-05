@@ -2,13 +2,21 @@ const BASE_URL = 'http://localhost:3000/api/goods';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  const headers = { 
+      'Content-Type': 'application/json' 
+  };
+  
+  if (token) {
+      headers.Authorization = `Bearer ${token}`;
+  }
+  
+  return headers;
 };
 
 export async function getGoods() {
   const response = await fetch(BASE_URL, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    headers: getAuthHeaders()
   });
   
   if (!response.ok) throw new Error('Failed to fetch goods');
@@ -18,10 +26,7 @@ export async function getGoods() {
 export async function addGood(data) {
   const response = await fetch(BASE_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders()
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
   
@@ -32,10 +37,7 @@ export async function addGood(data) {
 export async function updateGood(id, data) {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders()
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
   

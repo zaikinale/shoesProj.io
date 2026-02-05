@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { deleteGood, updateGood } from '../api/goods.js'
-import { addGood } from "../api/basket.js";
+import { addGood as addToBasket, deleteGood as deleteFromBasket } from "../api/basket.js";
 
 // eslint-disable-next-line react/prop-types
-export default function Card ({id, title, desc, price, image, type}) {
+export default function Card ({id, title, desc, price, image, type, isInBasket, refreshGoods, basketItemId}) {
+    const [inBasket, setInBasket] = useState(isInBasket);
     const [isChange, setIsChange] = useState(false);
     const [form, setForm] = useState({
         title: title,
@@ -24,6 +25,7 @@ export default function Card ({id, title, desc, price, image, type}) {
             image: image
         })
         handleChange()
+        refreshGoods()
     }
 
     const handleDelete = async () => {
@@ -33,6 +35,7 @@ export default function Card ({id, title, desc, price, image, type}) {
             // loadGoods(); 
             // setShowForm(false); 
             // setFormAdd({});
+            refreshGoods()
         } catch (error) {
             console.error('Product deletion error: ', error);
         }
@@ -55,19 +58,33 @@ export default function Card ({id, title, desc, price, image, type}) {
             const resp = await updateGood(id, payload);
             console.log('Product changed:', resp);
             handleChange()
+            refreshGoods()
         } catch (error) {
             console.error('Product change error: ', error);
         }
     }
 
-    const handleAddGoodInBasket = async () => {
+    const handleAddToBasket = async () => {
         try {
-            const resp = await addGood(id);
-            console.log('Product added in basket: ', resp);
+            await addToBasket(id);
+            setInBasket(true);
+            console.log('Added to basket');
+            refreshGoods()
         } catch (error) {
-            console.error('Product added error: ', error);
+            console.error('Add to basket error:', error);
         }
-    }
+    };
+
+    const handleRemoveFromBasket = async () => {
+        try {
+            await deleteFromBasket(basketItemId);
+            setInBasket(false);
+            console.log('Removed from basket');
+            refreshGoods()
+        } catch (error) {
+            console.error('Remove from basket error:', error);
+        }
+    };
 
     const changeInputForm = (field, value) => {
         setForm(prev => ({
@@ -83,7 +100,21 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add" onClick={handleAddGoodInBasket}>Add product</button>
+                {inBasket ? (
+                    <button 
+                        className="remove-basket" 
+                        onClick={handleRemoveFromBasket}
+                    >
+                        Delete from basket
+                    </button>
+                ) : (
+                    <button 
+                        className="add-basket" 
+                        onClick={handleAddToBasket}
+                    >
+                        Add in basket
+                    </button>
+                )}
             </div>
         )
     } else if (type ==="manager") {
@@ -93,7 +124,21 @@ export default function Card ({id, title, desc, price, image, type}) {
                 <h3 className="title">{title}</h3>
                 <p className="desc">{desc}</p>
                 <span className="price">{`${price} ₽`}</span>
-                <button className="add" onClick={handleAddGoodInBasket}>Add product</button>
+                {inBasket ? (
+                    <button 
+                        className="remove-basket" 
+                        onClick={handleRemoveFromBasket}
+                    >
+                        Delete from basket
+                    </button>
+                ) : (
+                    <button 
+                        className="add-basket" 
+                        onClick={handleAddToBasket}
+                    >
+                        Add in basket
+                    </button>
+                )}
             </div>
         )
     } else if (type ==="admin") {

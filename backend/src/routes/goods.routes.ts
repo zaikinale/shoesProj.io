@@ -4,15 +4,45 @@ import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
-// GET /api/goods 
-router.get('/', async (req: Request, res: Response) => {
+// GET /api/goods
+router.get('/', authenticateToken, async (req: Request, res: Response) => {
+  const user = (req as any).user;
+
   try {
-    const goods = await prisma.good.findMany();
-    res.json(goods);
+    const goods = await prisma.good.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!user) {
+      return res.json(goods);
+    }
+
+    const basketItems = await prisma.basketItem.findMany({
+      where: { 
+        basket: { userId: user.id } 
+      },
+      select: { 
+        id: true, 
+        goodId: true 
+      }
+    });
+
+    const basketItemMap = new Map(
+      basketItems.map(item => [item.goodId, item.id])
+    );
+
+    const goodsWithBasket = goods.map(good => ({
+      ...good,
+      isInBasket: basketItemMap.has(good.id),
+      basketItemId: basketItemMap.get(good.id) || null 
+    }));
+
+    res.json(goodsWithBasket);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch goods' });
   }
 });
+
 
 // POST /api/goods 
 router.post('/', authenticateToken, async (req: Request, res: Response) => {
@@ -26,8 +56,8 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
   if (!title || typeof title !== 'string') {
     return res.status(400).json({ error: 'Title is required' });
   }
-  if (typeof price !== 'number' || !Number.isInteger(price)) {
-    return res.status(400).json({ error: 'Price must be an integer' });
+  if (typeof price !== 'number' || price <= 0) {
+    return res.status(400).json({ error: 'Price must be positive number' });
   }
 
   try {
@@ -35,54 +65,63 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
       data: {
         title,
         description: description || '',
-        price,
+        price: Math.floor(price),
         image: image || null
       }
     });
-    return res.status(201).json(newGood);
+    res.status(201).json(newGood);
   } catch (error: any) {
-    console.error('Prisma error:', error.message);
-    return res.status(500).json({ error: 'Failed to create good' });
+    console.error('Create good error:', error.message);
+    res.status(500).json({ error: 'Failed to create good' });
   }
 });
 
-// PUT /api/goods/:id 
+// PUT /api/goods/:id
 router.put('/:id', authenticateToken, async (req: Request, res: Response) => {
   const user = (req as any).user;
   if (user.roleID !== 3) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
-  const id = req.params.id as string;
+  const id = parseInt(req.params.id as string);
   const { title, description, price, image } = req.body;
 
   try {
     const updatedGood = await prisma.good.update({
-      where: { id: parseInt(id) },
-      data: { title, description, price, image }
+      where: { id },
+      data: { 
+        title,
+        description: description || '',
+        price: Math.floor(price),
+        image: image || null 
+      }
     });
     res.json(updatedGood);
-  } catch (error) {
-    res.status(404).json({ error: 'Good not found' });
+  } catch (error: any) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'Good not found' });
+    }
+    res.status(500).json({ error: 'Failed to update good' });
   }
 });
 
-// DELETE /api/goods/:id 
+// DELETE /api/goods/:id
 router.delete('/:id', authenticateToken, async (req: Request, res: Response) => {
   const user = (req as any).user;
   if (user.roleID !== 3) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
-  const id  = req.params.id as string;
+  const id = parseInt(req.params.id as string);
 
   try {
-    await prisma.good.delete({
-      where: { id: parseInt(id) }
-    });
+    await prisma.good.delete({ where: { id } });
     res.status(204).send();
-  } catch (error) {
-    res.status(404).json({ error: 'Good not found' });
+  } catch (error: any) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'Good not found' });
+    }
+    res.status(500).json({ error: 'Failed to delete good' });
   }
 });
 

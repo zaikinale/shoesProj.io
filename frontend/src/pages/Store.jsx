@@ -33,6 +33,8 @@ export default function Store() {
         }
     };
 
+    const refreshGoods = () => loadGoods();
+
     useEffect(() => {
         loadGoods();
     }, []);
@@ -93,11 +95,6 @@ export default function Store() {
             setFormAdd({}) 
         }
     }
-
-// // В случае ошибки
-//     navigate('/denied', { 
-//         state: { status: 403, error: 'Access denied' } 
-//     });
 
     const addForm = () => {
         return (
@@ -163,6 +160,9 @@ export default function Store() {
                         price={good.price}
                         image={good.image}
                         type={type}
+                        isInBasket={good.isInBasket}
+                        refreshGoods={refreshGoods}
+                        basketItemId={good.basketItemId}
                     />
                 ))
                 ) : (
