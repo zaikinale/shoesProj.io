@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router";
 import { deleteGood, updateGood } from '../api/goods.js'
 import { addGood as addToBasket, deleteGood as deleteFromBasket } from "../api/basket.js";
 
@@ -93,10 +94,14 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
     if (type ==="user") {
         return (
             <div className="card">
-                <img className="img" src={image} alt={title} />
-                <h3 className="title">{title}</h3>
-                <p className="desc">{desc}</p>
-                <span className="price">{`${price} ₽`}</span>
+                <Link to={`/good/${id}`}>{
+                    <>
+                    <img className="img" src={image} alt={title} />
+                    <h3 className="title">{title}</h3>
+                    <p className="desc">{desc}</p>
+                    <span className="price">{`${price} ₽`}</span>
+                    </>
+                }</Link>
                 {inBasket ? (
                     <button 
                         className="remove-basket" 
@@ -117,10 +122,14 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
     } else if (type ==="manager") {
         return (
             <div className="card">
-                <img className="img" src={image} alt={title} />
-                <h3 className="title">{title}</h3>
-                <p className="desc">{desc}</p>
-                <span className="price">{`${price} ₽`}</span>
+                <Link to={`/good/${id}`}>{
+                    <>
+                        <img className="img" src={image} alt={title} />
+                        <h3 className="title">{title}</h3>
+                        <p className="desc">{desc}</p>
+                        <span className="price">{`${price} ₽`}</span>
+                    </>
+                }</Link>
                 {inBasket ? (
                     <button 
                         className="remove-basket" 
@@ -154,10 +163,14 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
 
                 ) : (
                     <>
-                        <img className="img" src={image} alt={title} />
-                        <h3 className="title">{form.title}</h3>
-                        <p className="desc">{form.description}</p>
-                        <span className="price">{`${form.price} ₽`}</span>
+                        <Link to={`/good/${id}`}>{
+                            <>
+                                <img className="img" src={image} alt={title} />
+                                <h3 className="title">{title}</h3>
+                                <p className="desc">{desc}</p>
+                                <span className="price">{`${price} ₽`}</span>
+                            </>
+                        }</Link>
                     </>
                     
                 )
@@ -170,10 +183,14 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
     } else {
         return (
             <div className="card">
-                <img className="img" src={image} alt={title} />
-                <h3 className="title">{title}</h3>
-                <p className="desc">{desc}</p>
-                <span className="price">{`${price} ₽`}</span>
+                <Link to={`/good/${id}`}>{
+                    <>
+                        <img className="img" src={image} alt={title} />
+                        <h3 className="title">{title}</h3>
+                        <p className="desc">{desc}</p>
+                        <span className="price">{`${price} ₽`}</span>
+                    </>
+                }</Link>
             </div>
         )
     }

@@ -13,6 +13,19 @@ const getAuthHeaders = () => {
   return headers;
 };
 
+export async function getGoodById(id) {
+  const response = await fetch(`${BASE_URL}/${id}`, {
+      method: 'GET',
+      headers: getAuthHeaders()
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to fetch good');
+  }
+  return response.json();
+}
+
 export async function getGoods() {
   const response = await fetch(BASE_URL, {
     method: 'GET',

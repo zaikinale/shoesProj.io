@@ -22,7 +22,12 @@ router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Good not found' });
     }
 
-    let goodWithBasket = good;
+    let responseGood = {
+      ...good,
+      isInBasket: false,
+      basketItemId: null as number | null,
+    };
+
     if (user) {
       const basketItem = await prisma.basketItem.findFirst({
         where: { 
@@ -32,14 +37,14 @@ router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
         select: { id: true }
       });
 
-      goodWithBasket = {
+      responseGood = {
         ...good,
         isInBasket: !!basketItem,
-        basketItemId: basketItem?.id || null
+        basketItemId: basketItem?.id ?? null,
       };
     }
 
-    res.json(goodWithBasket);
+    res.json(responseGood);
   } catch (error: any) {
     console.error('Get good by ID error:', error.message);
     res.status(500).json({ error: 'Failed to fetch good' });
