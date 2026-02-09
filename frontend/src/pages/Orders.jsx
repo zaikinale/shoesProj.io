@@ -1,4 +1,3 @@
-
 import { useStore } from '../store/useUserContext.jsx';
 import { useState, useEffect } from 'react';
 import { getOrdersUser, getOrdersManager } from '../api/orders.js';
@@ -26,7 +25,7 @@ export default function Orders () {
     
     useEffect(() => {
         loadGoods();
-    }, []);
+    }, [userRole]);
 
     const renderOrdersBody = (type) => {
         if (type === "user") {
@@ -40,6 +39,7 @@ export default function Orders () {
                                 data={order.createdAt}
                                 status={order.status}
                                 list={order.items}
+                                onOrderCancelled={loadGoods}
                             />
                         ))
                     ) : (
@@ -54,7 +54,7 @@ export default function Orders () {
     return (
         <section className="basket">
             <h1 className="head">
-                < NavigateTo path="orders"/>
+                <NavigateTo path="orders"/>
                 <div className="controllers">
                     <NavigateTo path="store"/>
                     {userRole !== 2 && userRole !== 3 && <NavigateTo path="basket"/>}
