@@ -23,6 +23,22 @@ export default function OrderList({ id, data, status, list }) {
         }
     }
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        
+        const date = new Date(dateString);
+        if (isNaN(date)) return dateString;
+        
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const year = date.getUTCFullYear();
+        
+        const hours = String(date.getUTCHours()).padStart(2, '0');
+        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+        
+        return `${day}.${month}.${year} в ${hours}:${minutes}`;
+    }
+
     const handleChangeStatus = async (statusNew) => {
         setSelectedValue(statusNew);
         try {
@@ -62,7 +78,7 @@ export default function OrderList({ id, data, status, list }) {
 
     return (
         <div className="order">
-            <h2 className="title">{`Заказ от ${data}`}</h2>
+            <h2 className="title">{`Заказ от ${formatDate(data)}`}</h2>
             <span className="status">{selectedValue}</span>
             <div className="goodsList">
                 {list.map((good) => renderListGood(good))}

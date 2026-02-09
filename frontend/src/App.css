@@ -156,6 +156,13 @@ input {
   border-radius: 10px;
 }
 
+.cardSmall > .title {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .order {
   align-items: flex-start;
   display: flex;
