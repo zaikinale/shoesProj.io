@@ -32,9 +32,6 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
         try {
             const resp = await deleteGood(id);
             console.log('Product removed: ', resp);
-            // loadGoods(); 
-            // setShowForm(false); 
-            // setFormAdd({});
             refreshGoods()
         } catch (error) {
             console.error('Product deletion error: ', error);

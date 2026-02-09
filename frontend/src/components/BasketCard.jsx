@@ -1,7 +1,7 @@
 import { deleteGood, changeQuantityGoods } from "../api/basket"
 
 /* eslint-disable react/prop-types */
-export default function BasketCard ({id, title, desc, price, image, type, quantity}) {
+export default function BasketCard ({id, title, desc, price, image, type, quantity, refreshGoods}) {
     const handleChangeQuantityGood = async (type) => {
         let quantityNew = quantity
         if (type === "add") {
@@ -16,6 +16,7 @@ export default function BasketCard ({id, title, desc, price, image, type, quanti
         } catch (error) {
             console.error('Product deletion quantity in basket error: ', error);
         }
+        refreshGoods()
     }
     
     const handleDelete = async () => {
@@ -25,6 +26,7 @@ export default function BasketCard ({id, title, desc, price, image, type, quanti
         } catch (error) {
             console.error('Product deletion in basket error: ', error);
         }
+        refreshGoods()
     }
 
 

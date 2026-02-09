@@ -17,6 +17,8 @@ export default function Basket () {
         }
     };
 
+    const refreshGoods = () => loadGoods();
+
     useEffect(() => {
         loadGoods();
     }, []);
@@ -72,6 +74,7 @@ export default function Basket () {
                                     image={goodItem.good.image}
                                     type={type}
                                     quantity={goodItem.quantity}
+                                    refreshGoods={refreshGoods}
                                 />
                             ))}
                             {orderBlock()}
