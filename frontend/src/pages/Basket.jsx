@@ -45,14 +45,15 @@ export default function Basket () {
 
 
     const orderBlock = () => {
-        const totalPrise = 10000;
-        const totalCount = 5;
+        const totalCount = goods.reduce((sum, item) => sum + item.quantity, 0);
+        
+        const totalPrice = goods.reduce((sum, item) => sum + (item.good.price * item.quantity), 0);
+        
         return (
             <div className="sectionOrder">
                 <p className="totalCount">{`Общее количество товаров: ${totalCount}`}</p>
-                <p className="totalSum">{`Общая сумма: ${totalPrise}`}</p>
-                <button className="create" onClick={handleCreateOrder}>crete order</button>
-                {/* <NavigateTo path={'orders'}/> */}
+                <p className="totalSum">{`Общая сумма: ${totalPrice} ₽`}</p>
+                <button className="create" onClick={handleCreateOrder}>create order</button>
             </div>
         )
     }
@@ -61,7 +62,7 @@ export default function Basket () {
         if (type === "user") {
             return (
                 <div className="containerColumn">
-                    <button className="clear" onClick={handleClearBasket}>Clear basket</button>
+                    {goods.length > 0 && <button className="clear" onClick={handleClearBasket}>Clear basket</button>}
                     {goods.length > 0 ? (
                         <>
                             {goods.map((goodItem) => (
