@@ -4,6 +4,48 @@ import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
+// GET /api/goods/:id
+router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const id = parseInt(req.params.id as string);
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid good ID' });
+  }
+
+  try {
+    const good = await prisma.good.findUnique({
+      where: { id }
+    });
+
+    if (!good) {
+      return res.status(404).json({ error: 'Good not found' });
+    }
+
+    let goodWithBasket = good;
+    if (user) {
+      const basketItem = await prisma.basketItem.findFirst({
+        where: { 
+          basket: { userId: user.id },
+          goodId: id
+        },
+        select: { id: true }
+      });
+
+      goodWithBasket = {
+        ...good,
+        isInBasket: !!basketItem,
+        basketItemId: basketItem?.id || null
+      };
+    }
+
+    res.json(goodWithBasket);
+  } catch (error: any) {
+    console.error('Get good by ID error:', error.message);
+    res.status(500).json({ error: 'Failed to fetch good' });
+  }
+});
+
 // GET /api/goods
 router.get('/', authenticateToken, async (req: Request, res: Response) => {
   const user = (req as any).user;
