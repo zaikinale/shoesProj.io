@@ -43,6 +43,11 @@ img {
   /* border-radius: 10px; */
 }
 
+textarea {
+  border: 0;
+  resize: none;
+}
+
 button, select {
   /* border-radius: 8px; */
   border: 1px solid transparent;

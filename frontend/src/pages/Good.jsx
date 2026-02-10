@@ -85,6 +85,36 @@ export default function Good() {
                         </div>
                     </div>
                 </div>
+
+                <aside className="reviews">
+                    <h2>Product reviews</h2>
+                    <div className="reviews-container">
+                        <div className="review-card">
+                            <img src="https://iili.io/fpjt6kg.jpg" alt="review-user" />
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed iusto a consectetur repellendus expedita repudiandae hic omnis doloribus dolor et alias rerum, recusandae vero saepe natus, temporibus consequuntur voluptate provident voluptatum impedit voluptates minus voluptas laborum? Temporibus unde maxime minus reiciendis molestias impedit architecto earum maiores optio error, similique dolorem cum harum asperiores vel dignissimos pariatur quisquam ducimus non aliquam fugiat alias. Debitis beatae facere necessitatibus modi cum id ducimus quidem voluptatum provident, sapiente voluptatem incidunt quod nobis quaerat a, eveniet nihil. Eius, fuga iste fugit error voluptatem architecto at, quia vero suscipit ab harum sapiente in consequuntur iure delectus.</p>
+                            <div className="rating">5</div>
+                        </div>
+                        <div className="review-card">
+                            <img src="https://iili.io/fpjt6kg.jpg" alt="review-user" />
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed iusto a consectetur repellendus expedita repudiandae hic omnis doloribus dolor et alias rerum, recusandae vero saepe natus, temporibus consequuntur voluptate provident voluptatum impedit voluptates minus voluptas laborum? Temporibus unde maxime minus reiciendis molestias impedit architecto earum maiores optio error, similique dolorem cum harum asperiores vel dignissimos pariatur quisquam ducimus non aliquam fugiat alias. Debitis beatae facere necessitatibus modi cum id ducimus quidem voluptatum provident, sapiente voluptatem incidunt quod nobis quaerat a, eveniet nihil. Eius, fuga iste fugit error voluptatem architecto at, quia vero suscipit ab harum sapiente in consequuntur iure delectus.</p>
+                            <div className="rating">5</div>
+                        </div>
+                        <div className="review-card">
+                            <img src="https://iili.io/fpjt6kg.jpg" alt="review-user" />
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed iusto a consectetur repellendus expedita repudiandae hic omnis doloribus dolor et alias rerum, recusandae vero saepe natus, temporibus consequuntur voluptate provident voluptatum impedit voluptates minus voluptas laborum? Temporibus unde maxime minus reiciendis molestias impedit architecto earum maiores optio error, similique dolorem cum harum asperiores vel dignissimos pariatur quisquam ducimus non aliquam fugiat alias. Debitis beatae facere necessitatibus modi cum id ducimus quidem voluptatum provident, sapiente voluptatem incidunt quod nobis quaerat a, eveniet nihil. Eius, fuga iste fugit error voluptatem architecto at, quia vero suscipit ab harum sapiente in consequuntur iure delectus.</p>
+                            <div className="rating">5</div>
+                        </div>
+                    </div>
+                    <div className="added-review">
+                        <h2>Add your review!</h2>
+                        <textarea name="" id="" placeholder='Your review'></textarea>
+                        <div className="controls">
+                            <input type="text" placeholder='image link' />
+                            <input className='rating-input' type="text" placeholder='your rating (from 0 to 5)' />
+                            <button className="submit">added your review</button>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </section>
     );

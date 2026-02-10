@@ -324,7 +324,7 @@ input {
   height: 30px;
 }
 
-.info, .saved  {
+.info, .saved, .reviews, .reviews-container  {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -337,6 +337,43 @@ input {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.review-card {
+  position: relative;
+  padding: 10px;
+  background-color: #1a1a1a;
+  display: flex;
+  gap: 10px;
+}
+
+.review-card > img {
+  width: 200px;
+}
+
+.rating {
+  position: absolute;
+  background-color: #1a1a1a;
+  padding: 5px 15px;
+  font-size: 20px;
+  top: 0;
+  left: 0;
+}
+
+.added-review {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.added-review > textarea {
+  width: 100%;
+  height: 100px;
+}
+
+.rating-input {
+  max-width: 200px;
 }
 
 /* 
