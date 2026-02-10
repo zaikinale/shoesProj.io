@@ -16,7 +16,7 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
             include: { good: true }
         });
 
-        const goods = saves.map(save => save.good);
+        const goods = saves.map((save: { good: any; }) => save.good);
         res.json(goods);
     } catch (error: any) {
         console.error('Get saves error:', error.message);
@@ -27,7 +27,7 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
 // GET /api/saves/check/:goodId 
 router.get('/check/:goodId', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
-    const goodId = parseInt(req.params.goodId, 10);
+    const goodId = parseInt(req.params.goodId as string, 10);
 
     if (isNaN(goodId)) {
         return res.status(400).json({ error: 'Invalid good ID' });
@@ -76,7 +76,7 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
 // DELETE /api/saves/:goodId 
 router.delete('/:goodId', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
-    const goodId = parseInt(req.params.goodId, 10);
+    const goodId = parseInt(req.params.goodId as string, 10);
 
     if (isNaN(goodId)) {
         return res.status(400).json({ error: 'Invalid good ID' });

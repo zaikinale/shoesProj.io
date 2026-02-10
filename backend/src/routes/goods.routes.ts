@@ -75,10 +75,10 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
     });
 
     const basketItemMap = new Map(
-      basketItems.map(item => [item.goodId, item.id])
+      basketItems.map((item: { goodId: any; id: any; }) => [item.goodId, item.id])
     );
 
-    const goodsWithBasket = goods.map(good => ({
+    const goodsWithBasket = goods.map((good: { id: unknown; }) => ({
       ...good,
       isInBasket: basketItemMap.has(good.id),
       basketItemId: basketItemMap.get(good.id) || null 
