@@ -84,7 +84,7 @@ input {
   opacity: 0.5;
 }
 
-.store, .basket, .good {
+.store, .basket, .good, .profile {
   width: 100%;
   height: 100vw;
   padding: 10px 20px;
@@ -305,12 +305,15 @@ input {
   text-align: start;
 }
 
-.saveBtn {
-  padding: 0;
-  margin: 0;
+.saveBtnPos {
   position: absolute;
   top: 15px;
   right: 15px;
+}
+
+.saveBtn {
+  padding: 0;
+  margin: 0;
   background: none;
   width: 30px;
   height: 30px;
@@ -319,6 +322,21 @@ input {
 .saveBtn > img {
   width: 30px;
   height: 30px;
+}
+
+.info, .saved  {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: start;
+}
+
+.profile-info, .saved-cards {
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* 

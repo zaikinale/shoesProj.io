@@ -10,7 +10,7 @@ export default function Logout () {
 
     return (
         <div className="section">
-            <h1>Вы успешно вышли из аккаунта!</h1>
+            <h1>You have successfully logged out of your account!</h1>
             <button className="register" onClick={() => navigate('/')}>На главную</button>
         </div>
     )

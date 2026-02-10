@@ -174,14 +174,14 @@ export default function Store() {
     if (userRole === 1) {
         return (
             <section className="store">
-                <h1 className="head">
+                <div className="head">
                 < NavigateTo path="store"/>
                         <div className="controllers">
                             < NavigateTo path="basket"/>
                             < NavigateTo path="orders"/>
-                            < NavigateTo path="logout"/>
+                            < NavigateTo path="profile"/>
                         </div>
-                </h1>
+                </div>
                 {renderGoods('user')}
             </section>
         );
@@ -190,13 +190,13 @@ export default function Store() {
     if (userRole === 2) {
         return (
             <section className="store">
-                <h1 className="head">
+                <div className="head">
                 < NavigateTo path="store"/>
                         <div className="controls">
                             < NavigateTo path="orders"/>
-                            < NavigateTo path="logout"/>
+                            < NavigateTo path="profile"/>
                         </div>
-                </h1>
+                </div>
                 <Filter />
                 {renderGoods('manager')}
             </section>
@@ -213,7 +213,7 @@ export default function Store() {
                             {!showFormStaff && addForm()}
                             {!showForm && staffForm()}
                             < NavigateTo path="orders"/>
-                            < NavigateTo path="logout"/>
+                            < NavigateTo path="profile"/>
                         </div>
                     </div>
                     <Filter />

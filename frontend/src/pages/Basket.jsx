@@ -91,14 +91,14 @@ export default function Basket () {
 
     return (
         <section className="basket">
-            <h1 className="head">
+            <div className="head">
                 < NavigateTo path="basket"/>
                 <div className="controllers">
                     < NavigateTo path="store"/>
                     < NavigateTo path="orders"/>
                     < NavigateTo path="logout"/>
                 </div>
-            </h1>
+            </div>
             {renderBasketBody('user')}
         </section>
     )

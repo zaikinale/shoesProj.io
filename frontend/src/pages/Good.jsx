@@ -3,9 +3,12 @@ import { useParams } from 'react-router-dom';
 import { getGoodById } from '../api/goods';
 import NavigateTo from '../utils/navBtn.jsx';
 import { addGood } from '../api/basket.js';
+import BookMarkActive from '../assets/bookmark_active.svg'
+import BookMarkUnActive from '../assets/bookmark_unactive.svg'
 
 export default function Good() {
     const [good, setGood] = useState(null);
+    const [isSave, setIsSave] = useState(false);
     const { id } = useParams();
 
     const fetchGood = async () => {
@@ -37,14 +40,14 @@ export default function Good() {
     return (
         <section className="good">
             <div className="container">
-                <h1 className="head">
+                <div className="head">
                     <NavigateTo path="store" />
                     <div className="controllers">
                         <NavigateTo path="basket" />
                         <NavigateTo path="orders" />
-                        <NavigateTo path="logout" />
+                        <NavigateTo path="profile" />
                     </div>
-                </h1>
+                </div>
 
                 <div className="good-content">
                     <div className="good-image">
@@ -68,13 +71,18 @@ export default function Good() {
                             <span className="price-value">{good.price} ₽</span>
                         </div>
                         
-                        {good.isInBasket ? (
-                            <NavigateTo path="basket" />
-                        ) : (
-                            <button className="btn-add-to-basket" onClick={handleAddToBasket}>
-                                add to basket
+                        <div className="controls">
+                            {good.isInBasket ? (
+                                    <NavigateTo path="basket" />
+                                ) : (
+                                    <button className="btn-add-to-basket" onClick={handleAddToBasket}>
+                                        add to basket
+                                    </button>
+                                )}
+                            <button className="saveBtn" onClick={() => setIsSave(!isSave)}>
+                                <img src={isSave ? BookMarkActive : BookMarkUnActive } alt="" />
                             </button>
-                        )}
+                        </div>
                     </div>
                 </div>
             </div>

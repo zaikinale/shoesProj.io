@@ -97,7 +97,7 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
     if (type ==="user") {
         return (
             <div className="card">
-                <button className="saveBtn" onClick={() => setIsSave(!isSave)}>
+                <button className="saveBtn saveBtnPos" onClick={() => setIsSave(!isSave)}>
                     <img src={isSave ? BookMarkActive : BookMarkUnActive } alt="" />
                 </button>
                 <Link to={`/good/${id}`}>{
