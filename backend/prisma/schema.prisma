@@ -21,6 +21,7 @@ model User {
   orders    Order[]
   tokens    Token[]
   saves     Save[]
+  reviews   Reviews[]
 }
 
 model Token {
@@ -48,6 +49,7 @@ model Good {
   basketItems BasketItem[]
   orderItems  OrderItem[]
   saves     Save[]
+  reviews   Reviews[]
 }
 
 model Basket {
@@ -101,4 +103,22 @@ model Save {
 
   @@unique([userId, goodId])
 }
+
+model Reviews {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  goodId    Int
+  text      String
+  rating    Int 
+  image     String? 
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  good      Good     @relation(fields: [goodId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, goodId])
+}
+
+
+
 
