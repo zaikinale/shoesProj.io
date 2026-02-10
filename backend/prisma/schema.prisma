@@ -20,6 +20,7 @@ model User {
   baskets   Basket[]
   orders    Order[]
   tokens    Token[]
+  saves     Save[]
 }
 
 model Token {
@@ -46,6 +47,7 @@ model Good {
 
   basketItems BasketItem[]
   orderItems  OrderItem[]
+  saves     Save[]
 }
 
 model Basket {
@@ -87,3 +89,16 @@ model OrderItem {
   order    Order @relation(fields: [orderId], references: [id])
   good     Good  @relation(fields: [goodId], references: [id])
 }
+
+model Save {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  goodId    Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  good      Good     @relation(fields: [goodId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, goodId])
+}
+
