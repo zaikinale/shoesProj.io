@@ -133,6 +133,7 @@ input {
 }
 
 .card {
+  position: relative;
   width: 300px;
   padding: 10px;
   background-color: rgb(57, 57, 57);
@@ -302,6 +303,22 @@ input {
   gap: 10px;
   align-items: start;
   text-align: start;
+}
+
+.saveBtn {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  width: 30px;
+  height: 30px;
+}
+
+.saveBtn > img {
+  width: 30px;
+  height: 30px;
 }
 
 /* 

@@ -2,11 +2,14 @@ import { useState } from "react"
 import { Link } from "react-router";
 import { deleteGood, updateGood } from '../api/goods.js'
 import { addGood as addToBasket, deleteGood as deleteFromBasket } from "../api/basket.js";
+import BookMarkActive from '../assets/bookmark_active.svg'
+import BookMarkUnActive from '../assets/bookmark_unactive.svg'
 
 // eslint-disable-next-line react/prop-types
 export default function Card ({id, title, desc, price, image, type, isInBasket, refreshGoods, basketItemId}) {
     const [inBasket, setInBasket] = useState(isInBasket);
     const [isChange, setIsChange] = useState(false);
+    const [isSave, setIsSave] = useState(false);
     const [form, setForm] = useState({
         title: title,
         description: desc,
@@ -94,6 +97,9 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
     if (type ==="user") {
         return (
             <div className="card">
+                <button className="saveBtn" onClick={() => setIsSave(!isSave)}>
+                    <img src={isSave ? BookMarkActive : BookMarkUnActive } alt="" />
+                </button>
                 <Link to={`/good/${id}`}>{
                     <>
                     <img className="img" src={image} alt={title} />

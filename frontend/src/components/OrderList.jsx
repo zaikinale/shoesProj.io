@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import { useStore } from '../store/useUserContext.jsx';
 import { cancelOrder, changeStatusOrder } from "../api/orders"
 
@@ -53,7 +54,6 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
         try {
             const resp = await cancelOrder(id);
             console.log('Cancel order: ', resp);
-            // Вызываем функцию обновления родительского компонента
             if (onOrderCancelled) {
                 onOrderCancelled(id);
             }
@@ -73,10 +73,12 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
 
     const renderListGood = (goodItem) => {
         return (
-            <div className="cardSmall" key={goodItem.id}>
-                <img src={goodItem.good.image} alt={goodItem.good.title} className="imgSmall" />
-                <h3 className="title">{goodItem.good.title}</h3>
-            </div>
+            <Link to={`/good/${goodItem.good.id}`}>
+                <div className="cardSmall" key={goodItem.id}>
+                    <img src={goodItem.good.image} alt={goodItem.good.title} className="imgSmall" />
+                    <h3 className="title">{goodItem.good.title}</h3>
+                </div>
+            </ Link>
         )
     }
 
