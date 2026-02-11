@@ -58,7 +58,7 @@ export default function Orders () {
                 <div className="controllers">
                     <NavigateTo path="store"/>
                     {userRole !== 2 && userRole !== 3 && <NavigateTo path="basket"/>}
-                    <NavigateTo path="logout"/>
+                    <NavigateTo path="profile"/>
                 </div>
             </div>
             {renderOrdersBody('user')}

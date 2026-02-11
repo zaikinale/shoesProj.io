@@ -96,7 +96,7 @@ export default function Basket () {
                 <div className="controllers">
                     < NavigateTo path="store"/>
                     < NavigateTo path="orders"/>
-                    < NavigateTo path="logout"/>
+                    < NavigateTo path="profile"/>
                 </div>
             </div>
             {renderBasketBody('user')}

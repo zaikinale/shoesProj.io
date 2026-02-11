@@ -149,6 +149,7 @@ input {
 }
 
 .cardSmall {
+  width: 100px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -376,6 +377,15 @@ input {
   max-width: 200px;
 }
 
+.saved-cards {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+/* a {
+  width: 110px;
+} */
 /* 
 .logo {
   height: 6em;
