@@ -53,14 +53,14 @@ export default function Orders () {
 
     return (
         <section className="basket">
-            <h1 className="head">
+            <div className="head">
                 <NavigateTo path="orders"/>
                 <div className="controllers">
                     <NavigateTo path="store"/>
                     {userRole !== 2 && userRole !== 3 && <NavigateTo path="basket"/>}
                     <NavigateTo path="logout"/>
                 </div>
-            </h1>
+            </div>
             {renderOrdersBody('user')}
         </section>
     )

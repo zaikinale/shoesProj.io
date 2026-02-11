@@ -5,6 +5,24 @@ const getAuthHeaders = () => {
     return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+// GET /api/reviews/check/:goodId
+export async function checkIfReviewed(goodId) {
+    const response = await fetch(`${BASE_URL}/check/${goodId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders()
+        }
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to check review status');
+    }
+    const data = await response.json();
+    return data.hasReviewed;
+}
+
 // POST /api/reviews
 export async function createReview(goodId, text, rating, image = null) {
     const response = await fetch(BASE_URL, {

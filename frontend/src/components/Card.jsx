@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router";
 import { deleteGood, updateGood } from '../api/goods.js'
 import { addGood as addToBasket, deleteGood as deleteFromBasket } from "../api/basket.js";
+import { checkIfSaved, removeSavedGood, saveGood } from '../api/saves.js'
 import BookMarkActive from '../assets/bookmark_active.svg'
 import BookMarkUnActive from '../assets/bookmark_unactive.svg'
 
@@ -16,6 +17,39 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
         price: price,
         image: image
     })
+
+    const loadGoods = async () => {
+        try {
+            const resp = await checkIfSaved(id);
+            setIsSave(resp)
+        } catch (error) {
+            console.error('Error loading is save status good: ', error);
+        }
+    };
+    
+    
+    useEffect(() => {
+        loadGoods();
+    }, []);
+
+    const handleAddSaveGood = async() => {
+        try {
+            await saveGood(id);
+            loadGoods()
+        } catch (error) {
+            console.error('Error fetch add good save: ', error);
+        }
+    }
+
+    const handleRemoveSaveGood = async() => {
+        try {
+            await removeSavedGood(id);
+            loadGoods()
+        } catch (error) {
+            console.error('Error fetch delete good save: ', error);
+        }
+    }
+
 
     const handleChange = () => {
         setIsChange(!isChange);
@@ -97,8 +131,8 @@ export default function Card ({id, title, desc, price, image, type, isInBasket, 
     if (type ==="user") {
         return (
             <div className="card">
-                <button className="saveBtn saveBtnPos" onClick={() => setIsSave(!isSave)}>
-                    <img src={isSave ? BookMarkActive : BookMarkUnActive } alt="" />
+                <button className="saveBtn saveBtnPos" onClick={isSave ? handleRemoveSaveGood : handleAddSaveGood }>
+                    <img src={isSave ? BookMarkActive : BookMarkUnActive } alt={isSave ? 'Delete' : 'Save' }  />
                 </button>
                 <Link to={`/good/${id}`}>{
                     <>
