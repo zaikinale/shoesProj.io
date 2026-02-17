@@ -4,6 +4,7 @@ import './index.css'
 import Login from './pages/Login.jsx'
 import Store from './pages/Store.jsx'
 import Orders from './pages/Orders.jsx'
+import Order from './pages/Order.jsx'
 import Basket from './pages/Basket.jsx'
 import Register from './pages/Register.jsx'
 import NotFound from './pages/Not-found.jsx'
@@ -24,7 +25,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/logout" element={<Logout />} /> 
         <Route path="/profile" element={<Profile />} /> 
         <Route path="/good/:id" element={<Good />} />
-        <Route path="*" element={<NotFound />} />
+          <Route path="/order/:id" element={<Order />} />
+          <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
 )

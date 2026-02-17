@@ -138,6 +138,20 @@ export default function Good() {
         );
     };
 
+    const  calculateAverageRating = (reviews) => {
+        if (!reviews || reviews.length === 0) {
+            return "пока что отсутствует.";
+        }
+
+        const totalRating = reviews.reduce((sum, review) => {
+            return sum + review.rating;
+        }, 0);
+
+        const average = totalRating / reviews.length;
+
+        return parseFloat(average.toFixed(1));
+    }
+
     return (
         <section className="good">
             <div className="container">
@@ -152,11 +166,11 @@ export default function Good() {
 
                 <div className="good-content">
                     <div className="good-image">
-                        {good.image ? (
+                        {good.image != null ? (
                             <img 
                                 className="image"
                                 src={good.image} 
-                                alt={good.title}
+                                // alt={good.title}
                             />
                         ) : (
                             <div className="image-placeholder">
@@ -167,9 +181,10 @@ export default function Good() {
 
                     <div className="good-info">
                         <h2 className="good-title">{good.title}</h2>
-                        <p className="good-description">{good.description || 'Описание отсутствует'}</p>
+                        <p className="good-description">{`Описание: ${good.description || 'Описание отсутствует'}`}</p>
+                        <p className="good-description">{`Рейтинг: ${calculateAverageRating(reviews)}`}</p>
                         <div className="good-price">
-                            <span className="price-value">{good.price} ₽</span>
+                            <span className="price-value">{`Цена: ${good.price} ₽`}</span>
                         </div>
                         
                         <div className="controls">

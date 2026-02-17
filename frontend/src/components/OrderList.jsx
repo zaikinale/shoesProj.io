@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { useStore } from '../store/useUserContext.jsx';
-import { cancelOrder, changeStatusOrder } from "../api/orders"
+import { cancelOrder, changeStatusOrder } from "../api/orders";
 
 /* eslint-disable react/prop-types */
 export default function OrderList({ id, data, status, list, onOrderCancelled }) {
@@ -9,7 +9,7 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
     const userRole = useStore((state) => state.user?.roleID);
 
     const renderControl = () => {
-        if (userRole === 2 || userRole === 3) { 
+        if (userRole === 2 || userRole === 3) {
             return (
                 <select value={selectedValue} name="select" onChange={(e) => handleChangeStatus(e.target.value)}>
                     <option value="created">created</option>
@@ -26,17 +26,17 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
 
     const formatDate = (dateString) => {
         if (!dateString) return '';
-        
+
         const date = new Date(dateString);
         if (isNaN(date)) return dateString;
-        
+
         const day = String(date.getUTCDate()).padStart(2, '0');
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const year = date.getUTCFullYear();
-        
+
         const hours = String(date.getUTCHours()).padStart(2, '0');
         const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-        
+
         return `${day}.${month}.${year} в ${hours}:${minutes}`;
     }
 
@@ -71,14 +71,22 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
         return null
     }
 
+    const renderInfoBtn = () => {
+        return (
+            <Link to={`/order/${id}`} className="more-info-link">
+                <button className="more-info" type="button">More info</button>
+            </Link>
+        )
+    }
+
     const renderListGood = (goodItem) => {
         return (
-            <Link to={`/good/${goodItem.good.id}`}>
-                <div className="cardSmall" key={goodItem.id}>
+            <Link to={`/good/${goodItem.good.id}`} key={goodItem.id}>
+                <div className="cardSmall">
                     <img src={goodItem.good.image} alt={goodItem.good.title} className="imgSmall" />
                     <h3 className="title">{goodItem.good.title}</h3>
                 </div>
-            </ Link>
+            </Link>
         )
     }
 
@@ -91,6 +99,7 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
             </div>
             <div className="controlsOrder">
                 {renderCancelBtn()}
+                {renderInfoBtn()}
                 {renderControl()}
             </div>
         </div>
