@@ -114,6 +114,36 @@ export const refresh = async (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Refresh token expired or invalid' });
     }
 };
+export const getMe = async (req: Request, res: Response) => {
+    try {
+        const user = (req as any).user;
+
+        if (!user) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        const fullUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                roleID: true,
+                createdAt: true
+            }
+        });
+
+        if (!fullUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(fullUser);
+
+    } catch (error) {
+        console.error('Error in getMe:', error);
+        res.status(500).json({ error: 'Failed to fetch user profile' });
+    }
+};
 
 export const logout = async (req: Request, res: Response) => {
     try {
@@ -136,3 +166,4 @@ export const logout = async (req: Request, res: Response) => {
         return res.status(500).json({ error: 'Logout failed' });
     }
 };
+
