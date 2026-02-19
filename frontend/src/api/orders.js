@@ -85,3 +85,19 @@ export async function createOrder() {
     }
     return response.json();
 }
+
+export async function getOrderById(id) {
+    const response = await fetch(`${BASE_URL}/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders()
+        }
+    })
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch find order by id');
+    }
+    return response.json();
+}
