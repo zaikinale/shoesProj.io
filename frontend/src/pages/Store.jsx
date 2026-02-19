@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { getGoods, addGood as apiAddGood } from "../api/goods.js";
-// import { useNavigate } from 'react-router-dom';
 import Card from "../components/Card.jsx";
 import { useStore } from '../store/useUserContext.jsx';
 import NavigateTo from '../utils/navBtn.jsx'
+import SearchIcon from '../assets/search.svg'
 
 export default function Store() {
-    // const navigate = useNavigate();
     const userRole = useStore((state) => state.user?.roleID);
-    const [originalGoods, setOriginalGoods] = useState([]); 
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [originalGoods, setOriginalGoods] = useState([]);
     const [sortOrder, setSortOrder] = useState('original');
     const [showForm, setShowForm] = useState(false);
     const [showFormStaff, setShowFormStaff] = useState(false);
@@ -39,46 +40,51 @@ export default function Store() {
         loadGoods();
     }, []);
 
+    const filteredGoods = originalGoods.filter(good => {
+        if (!searchQuery.trim()) return true;
+        const lowerQuery = searchQuery.toLowerCase();
+        const title = (good.title || '').toLowerCase();
+        const description = (good.description || '').toLowerCase();
+        return title.includes(lowerQuery) || description.includes(lowerQuery);
+    });
+
     const displayGoods = sortOrder === 'alphabet'
-        ? [...originalGoods].sort((a, b) => a.title.localeCompare(b.title))
-        : originalGoods;
+        ? [...filteredGoods].sort((a, b) => a.title.localeCompare(b.title))
+        : filteredGoods;
 
     const handleSortChange = (e) => {
         setSortOrder(e.target.value);
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
     const changeInputForm = (field, value) => {
-        setFormAdd(prev => ({
-            ...prev,
-            [field]: value
-        }));
+        setFormAdd(prev => ({ ...prev, [field]: value }));
     };
 
     const changeInputFormStaff = (field, value) => {
-        setFormStaff(prev => ({
-            ...prev,
-            [field]: value
-        }));
+        setFormStaff(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleAddGood = async () => { 
+    const handleAddGood = async () => {
         const payload = {
             title: formAdd.title || '',
             description: formAdd.description || '',
             price: Number(formAdd.price),
             image: formAdd.image || null
         };
-        
+
         if (isNaN(payload.price)) {
             alert('The price must be a number');
             return;
         }
         try {
-            const resp = await apiAddGood(payload);
-            console.log('Product added:', resp);
-            loadGoods(); 
-            setShowForm(false); 
-            setFormAdd({});
+            await apiAddGood(payload);
+            loadGoods();
+            setShowForm(false);
+            setFormAdd({ title: '', description: '', price: '', image: '' });
         } catch (error) {
             console.error('Error sending item: ', error);
         }
@@ -87,50 +93,44 @@ export default function Store() {
     const handleAddStaff = () => {
         console.log("Data sent:", formStaff)
     }
-    
+
     const clearForm = (type) => {
-        if(type === 'staff') {
-            setFormStaff({}) 
-        } else if(type === 'goods') {
-            setFormAdd({}) 
-        }
+        if(type === 'staff') setFormStaff({ login: '', emil: '', password: '' });
+        else if(type === 'goods') setFormAdd({ title: '', description: '', price: '', image: '' });
     }
 
-    const addForm = () => {
-        return (
+    const addForm = () => (
         <div className="formAdd">
-            <button className="showForm" onClick={() => (setShowForm(!showForm), clearForm('goods'))}>{showForm ? 'Hide and clear the form' : 'Add product'}</button>
-            {
-                showForm && (
-                    <form onSubmit={(e) => {e.preventDefault();handleAddGood(); }} className="form formAddGoods">
-                        <input type="text" value={formAdd.title || ''} placeholder="title" onChange={(e) => changeInputForm('title', e.target.value)}/>
-                        <input type="text" value={formAdd.description || ''} placeholder="description" onChange={(e) => changeInputForm('description', e.target.value)}/>
-                        <input type="text" value={formAdd.price || ''} placeholder="price" onChange={(e) => changeInputForm('price', e.target.value)}/>
-                        <input type="text" value={formAdd.image || ''} placeholder="image link" onChange={(e) => changeInputForm('image', e.target.value)}/>
-                        <button className="submitForm">submit</button>
-                    </form>
-                )
-            }
-        </div>)
-    }
-
-    const staffForm = () => {
-        return (
-            <div className="formAdd">
-            <button className="showForm" onClick={() => (setShowFormStaff(!showFormStaff), clearForm('staff'))}>{showFormStaff ? 'Hide and clear the form' : 'Add staff'}</button>
-            {
-                showFormStaff && (
-                    <form onSubmit={(e) => {e.preventDefault();handleAddStaff(); }} className="form formAddGoods">
-                        <input type="text" value={formStaff.login || ''} placeholder="login" onChange={(e) => changeInputFormStaff('login', e.target.value)}/>
-                        <input type="text" value={formStaff.email || ''} placeholder="email" onChange={(e) => changeInputFormStaff('email', e.target.value)}/>
-                        <input type="text" value={formStaff.password || ''} placeholder="password" onChange={(e) => changeInputFormStaff('password', e.target.value)}/>
-                        <button className="submitForm">submit</button>
-                    </form>
-                )
-            }
+            <button className="showForm" onClick={() => { setShowForm(!showForm); clearForm('goods'); }}>
+                {showForm ? 'Hide and clear the form' : 'Add product'}
+            </button>
+            {showForm && (
+                <form onSubmit={(e) => { e.preventDefault(); handleAddGood(); }} className="form formAddGoods">
+                    <input type="text" value={formAdd.title} placeholder="title" onChange={(e) => changeInputForm('title', e.target.value)}/>
+                    <input type="text" value={formAdd.description} placeholder="description" onChange={(e) => changeInputForm('description', e.target.value)}/>
+                    <input type="text" value={formAdd.price} placeholder="price" onChange={(e) => changeInputForm('price', e.target.value)}/>
+                    <input type="text" value={formAdd.image} placeholder="image link" onChange={(e) => changeInputForm('image', e.target.value)}/>
+                    <button className="submitForm">submit</button>
+                </form>
+            )}
         </div>
-        )
-    }
+    );
+
+    const staffForm = () => (
+        <div className="formAdd">
+            <button className="showForm" onClick={() => { setShowFormStaff(!showFormStaff); clearForm('staff'); }}>
+                {showFormStaff ? 'Hide and clear the form' : 'Add staff'}
+            </button>
+            {showFormStaff && (
+                <form onSubmit={(e) => { e.preventDefault(); handleAddStaff(); }} className="form formAddGoods">
+                    <input type="text" value={formStaff.login} placeholder="login" onChange={(e) => changeInputFormStaff('login', e.target.value)}/>
+                    <input type="text" value={formStaff.emil || ''} placeholder="email" onChange={(e) => changeInputFormStaff('emil', e.target.value)}/>
+                    <input type="text" value={formStaff.password} placeholder="password" onChange={(e) => changeInputFormStaff('password', e.target.value)}/>
+                    <button className="submitForm">submit</button>
+                </form>
+            )}
+        </div>
+    );
 
     const Filter = () => (
         <div className="filter">
@@ -141,12 +141,6 @@ export default function Store() {
             </select>
         </div>
     );
-
-    // const navigateTo = (path) => (
-    //     <button className="nav" onClick={() => navigate(`/${path}`)}>
-    //         {path}
-    //     </button>
-    // );
 
     const renderGoods = (type) => (
         <div className="container">
@@ -165,8 +159,8 @@ export default function Store() {
                         basketItemId={good.basketItemId}
                     />
                 ))
-                ) : (
-                    <p>No products</p>
+            ) : (
+                <p>{searchQuery ? 'Товары не найдены' : 'No products'}</p>
             )}
         </div>
     );
@@ -175,12 +169,25 @@ export default function Store() {
         return (
             <section className="store">
                 <div className="head">
-                < NavigateTo path="store"/>
-                        <div className="controllers">
-                            < NavigateTo path="basket"/>
-                            < NavigateTo path="orders"/>
-                            < NavigateTo path="profile"/>
+                    <div className="controls">
+                        <NavigateTo path="store"/>
+                        {/* Прямая вставка инпута */}
+                        <div className="controlsInput">
+                            <img src={SearchIcon} alt="search"/>
+                            <input
+                                type="search"
+                                className='search'
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search"
+                            />
                         </div>
+                    </div>
+                    <div className="controllers">
+                        <NavigateTo path="basket"/>
+                        <NavigateTo path="orders"/>
+                        <NavigateTo path="profile"/>
+                    </div>
                 </div>
                 {renderGoods('user')}
             </section>
@@ -191,11 +198,23 @@ export default function Store() {
         return (
             <section className="store">
                 <div className="head">
-                < NavigateTo path="store"/>
-                        <div className="controls">
-                            < NavigateTo path="orders"/>
-                            < NavigateTo path="profile"/>
+                    <div className="controls">
+                        <NavigateTo path="store"/>
+                        <div className="controlsInput">
+                            <img src={SearchIcon} alt="search"/>
+                            <input
+                                type="search"
+                                className='search'
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search"
+                            />
                         </div>
+                    </div>
+                    <div className="controls">
+                        <NavigateTo path="orders"/>
+                        <NavigateTo path="profile"/>
+                    </div>
                 </div>
                 <Filter />
                 {renderGoods('manager')}
@@ -205,31 +224,53 @@ export default function Store() {
 
     if (userRole === 3) {
         return (
-            <>
-                <section className="store">
-                    <div className="head">
-                    < NavigateTo path="store"/>
-                        <div className="controls">
-                            {!showFormStaff && addForm()}
-                            {!showForm && staffForm()}
-                            < NavigateTo path="orders"/>
-                            < NavigateTo path="profile"/>
+            <section className="store">
+                <div className="head">
+                    <div className="controls">
+                        <NavigateTo path="store"/>
+                        <div className="controlsInput">
+                            <img src={SearchIcon} alt="search"/>
+                            <input
+                                type="search"
+                                className='search'
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search"
+                            />
                         </div>
                     </div>
-                    <Filter />
-                    {renderGoods('admin')}
-                </section>
-            </>
+                    <div className="controls">
+                        {!showFormStaff && addForm()}
+                        {!showForm && staffForm()}
+                        <NavigateTo path="orders"/>
+                        <NavigateTo path="profile"/>
+                    </div>
+                </div>
+                <Filter />
+                {renderGoods('admin')}
+            </section>
         );
     }
 
     return (
         <section className="store">
             <div className="head">
-            < NavigateTo path="store"/>
                 <div className="controls">
-                    < NavigateTo path="register"/>
-                    < NavigateTo path="login"/>
+                    <NavigateTo path="store"/>
+                    <div className="controlsInput">
+                        <img src={SearchIcon} alt="search"/>
+                        <input
+                            type="search"
+                            className='search'
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            placeholder="Search"
+                        />
+                    </div>
+                </div>
+                <div className="controls">
+                    <NavigateTo path="register"/>
+                    <NavigateTo path="login"/>
                 </div>
             </div>
             {renderGoods('login')}

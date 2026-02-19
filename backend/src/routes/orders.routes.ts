@@ -4,7 +4,7 @@ import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
-// POST /api/orders - Создать заказ из корзины
+// POST /api/orders
 router.post('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
 
@@ -173,6 +173,37 @@ router.delete('/:id/cancel', authenticateToken, async (req: Request, res: Respon
         if (!order) {
             return res.status(403).json({ 
                 error: 'Order not found or cannot be cancelled (already shipped/delivered)' 
+            });
+        }
+
+        await prisma.order.update({
+            where: { id: orderId },
+            data: { status: 'cancelled' }
+        });
+
+        res.json({ message: 'Order cancelled successfully' });
+    } catch (error) {
+        console.error('Cancel order error:', error);
+        res.status(500).json({ error: 'Failed to cancel order' });
+    }
+});
+
+// GET /api/orders/:id
+router.delete('/:id', authenticateToken, async (req: Request, res: Response) => {
+    const user = (req as any).user;
+    const orderId = parseInt(req.params.id as string);
+
+    try {
+        const order = await prisma.order.findFirst({
+            where: {
+                id: orderId,
+                userId: user.id
+            }
+        });
+
+        if (!order) {
+            return res.status(403).json({
+                error: 'Order not found'
             });
         }
 

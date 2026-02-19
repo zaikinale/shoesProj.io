@@ -48,7 +48,7 @@ textarea {
   resize: none;
 }
 
-button, select {
+button, select, .search {
   /* border-radius: 8px; */
   border: 1px solid transparent;
   padding: 0.6em 1.2em;

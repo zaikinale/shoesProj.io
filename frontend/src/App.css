@@ -208,6 +208,18 @@ input {
   gap: 10px;
 }
 
+.controlsInput {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #1a1a1a;
+    padding: 0 5px;
+}
+
+.search {
+    width: 400px;
+}
+
 .goodsList {
   overflow: scroll;
 }
