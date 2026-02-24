@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
     const isUserInitializated = useStore((state) => state.user?.isInitialized);
 
     if (!isUserInitializated) {
-        return <Navigate to="/denied" state={{ status: 403, error: 'Доступ запрещен: Требуется авторизация' }} replace />;
+        return <Navigate to="/denied" state={{ status: 403, error: 'Access Denied: Authorization Required' }} replace />;
     }
     return children;
 };
@@ -36,8 +36,8 @@ const LoadingScreen = () => (
         fontFamily: 'Montserrat, sans-serif'
     }}>
         <div>
-            <h2>Загрузка приложения...</h2>
-            <p>Пожалуйста, подождите</p>
+            <h2>Load app...</h2>
+            <p>Please, wait.</p>
         </div>
     </div>
 );

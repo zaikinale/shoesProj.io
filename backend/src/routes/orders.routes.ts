@@ -11,41 +11,61 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
     try {
         const basket = await prisma.basket.findUnique({
             where: { userId: user.id },
-            include: { items: { include: { good: true } } }
+            include: {
+                items: {
+                    include: { good: true }
+                }
+            }
         });
 
         if (!basket || basket.items.length === 0) {
             return res.status(400).json({ error: 'Basket is empty' });
         }
 
-        const order = await prisma.order.create({
-            data: {
-                userId: user.id,
-                status: 'created'
-            }
+        const inactiveGoods = basket.items.filter(item => !item.good.isActive);
+
+        if (inactiveGoods.length > 0) {
+            const titles = inactiveGoods.map(i => i.good.title).join(', ');
+            return res.status(400).json({
+                error: 'Некоторые товары в корзине более недоступны',
+                details: `Недоступные товары: ${titles}`
+            });
+        }
+
+        const order = await prisma.$transaction(async (tx) => {
+            const newOrder = await tx.order.create({
+                data: {
+                    userId: user.id,
+                    status: 'created'
+                }
+            });
+
+            const orderItemsData = basket.items.map(item => ({
+                orderId: newOrder.id,
+                goodId: item.goodId,
+                quantity: item.quantity
+            }));
+
+            await tx.orderItem.createMany({
+                data: orderItemsData
+            });
+
+            await tx.basketItem.deleteMany({
+                where: { basketId: basket.id }
+            });
+
+            return await tx.order.findUnique({
+                where: { id: newOrder.id },
+                include: {
+                    items: { include: { good: true } },
+                    user: { select: { id: true, username: true, email: true } }
+                }
+            });
         });
 
-        const orderItems = basket.items.map(item => ({
-            orderId: order.id,
-            goodId: item.goodId,
-            quantity: item.quantity
-        }));
-
-        await prisma.orderItem.createMany({ data: orderItems });
-
-        await prisma.basketItem.deleteMany({ where: { basketId: basket.id } });
-
-        const orderWithItems = await prisma.order.findUnique({
-            where: { id: order.id },
-            include: {
-                items: { include: { good: true } },
-                user: { select: { id: true, username: true, email: true } }
-            }
-        });
-
-        res.status(201).json(orderWithItems);
-    } catch (error) {
-        console.error('Create order error:', error);
+        res.status(201).json(order);
+    } catch (error: any) {
+        console.error('Create order error:', error.message);
         res.status(500).json({ error: 'Failed to create order' });
     }
 });
@@ -81,7 +101,9 @@ router.get('/my', authenticateToken, async (req: Request, res: Response) => {
         const orders = await prisma.order.findMany({
             where: { userId: user.id },
             include: {
-                items: { include: { good: true } }
+                items: {
+                    include: { good: true }
+                }
             },
             orderBy: { createdAt: 'desc' }
         });
@@ -166,7 +188,7 @@ router.put('/:id/status', authenticateToken, async (req: Request, res: Response)
         if (error.code === 'P2025') {
             return res.status(404).json({ error: 'Order not found' });
         }
-        console.error('Update order status error:', error);
+        console.error('Update order status error:', error.message);
         res.status(500).json({ error: 'Failed to update order status' });
     }
 });
@@ -197,8 +219,8 @@ router.delete('/:id/cancel', authenticateToken, async (req: Request, res: Respon
         });
 
         res.json({ message: 'Order cancelled successfully' });
-    } catch (error) {
-        console.error('Cancel order error:', error);
+    } catch (error: any) {
+        console.error('Cancel order error:', error.message);
         res.status(500).json({ error: 'Failed to cancel order' });
     }
 });

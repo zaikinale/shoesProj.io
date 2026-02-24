@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { prisma } from '../utils/prismaClient';
 import { authenticateToken } from '../middleware/auth';
+
 const router = Router();
 
-// GET /api/basket 
+// GET /api/basket
 router.get('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     try {
@@ -13,21 +14,28 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
                 items: {
                     include: {
                         good: true
+                    },
+                    where: {
+                        good: {
+                            isActive: true
+                        }
                     }
                 }
             }
         });
+
         if (!basket) {
             return res.json({ items: [], total: 0 });
         }
-    res.json(basket);
+
+        res.json(basket);
     } catch (error) {
         console.error('Basket fetch error:', error);
         res.status(500).json({ error: 'Failed to fetch basket' });
     }
 });
 
-// DELETE /api/basket/clear 
+// DELETE /api/basket/clear - Очистка корзины
 router.delete('/clear', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     try {
@@ -54,6 +62,15 @@ router.post('/add-good', authenticateToken, async (req: Request, res: Response) 
     }
 
     try {
+        const good = await prisma.good.findUnique({
+            where: { id: goodId },
+            select: { id: true, isActive: true }
+        });
+
+        if (!good || !good.isActive) {
+            return res.status(400).json({ error: 'Товар недоступен или удален' });
+        }
+
         let basket = await prisma.basket.findUnique({ where: { userId: user.id } });
         if (!basket) {
             basket = await prisma.basket.create({
@@ -84,6 +101,7 @@ router.post('/add-good', authenticateToken, async (req: Request, res: Response) 
             where: { id: item.id },
             include: { good: true }
         });
+
         res.status(201).json(itemWithGood);
     } catch (error: any) {
         console.error('Add to basket error:', error.message);
@@ -110,25 +128,33 @@ router.put('/update-good/:itemId', authenticateToken, async (req: Request, res: 
                 id: parseInt(itemId),
                 basket: { userId: user.id }
             },
-        include: { good: true }
+            include: { good: true }
         });
 
         if (!item) {
             return res.status(404).json({ error: 'Basket item not found' });
         }
 
+        if (!item.good.isActive && quantity > 0) {
+            return res.status(400).json({ error: 'Невозможно обновить количество: товар более не доступен' });
+        }
+
         const updatedItem = await prisma.basketItem.update({
             where: { id: item.id },
             data: { quantity }
         });
+
         res.json(updatedItem);
-    } catch (error) {
-        console.error('Update basket item error:', error);
+    } catch (error: any) {
+        console.error('Update basket item error:', error.message);
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: 'Item not found' });
+        }
         res.status(500).json({ error: 'Failed to update basket item' });
     }
 });
 
-// DELETE /api/basket/delete-good/:itemId 
+// DELETE /api/basket/delete-good/:itemId - Удаление элемента из корзины
 router.delete('/delete-good/:itemId', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const itemId = req.params.itemId as string;
@@ -146,8 +172,8 @@ router.delete('/delete-good/:itemId', authenticateToken, async (req: Request, re
 
         await prisma.basketItem.delete({ where: { id: item.id } });
         res.status(204).send();
-    } catch (error) {
-        console.error('Delete basket item error:', error);
+    } catch (error: any) {
+        console.error('Delete basket item error:', error.message);
         res.status(500).json({ error: 'Failed to delete basket item' });
     }
 });
