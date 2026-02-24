@@ -81,7 +81,10 @@ export default function Basket () {
                             {orderBlock()}
                         </>
                     ) : (
-                        <p>No products in basket</p>        
+                        <>
+                            <p>No products in basket</p>
+
+                        </>
                     )}
                 </div>
             )

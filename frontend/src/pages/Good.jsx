@@ -16,6 +16,7 @@ export default function Good() {
     const [reviewText, setReviewText] = useState('');
     const [reviewImage, setReviewImage] = useState('');
     const [reviewRating, setReviewRating] = useState('');
+    const [isUser, setIsUser] = useState(false)
     const { id } = useParams();
 
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function Good() {
                 try {
                     const resp = await checkIfSaved(good.id);
                     setIsSave(resp);
+                    setIsUser(true)
                 } catch (error) {
                     console.error('Error loading save status:', error);
                 }
@@ -58,6 +60,7 @@ export default function Good() {
                     setHasReviewed(resp);
                 } catch (error) {
                     console.error('Error loading review status:', error);
+                    setHasReviewed(true)
                 }
             };
 
@@ -186,25 +189,27 @@ export default function Good() {
                         <div className="good-price">
                             <span className="price-value">{`Цена: ${good.price} ₽`}</span>
                         </div>
-                        
-                        <div className="controls">
-                            {good.isInBasket ? (
-                                <NavigateTo path="basket" />
-                            ) : (
-                                <button className="btn-add-to-basket" onClick={handleAddToBasket}>
-                                    add to basket
+                        {isUser && (
+                            <div className="controls">
+                                {good.isInBasket ? (
+                                    <NavigateTo path="basket" />
+                                ) : (
+                                    <button className="btn-add-to-basket" onClick={handleAddToBasket}>
+                                        add to basket
+                                    </button>
+                                )}
+                                <button
+                                    className="saveBtn"
+                                    onClick={isSave ? handleRemoveSaveGood : handleAddSaveGood}
+                                >
+                                    <img
+                                        src={isSave ? BookMarkActive : BookMarkUnActive}
+                                        alt={isSave ? 'Delete from saved' : 'Save'}
+                                    />
                                 </button>
-                            )}
-                            <button 
-                                className="saveBtn" 
-                                onClick={isSave ? handleRemoveSaveGood : handleAddSaveGood}
-                            >
-                                <img 
-                                    src={isSave ? BookMarkActive : BookMarkUnActive} 
-                                    alt={isSave ? 'Delete from saved' : 'Save'}  
-                                />
-                            </button>
-                        </div>
+                            </div>
+                        )}
+
                     </div>
                 </div>
 

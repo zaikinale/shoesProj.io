@@ -55,16 +55,15 @@ export default function Order() {
     });
 
     const statusConfig = {
-        created: { label: 'Создан', color: '#3b82f6' },      // Синий
-        processing: { label: 'В обработке', color: '#f59e0b' }, // Оранжевый
-        shipped: { label: 'Отправлен', color: '#8b5cf6' },     // Фиолетовый
-        delivered: { label: 'Доставлен', color: '#10b981' },   // Зеленый
-        cancelled: { label: 'Отменен', color: '#ef4444' }      // Красный
+        created: { label: 'Создан', color: '#3b82f6' },
+        processing: { label: 'В обработке', color: '#f59e0b' },
+        shipped: { label: 'Отправлен', color: '#8b5cf6' },
+        delivered: { label: 'Доставлен', color: '#10b981' },
+        cancelled: { label: 'Отменен', color: '#ef4444' }
     };
 
     const currentStatus = statusConfig[order.status] || { label: order.status, color: '#9ca3af' };
 
-    // Подсчет общей суммы
     const totalAmount = order.items.reduce((sum, item) => {
         return sum + (item.good?.price || 0) * item.quantity;
     }, 0);
@@ -81,7 +80,7 @@ export default function Order() {
 
             if (res.ok) {
                 alert('Заказ успешно отменен');
-                setOrder({ ...order, status: 'cancelled' }); // Обновляем локально
+                setOrder({ ...order, status: 'cancelled' });
             } else {
                 const err = await res.json();
                 alert(err.error || 'Не удалось отменить заказ');

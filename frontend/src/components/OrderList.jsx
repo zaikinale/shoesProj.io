@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../store/useUserContext.jsx';
 import { cancelOrder, changeStatusOrder } from "../api/orders";
+import ArrowRightIcon from '../assets/arrow-right.svg'
+
 
 /* eslint-disable react/prop-types */
 export default function OrderList({ id, data, status, list, onOrderCancelled }) {
@@ -74,7 +76,10 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
     const renderInfoBtn = () => {
         return (
             <Link to={`/order/${id}`} className="more-info-link">
-                <button className="more-info" type="button">More info</button>
+                <button className="more-info controls" type="button">
+                    <p>More info</p>
+                    <img src={ArrowRightIcon} alt="go to"/>
+                </button>
             </Link>
         )
     }
@@ -93,7 +98,7 @@ export default function OrderList({ id, data, status, list, onOrderCancelled }) 
     return (
         <div className="order">
             <h2 className="title">{`Заказ от ${formatDate(data)}`}</h2>
-            <span className="status">{selectedValue}</span>
+            <span className="status">{`status: ${selectedValue}`}</span>
             <div className="goodsList">
                 {list.map((good) => renderListGood(good))}
             </div>

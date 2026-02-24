@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useUserContext';
 
 import Login from './pages/Login.jsx';
@@ -13,8 +13,18 @@ import NotFound from './pages/Not-found.jsx';
 import Logout from './pages/Logout.jsx';
 import Good from './pages/Good.jsx';
 import Profile from './pages/Profile.jsx';
+import Denied from './pages/Denied.jsx';
 
 import './index.css';
+
+const ProtectedRoute = ({ children }) => {
+    const isUserInitializated = useStore((state) => state.user?.isInitialized);
+
+    if (!isUserInitializated) {
+        return <Navigate to="/denied" state={{ status: 403, error: 'Доступ запрещен: Требуется авторизация' }} replace />;
+    }
+    return children;
+};
 
 const LoadingScreen = () => (
     <div style={{
@@ -22,13 +32,12 @@ const LoadingScreen = () => (
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: '#121212',
         color: '#fff',
         fontFamily: 'Montserrat, sans-serif'
     }}>
         <div>
-            <h2>Загрузка системы...</h2>
-            <p>Проверка данных пользователя</p>
+            <h2>Загрузка приложения...</h2>
+            <p>Пожалуйста, подождите</p>
         </div>
     </div>
 );
@@ -36,7 +45,6 @@ const LoadingScreen = () => (
 function App() {
     const restoreAuth = useStore((state) => state.restoreAuth);
     const isInitialized = useStore((state) => state.isInitialized);
-
     const [hasChecked, setHasChecked] = useState(false);
 
     useEffect(() => {
@@ -54,14 +62,23 @@ function App() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/store" element={<Store />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/order/:id" element={<Order />} />
-                <Route path="/basket" element={<Basket />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/logout" element={<Logout />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/store" element={<Store />} />
                 <Route path="/good/:id" element={<Good />} />
+                <Route path="/denied" element={<Denied />} />
+                <Route path="/profile" element={
+                    <ProtectedRoute><Profile /></ProtectedRoute>
+                } />
+                <Route path="/basket" element={
+                    <ProtectedRoute><Basket /></ProtectedRoute>
+                } />
+                <Route path="/orders" element={
+                    <ProtectedRoute><Orders /></ProtectedRoute>
+                } />
+                <Route path="/order/:id" element={
+                    <ProtectedRoute><Order /></ProtectedRoute>
+                } />
+                <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
