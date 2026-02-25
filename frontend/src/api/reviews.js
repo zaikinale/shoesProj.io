@@ -1,9 +1,6 @@
-const BASE_URL = 'http://localhost:3000/api/reviews';
+import { BASE_OPTIONS } from '../utils/apiBase.js'
 
-const BASE_OPTIONS = {
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-};
+const BASE_URL = 'http://localhost:3000/api/reviews';
 
 export async function checkIfReviewed(goodId) {
     const response = await fetch(`${BASE_URL}/check/${goodId}`, {

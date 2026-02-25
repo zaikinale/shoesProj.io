@@ -6,7 +6,9 @@ import NavigateTo from '../utils/navBtn.jsx'
 import SearchIcon from '../assets/search.svg'
 
 export default function Store() {
-    const userRole = useStore((state) => state.user?.roleID);
+    const user = useStore((state) => state.user);
+    const userRole = user?.roleID;
+    const isInitialized = useStore((state) => state.isInitialized);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [originalGoods, setOriginalGoods] = useState([]);
@@ -37,8 +39,10 @@ export default function Store() {
     const refreshGoods = () => loadGoods();
 
     useEffect(() => {
-        loadGoods();
-    }, []);
+        if (isInitialized) {
+            loadGoods();
+        }
+    }, [isInitialized, userRole]);
 
     const filteredGoods = originalGoods.filter(good => {
         if (!searchQuery.trim()) return true;
@@ -166,13 +170,20 @@ export default function Store() {
         </div>
     );
 
+    if (!isInitialized) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                Loading...
+            </div>
+        );
+    }
+
     if (userRole === 1) {
         return (
             <section className="store">
                 <div className="head">
                     <div className="controls">
                         <NavigateTo path="store"/>
-                        {/* Прямая вставка инпута */}
                         <div className="controlsInput">
                             <img src={SearchIcon} alt="search"/>
                             <input
@@ -253,6 +264,7 @@ export default function Store() {
         );
     }
 
+    // Для неавторизованных
     return (
         <section className="store">
             <div className="head">

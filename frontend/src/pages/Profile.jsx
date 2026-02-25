@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Changed 'react-router' to 'react-router-dom' for standard hooks
+import { Link, useNavigate } from "react-router-dom";
 import { getSavedGoods } from '../api/saves.js';
 import NavigateTo from "../utils/navBtn";
 import { useStore } from "../store/useUserContext.jsx";
@@ -18,7 +18,7 @@ export default function Profile() {
             console.error('Error loading saves goods: ', error);
         }
     };
-    
+
     const renderListGood = (goodItem) => {
         return (
             <Link to={`/good/${goodItem.id}`} key={goodItem.id}>

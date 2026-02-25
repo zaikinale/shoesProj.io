@@ -1,11 +1,6 @@
-const BASE_URL = 'http://localhost:3000/api/auth';
+import { BASE_OPTIONS } from '../utils/apiBase.js'
 
-const BASE_OPTIONS = {
-    headers: { 
-        'Content-Type': 'application/json' 
-    },
-    credentials: 'include'
-};
+const BASE_URL = 'http://localhost:3000/api/auth';
 
 export async function login(email, password) {
     const response = await fetch(`${BASE_URL}/login`, {

@@ -17,13 +17,13 @@ export default function Card ({
     isInBasket, 
     refreshGoods, 
     basketItemId,
-    isActive: initialActive  // ← Новый проп: статус из API
+    isActive: initialActive
 }) {
     const [inBasket, setInBasket] = useState(isInBasket);
     const [isChange, setIsChange] = useState(false);
     const [isSave, setIsSave] = useState(false);
-    const [isActive, setIsActive] = useState(initialActive ?? true);  // ← Локальный статус toggle
-    const [isToggling, setIsToggling] = useState(false);  // ← Блокировка во время запроса
+    const [isActive, setIsActive] = useState(initialActive ?? true);  
+    const [isToggling, setIsToggling] = useState(false);
     
     const [form, setForm] = useState({
         title: title,
@@ -45,32 +45,24 @@ export default function Card ({
         loadGoods();
     }, []);
 
-    // ─────────────────────────────────────────────────────────────
-    // 🔘 НОВАЯ ФУНКЦИЯ: переключение isActive
-    // ─────────────────────────────────────────────────────────────
     const handleToggleActive = async () => {
         if (isToggling) return;
         
         setIsToggling(true);
         const newStatus = !isActive;
         
-        // ✅ Оптимистичное обновление UI
         setIsActive(newStatus);
 
         try {
-            // Используем существующую updateGood, передаём только isActive
             await updateGood(id, { isActive: newStatus });
-            refreshGoods?.();  // Обновляем список после успеха
         } catch (error) {
             console.error('Failed to toggle active status:', error);
-            // ❌ Откат при ошибке
             setIsActive(!newStatus);
             alert('Failed to update status. Please try again.');
         } finally {
             setIsToggling(false);
         }
     };
-    // ─────────────────────────────────────────────────────────────
 
     const handleAddSaveGood = async() => {
         try {
@@ -228,7 +220,7 @@ export default function Card ({
         )
     } else if (type ==="admin") {
         return (
-            <div className={`card ${!isActive ? 'inactive' : ''}`}>  {/* ← Визуальный индикатор */}
+            <div className={`card ${!isActive ? 'inactive' : ''}`}>
                 
                 { isChange ? ( 
                     <>
@@ -251,7 +243,6 @@ export default function Card ({
                     </>
                 )}
 
-                {/* 🔘 Переключатель isActive — только для админа */}
                 <div className="admin-toggle-wrapper">
                     <label className={`toggle ${isActive ? 'active' : ''} ${isToggling ? 'loading' : ''}`}>
                         <input
@@ -271,14 +262,14 @@ export default function Card ({
                 </div>
 
                 <button className="change" onClick={handleChange}>{isChange ? 'Hide form' : 'Change product'}</button>
-                <button className="add" onClick={isChange ? handleСancellation : handleDelete}>
+                {/* <button className="add" onClick={isChange ? handleСancellation : handleDelete}>
                     { isChange ? 'Cancel changes':'Remove product'}
-                </button>
+                </button> */}
             </div>
         )   
     } else {
         return (
-            <div className={`card ${!isActive ? 'inactive' : ''}`}>  {/* ← Визуальный индикатор */}
+            <div className={`card ${!isActive ? 'inactive' : ''}`}>
                 <Link to={`/good/${id}`}>{
                     <>
                         <img className="img" src={image} alt={title} />

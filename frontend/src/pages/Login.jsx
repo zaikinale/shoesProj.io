@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login as apiLogin } from '../api/auth.js';  // ← Переименовали импорт API-функции
+import { login as apiLogin } from '../api/auth.js';
 import '../App.css';
 import { useStore } from '../store/useUserContext.jsx'; 
 
@@ -11,17 +11,14 @@ function Login() {
   const [userPassword, setUserPassword] = useState('');
   const [error, setError] = useState('');
 
-  // ✅ Берем login action из стора (вместо setUser)
   const storeLogin = useStore((state) => state.login);
 
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      // Вызываем API-функцию (переименованную как apiLogin)
       const responseData = await apiLogin(userLogin, userPassword);
       console.log("Успешный вход:", responseData);
       
-      // ✅ Используем action из стора — он сам всё сохранит и поставит isInitialized: true
       storeLogin(responseData.accessToken, responseData.user);
       
       navigate('/store');
@@ -33,8 +30,6 @@ function Login() {
 
   const guestGo = () => {
     navigate('/store'); 
-    // Для гостя можно не трогать стор, или явно очистить:
-    // useStore.getState().logout();
   };
 
   return (
@@ -62,7 +57,6 @@ function Login() {
         <input type="submit" value="login" />
       </form>
       
-      {/* ✅ Исправление ошибки className */}
       <div className={error !== "" ? "error" : ""}> 
         {error !== "" && error}
       </div>

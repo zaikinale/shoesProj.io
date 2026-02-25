@@ -1,9 +1,6 @@
-const BASE_URL = 'http://localhost:3000/api/basket';
+import { BASE_OPTIONS } from '../utils/apiBase.js'
 
-const BASE_OPTIONS = {
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-};
+const BASE_URL = 'http://localhost:3000/api/basket';
 
 export async function getBasket() {
     const response = await fetch(BASE_URL, {
