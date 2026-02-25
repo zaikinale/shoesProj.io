@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useUserContext';
 
@@ -18,10 +18,16 @@ import Denied from './pages/Denied.jsx';
 import './index.css';
 
 const ProtectedRoute = ({ children }) => {
-    const isUserInitializated = useStore((state) => state.user?.isInitialized);
+    const user = useStore((state) => state.user);
 
-    if (!isUserInitializated) {
-        return <Navigate to="/denied" state={{ status: 403, error: 'Access Denied: Authorization Required' }} replace />;
+    if (!user) {
+        return (
+            <Navigate 
+                to="/denied" 
+                state={{ status: 403, error: 'Access Denied: Authorization Required' }} 
+                replace 
+            />
+        );
     }
     return children;
 };
@@ -35,9 +41,9 @@ const LoadingScreen = () => (
         color: '#fff',
         fontFamily: 'Montserrat, sans-serif'
     }}>
-        <div>
-            <h2>Load app...</h2>
-            <p>Please, wait.</p>
+        <div style={{ textAlign: 'center' }}>
+            <h2>Loading app...</h2>
+            <p>Please wait.</p>
         </div>
     </div>
 );
@@ -45,27 +51,29 @@ const LoadingScreen = () => (
 function App() {
     const restoreAuth = useStore((state) => state.restoreAuth);
     const isInitialized = useStore((state) => state.isInitialized);
-    const [hasChecked, setHasChecked] = useState(false);
 
     useEffect(() => {
-        restoreAuth().finally(() => {
-            setHasChecked(true);
-        });
+        restoreAuth();
     }, [restoreAuth]);
 
-    if (!hasChecked || !isInitialized) {
+    if (!isInitialized) {
         return <LoadingScreen />;
     }
 
     return (
         <BrowserRouter>
             <Routes>
+                {/* Public routes */}
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/denied" element={<Denied />} />
+                
+                {/* Common routes */}
                 <Route path="/store" element={<Store />} />
                 <Route path="/good/:id" element={<Good />} />
-                <Route path="/denied" element={<Denied />} />
+
+                {/* Protected routes */}
                 <Route path="/profile" element={
                     <ProtectedRoute><Profile /></ProtectedRoute>
                 } />
@@ -78,6 +86,8 @@ function App() {
                 <Route path="/order/:id" element={
                     <ProtectedRoute><Order /></ProtectedRoute>
                 } />
+                
+                {/* Logout and fallback */}
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>

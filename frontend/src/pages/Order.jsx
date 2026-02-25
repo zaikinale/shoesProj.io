@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import NavigateTo from '../utils/navBtn.jsx';
+import { getOrderById, cancelOrder } from '../api/orders.js';
 
 export default function Order() {
     const { id } = useParams();
@@ -12,23 +13,7 @@ export default function Order() {
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) throw new Error('Необходима авторизация');
-
-                const response = await fetch(`http://localhost:3000/api/orders/${id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    const errData = await response.json();
-                    throw new Error(errData.error || 'Ошибка загрузки заказа');
-                }
-
-                const data = await response.json();
+                const data = await getOrderById(id);
                 setOrder(data);
             } catch (err) {
                 setError(err.message);
@@ -72,21 +57,11 @@ export default function Order() {
         if (!window.confirm('Вы уверены, что хотите отменить этот заказ?')) return;
 
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:3000/api/orders/${id}/cancel`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            if (res.ok) {
-                alert('Заказ успешно отменен');
-                setOrder({ ...order, status: 'cancelled' });
-            } else {
-                const err = await res.json();
-                alert(err.error || 'Не удалось отменить заказ');
-            }
+            await cancelOrder(id);
+            alert('Заказ успешно отменен');
+            setOrder({ ...order, status: 'cancelled' });
         } catch (e) {
-            alert('Ошибка сети');
+            alert(e.message || 'Ошибка сети');
         }
     };
 
@@ -110,10 +85,6 @@ export default function Order() {
                         <span className="label">Дата оформления:</span>
                         <span className="value">{formattedDate}</span>
                     </div>
-                    {/*<div className="controls">*/}
-                    {/*    <span className="label">ID пользователя:</span>*/}
-                    {/*    <span className="value">{order.userId}</span>*/}
-                    {/*</div>*/}
                 </div>
 
                 <h2 className="section-title">Состав заказа</h2>

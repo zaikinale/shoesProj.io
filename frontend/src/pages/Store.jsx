@@ -154,6 +154,7 @@ export default function Store() {
                         price={good.price}
                         image={good.image}
                         type={type}
+                        isActive={good.isActive}
                         isInBasket={good.isInBasket}
                         refreshGoods={refreshGoods}
                         basketItemId={good.basketItemId}

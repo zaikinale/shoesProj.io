@@ -4,14 +4,12 @@ import { JWT_ACCESS_SECRET } from '../config/env';
 import { prisma } from '../utils/prismaClient';
 
 export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    console.log('Authorization header:', authHeader);
+    const token = req.cookies?.accessToken;
     
-    const token = authHeader && authHeader.split(' ')[1];
-    console.log('Extracted token:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
+    console.log('Access token from cookie:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
 
     if (!token) {
-        console.log('No token provided - allowing public access');
+        console.log('No access token - allowing public access');
         (req as any).user = null; 
         return next(); 
     }
@@ -36,11 +34,14 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
         next();
     } catch (err) {
         console.error('Token verification error:', err);
+        
         if (err instanceof jwt.TokenExpiredError) {
-            console.log('Token expired');
+            console.log('Access token expired');
+            return res.status(401).json({ error: 'Access token expired' });
         } else if (err instanceof jwt.JsonWebTokenError) {
             console.log('Invalid token signature');
         }
+        
         return res.status(403).json({ error: 'Invalid or expired token' });
     }
 };

@@ -9,22 +9,7 @@ export default function Profile() {
     const isUserInitializated = useStore((state) => state.user?.isInitialized);
     const [savesGoods, setSavesGoods] = useState([]);
 
-    // Redirect if user is not initialized
-    useEffect(() => {
-        if (!isUserInitializated) {
-            navigate('/denied', {
-                state: {
-                    status: 403,
-                    error: 'Access Denied: User not initialized'
-                }
-            });
-        }
-    }, [isUserInitializated, navigate]);
-
     const loadGoods = async () => {
-        // Optional: Prevent API call if user is not initialized
-        if (!isUserInitializated) return;
-
         try {
             const data = await getSavedGoods();
             console.log(data);
@@ -33,11 +18,7 @@ export default function Profile() {
             console.error('Error loading saves goods: ', error);
         }
     };
-
-    useEffect(() => {
-        loadGoods();
-    }, [isUserInitializated]); // Re-run if initialization status changes
-
+    
     const renderListGood = (goodItem) => {
         return (
             <Link to={`/good/${goodItem.id}`} key={goodItem.id}>
@@ -48,11 +29,6 @@ export default function Profile() {
             </Link>
         );
     };
-
-    // Optional: Return null while redirecting to prevent flash of content
-    if (!isUserInitializated) {
-        return null;
-    }
 
     return (
         <section className="profile">

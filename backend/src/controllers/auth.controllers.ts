@@ -6,6 +6,7 @@ import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from '../config/env';
 
 const generateAndSaveTokens = async (userId: number, res: Response) => {
     const accessToken = jwt.sign({ userId }, JWT_ACCESS_SECRET!, { expiresIn: '15m' });
+    
     const refreshToken = jwt.sign({ userId }, JWT_REFRESH_SECRET!, { expiresIn: '7d' });
 
     await prisma.token.create({
@@ -13,10 +14,17 @@ const generateAndSaveTokens = async (userId: number, res: Response) => {
     });
 
     res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
+        httpOnly: true,           
+        secure: process.env.NODE_ENV === 'production', 
+        sameSite: 'strict',          
+        maxAge: 7 * 24 * 60 * 60 * 1000 
+    });
+
+    res.cookie('accessToken', accessToken, {
+        httpOnly: true,             
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: 'strict',        
+        maxAge: 15 * 60 * 1000      
     });
 
     return accessToken;
@@ -33,15 +41,20 @@ export const register = async (req: Request, res: Response) => {
     if (existingUser) return res.status(400).json({ error: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    
     const user = await prisma.user.create({
         data: { username, email, password: hashedPassword, roleID: 1 },
     });
 
-    const accessToken = await generateAndSaveTokens(user.id, res);
+    await generateAndSaveTokens(user.id, res);
 
     res.status(201).json({ 
-        user: { id: user.id, username: user.username, email: user.email, roleID: user.roleID }, 
-        accessToken 
+        user: { 
+            id: user.id, 
+            username: user.username, 
+            email: user.email, 
+            roleID: user.roleID 
+        }
     });
 };
 
@@ -49,17 +62,22 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const user = await prisma.user.findUnique({ where: { email } });
+    
     if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     await prisma.token.deleteMany({ where: { userId: user.id } });
 
-    const accessToken = await generateAndSaveTokens(user.id, res);
+    await generateAndSaveTokens(user.id, res);
 
     res.json({ 
-        user: { id: user.id, username: user.username, email: user.email, roleID: user.roleID }, 
-        accessToken 
+        user: { 
+            id: user.id, 
+            username: user.username, 
+            email: user.email, 
+            roleID: user.roleID 
+        }
     });
 };
 
@@ -68,7 +86,6 @@ const generateTokens = (userId: number) => {
     const refreshToken = jwt.sign({ userId }, JWT_REFRESH_SECRET!, { expiresIn: '7d' });
     return { accessToken, refreshToken };
 };
-
 
 export const refresh = async (req: Request, res: Response) => {
     try {
@@ -108,12 +125,20 @@ export const refresh = async (req: Request, res: Response) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-        return res.json({ accessToken: tokens.accessToken });
+        res.cookie('accessToken', tokens.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 15 * 60 * 1000
+        });
+
+        return res.json({ message: 'Token refreshed' });
 
     } catch (err) {
         return res.status(401).json({ error: 'Refresh token expired or invalid' });
     }
 };
+
 export const getMe = async (req: Request, res: Response) => {
     try {
         const user = (req as any).user;
@@ -161,9 +186,14 @@ export const logout = async (req: Request, res: Response) => {
             sameSite: 'strict'
         });
 
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict'
+        });
+
         return res.status(204).send();
     } catch (err) {
         return res.status(500).json({ error: 'Logout failed' });
     }
 };
-

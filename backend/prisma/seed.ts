@@ -1,33 +1,36 @@
 // prisma/seed.ts
+import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.role.upsert({
-        where: { id: 1 },
-        update: {},
-        create: { id: 1, name: 'User' },
-    });
+  console.log('🌱 Сидирование ролей...');
 
-    await prisma.role.upsert({
-        where: { id: 2 },
-        update: {},
-        create: { id: 2, name: 'Manager' },
-    });
+  // Создаём роли с фиксированными ID
+  await prisma.role.createMany({
+    data: [  // ← обязательно свойство data:
+      { id: 1, name: 'User' },
+      { id: 2, name: 'Manager' },
+      { id: 3, name: 'Admin' },
+    ],
+    skipDuplicates: true,  // пропустить, если уже есть
+  });
 
-    await prisma.role.upsert({
-        where: { id: 3 },
-        update: {},
-        create: { id: 3, name: 'Admin' },
-    });
+  // Сбрасываем последовательность, чтобы следующие ID шли с 4
+  await prisma.$executeRaw`
+    SELECT setval('"Role_id_seq"', (SELECT COALESCE(MAX(id), 0) + 1 FROM "Role"), false);
+  `;
+
+  const roles = await prisma.role.findMany({ orderBy: { id: 'asc' } });
+  console.log('✅ Роли созданы:', roles);
 }
 
 main()
-    .catch(e => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+  .catch((e) => {
+    console.error('❌ Ошибка:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

@@ -1,22 +1,14 @@
 const BASE_URL = 'http://localhost:3000/api/basket';
 
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    const headers = { 
-        'Content-Type': 'application/json' 
-    };
-    
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
-    }
-    
-    return headers;
+const BASE_OPTIONS = {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
 };
 
 export async function getBasket() {
     const response = await fetch(BASE_URL, {
         method: 'GET',
-        headers: getAuthHeaders()
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -29,7 +21,7 @@ export async function getBasket() {
 export async function deleteBasket() {
     const response = await fetch(`${BASE_URL}/clear`, {
         method: 'DELETE',
-        headers: getAuthHeaders()
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -42,7 +34,7 @@ export async function deleteBasket() {
 export async function addGood(goodId) {
     const response = await fetch(`${BASE_URL}/add-good`, {
         method: 'POST',
-        headers: getAuthHeaders(),
+        ...BASE_OPTIONS,
         body: JSON.stringify({ goodId })
     })
 
@@ -56,7 +48,7 @@ export async function addGood(goodId) {
 export async function changeQuantityGoods(id, quantity) {
     const response = await fetch(`${BASE_URL}/update-good/${id}`, {
         method: 'PUT',
-        headers: getAuthHeaders(),
+        ...BASE_OPTIONS,
         body: JSON.stringify({ quantity })
     })
 
@@ -70,7 +62,7 @@ export async function changeQuantityGoods(id, quantity) {
 export async function deleteGood(id) {
     const response = await fetch(`${BASE_URL}/delete-good/${id}`, {
         method: 'DELETE',
-        headers: getAuthHeaders(),
+        ...BASE_OPTIONS,
     });
 
     if (!response.ok) {

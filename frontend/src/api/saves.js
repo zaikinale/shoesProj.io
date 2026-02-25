@@ -1,18 +1,14 @@
 const BASE_URL = 'http://localhost:3000/api/saves';
 
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
+const BASE_OPTIONS = {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
 };
 
-// GET /api/saves
 export async function getSavedGoods() {
     const response = await fetch(BASE_URL, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -22,14 +18,10 @@ export async function getSavedGoods() {
     return response.json();
 }
 
-// GET /api/saves/check/:goodId
 export async function checkIfSaved(goodId) {
     const response = await fetch(`${BASE_URL}/check/${goodId}`, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -40,14 +32,10 @@ export async function checkIfSaved(goodId) {
     return data.isSaved;
 }
 
-// POST /api/saves
 export async function saveGood(goodId) {
     const response = await fetch(BASE_URL, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        },
+        ...BASE_OPTIONS,
         body: JSON.stringify({ goodId })
     });
 
@@ -58,14 +46,10 @@ export async function saveGood(goodId) {
     return response.json();
 }
 
-// DELETE /api/saves/:goodId 
 export async function removeSavedGood(goodId) {
     const response = await fetch(`${BASE_URL}/${goodId}`, {
         method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {

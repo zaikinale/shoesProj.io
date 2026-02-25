@@ -1,12 +1,12 @@
 generator client {
   provider = "prisma-client-js"
 }
-  
+
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  // url убран — он теперь в prisma.config.ts
 }
-  
+
 model User {
   id        Int      @id @default(autoincrement())
   username  String
@@ -31,13 +31,13 @@ model Token {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
 }
-  
+
 model Role {
   id    Int    @id @default(autoincrement())
   name  String @unique
   users User[]
 }
-  
+
 model Good {
   id          Int      @id @default(autoincrement())
   title       String
@@ -49,8 +49,8 @@ model Good {
 
   basketItems BasketItem[]
   orderItems  OrderItem[]
-  saves     Save[]
-  reviews   Reviews[]
+  saves       Save[]
+  reviews     Reviews[]
 }
 
 model Basket {
@@ -61,7 +61,7 @@ model Basket {
 
   @@unique([userId])
 }
-  
+
 model BasketItem {
   id       Int   @id @default(autoincrement())
   basketId Int
@@ -73,14 +73,14 @@ model BasketItem {
 
   @@unique([basketId, goodId])
 }
-  
+
 model Order {
   id        Int         @id @default(autoincrement())
   userId    Int
   user      User        @relation(fields: [userId], references: [id])
   items     OrderItem[]
   status    String      @default("created")
-  createdAt DateTime   @default(now())
+  createdAt DateTime    @default(now())
 }
 
 model OrderItem {
@@ -119,7 +119,3 @@ model Reviews {
 
   @@unique([userId, goodId])
 }
-
-
-
-

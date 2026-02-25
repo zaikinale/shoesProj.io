@@ -1,18 +1,14 @@
 const BASE_URL = 'http://localhost:3000/api/reviews';
 
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
+const BASE_OPTIONS = {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
 };
 
-// GET /api/reviews/check/:goodId
 export async function checkIfReviewed(goodId) {
     const response = await fetch(`${BASE_URL}/check/${goodId}`, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -23,14 +19,10 @@ export async function checkIfReviewed(goodId) {
     return data.hasReviewed;
 }
 
-// POST /api/reviews
 export async function createReview(goodId, text, rating, image = null) {
     const response = await fetch(BASE_URL, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        },
+        ...BASE_OPTIONS,
         body: JSON.stringify({ goodId, text, rating, image })
     });
 
@@ -41,13 +33,10 @@ export async function createReview(goodId, text, rating, image = null) {
     return response.json();
 }
 
-// GET /api/reviews/:goodId
 export async function getReviewsByGoodId(goodId) {
     const response = await fetch(`${BASE_URL}/${goodId}`, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -56,12 +45,3 @@ export async function getReviewsByGoodId(goodId) {
     }
     return response.json();
 }
-
-
-
-
-
-
-
-
-

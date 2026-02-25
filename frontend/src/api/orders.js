@@ -1,17 +1,14 @@
 const BASE_URL = 'http://localhost:3000/api/orders';
 
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
+const BASE_OPTIONS = {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
 };
 
 export async function getOrdersManager() {
     const response = await fetch(BASE_URL, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -24,10 +21,7 @@ export async function getOrdersManager() {
 export async function getOrdersUser() {
     const response = await fetch(`${BASE_URL}/my`, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -40,10 +34,7 @@ export async function getOrdersUser() {
 export async function changeStatusOrder(id, status) {
     const response = await fetch(`${BASE_URL}/${id}/status`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        },
+        ...BASE_OPTIONS,
         body: JSON.stringify({ status })
     })
 
@@ -57,10 +48,7 @@ export async function changeStatusOrder(id, status) {
 export async function cancelOrder(id) {
     const response = await fetch(`${BASE_URL}/${id}/cancel`, {
         method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     });
 
     if (!response.ok) {
@@ -73,10 +61,7 @@ export async function cancelOrder(id) {
 export async function createOrder() {
     const response = await fetch(BASE_URL, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     })
 
     if (!response.ok) {
@@ -89,10 +74,7 @@ export async function createOrder() {
 export async function getOrderById(id) {
     const response = await fetch(`${BASE_URL}/${id}`, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-        }
+        ...BASE_OPTIONS
     })
 
     if (!response.ok) {
