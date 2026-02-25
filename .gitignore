@@ -8,7 +8,7 @@ yarn-error.log*
 Thumbs.db
 
 /backend/.env
-/backend/.env.*
+/backend/.env
 /backend/dist/
 /backend/build/
 /backend/out/
