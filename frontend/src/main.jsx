@@ -2,6 +2,8 @@ import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useUserContext';
+import { ProtectedRoute } from './providers/ProtectedRoute.jsx'
+import { LoadingScreen } from './utils/LoadScreen.jsx';
 
 import Login from './pages/Login.jsx';
 import Store from './pages/Store.jsx';
@@ -16,37 +18,6 @@ import Profile from './pages/Profile.jsx';
 import Denied from './pages/Denied.jsx';
 
 import './index.css';
-
-const ProtectedRoute = ({ children }) => {
-    const user = useStore((state) => state.user);
-
-    if (!user) {
-        return (
-            <Navigate 
-                to="/denied" 
-                state={{ status: 403, error: 'Access Denied: Authorization Required' }} 
-                replace 
-            />
-        );
-    }
-    return children;
-};
-
-const LoadingScreen = () => (
-    <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        color: '#fff',
-        fontFamily: 'Montserrat, sans-serif'
-    }}>
-        <div style={{ textAlign: 'center' }}>
-            <h2>Loading app...</h2>
-            <p>Please wait.</p>
-        </div>
-    </div>
-);
 
 function App() {
     const restoreAuth = useStore((state) => state.restoreAuth);
@@ -63,17 +34,14 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                {/* Public routes */}
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/denied" element={<Denied />} />
                 
-                {/* Common routes */}
                 <Route path="/store" element={<Store />} />
                 <Route path="/good/:id" element={<Good />} />
 
-                {/* Protected routes */}
                 <Route path="/profile" element={
                     <ProtectedRoute><Profile /></ProtectedRoute>
                 } />
@@ -87,7 +55,6 @@ function App() {
                     <ProtectedRoute><Order /></ProtectedRoute>
                 } />
                 
-                {/* Logout and fallback */}
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
