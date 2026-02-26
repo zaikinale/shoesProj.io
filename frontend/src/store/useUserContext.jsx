@@ -1,8 +1,10 @@
 import { create } from 'zustand';
+import { buildUrl, BASE_OPTIONS } from '../utils/apiBase.js';
 
 export const useStore = create((set, get) => ({
     user: null,            
     isInitialized: false,   
+
     login: (userData) => {
         set({
             user: userData,
@@ -12,9 +14,9 @@ export const useStore = create((set, get) => ({
 
     logout: async () => {
         try {
-            await fetch('http://localhost:3000/api/auth/logout', {
+            await fetch(buildUrl('auth/logout'), {
                 method: 'POST',
-                credentials: 'include'
+                ...BASE_OPTIONS
             });
         } catch (error) {
             console.error('Logout error:', error);
@@ -28,10 +30,9 @@ export const useStore = create((set, get) => ({
 
     restoreAuth: async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/auth/me', {
+            const response = await fetch(buildUrl('auth/me'), {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
+                ...BASE_OPTIONS
             });
 
             if (response.ok) {
@@ -47,7 +48,12 @@ export const useStore = create((set, get) => ({
                 });
             }
         } catch (error) {
-            console.error('Auth restoration error:', error);
+            if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+                console.warn('Network error during auth restore');
+            } else {
+                console.error('Auth restoration error:', error);
+            }
+            
             set({ 
                 user: null, 
                 isInitialized: true 

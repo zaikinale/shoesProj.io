@@ -1,6 +1,7 @@
-import { BASE_OPTIONS } from '../utils/apiBase.js'
+import { BASE_OPTIONS, BASE_URL as API_BASE } from '../utils/apiBase.js';
 
-const BASE_URL = 'http://localhost:3000/api/reviews';
+const BASE = API_BASE.endsWith('/') ? API_BASE : `${API_BASE}/`;
+const BASE_URL = `${BASE}auth`;
 
 export async function checkIfReviewed(goodId) {
     const response = await fetch(`${BASE_URL}/check/${goodId}`, {
