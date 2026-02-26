@@ -1,7 +1,6 @@
-import { BASE_OPTIONS, BASE_URL as API_BASE } from '../utils/apiBase.js';
+import { BASE_OPTIONS, buildUrl } from '../utils/apiBase.js';
 
-const BASE = API_BASE.endsWith('/') ? API_BASE : `${API_BASE}/`;
-const BASE_URL = `${BASE}auth`;
+const BASE_URL = buildUrl('orders');
 
 export async function getOrdersManager() {
     const response = await fetch(BASE_URL, {
