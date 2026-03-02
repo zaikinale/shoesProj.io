@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getSavedGoods } from '../api/saves.js';
 import NavigateTo from "../utils/navBtn";
-import { useStore } from "../store/useUserContext.jsx";
+// import { useStore } from "../store/useUserContext.jsx";
 
 export default function Profile() {
-    const navigate = useNavigate();
-    const isUserInitializated = useStore((state) => state.user?.isInitialized);
+    // const navigate = useNavigate();
+    // const isUserInitializated = useStore((state) => state.user?.isInitialized);
     const [savesGoods, setSavesGoods] = useState([]);
 
     const loadGoods = async () => {
@@ -18,6 +18,11 @@ export default function Profile() {
             console.error('Error loading saves goods: ', error);
         }
     };
+    
+
+    useEffect(() => {
+        loadGoods();    
+    }, []);
 
     const renderListGood = (goodItem) => {
         return (

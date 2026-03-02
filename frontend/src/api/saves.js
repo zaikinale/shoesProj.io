@@ -3,7 +3,7 @@ import { BASE_OPTIONS, buildUrl } from '../utils/apiBase.js';
 const BASE_URL = buildUrl('saves');
 
 export async function getSavedGoods() {
-    const response = await fetch(BASE_URL, {
+    const response = await fetch(`${BASE_URL}/`, {
         method: 'GET',
         ...BASE_OPTIONS
     });
