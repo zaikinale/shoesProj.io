@@ -13,5 +13,6 @@ routes.use('/basket', basketRoutes);
 routes.use('/orders', ordersRoutes);
 routes.use('/saves', savesRoutes);
 routes.use('/reviews', reviewsRoutes);
+routes.use('/categories', reviewsRoutes);
 
 export default routes;

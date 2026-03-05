@@ -1,10 +1,11 @@
 generator client {
   provider = "prisma-client-js"
+  engineType = "binary"
 }
 
 datasource db {
   provider = "postgresql"
-  // url убран — он теперь в prisma.config.ts
+  url      = env("DATABASE_URL") 
 }
 
 model User {
@@ -51,6 +52,7 @@ model Good {
   orderItems  OrderItem[]
   saves       Save[]
   reviews     Reviews[]
+  categories  Category[] 
 }
 
 model Basket {
@@ -118,4 +120,14 @@ model Reviews {
   good      Good     @relation(fields: [goodId], references: [id], onDelete: Cascade)
 
   @@unique([userId, goodId])
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  goods       Good[]
 }

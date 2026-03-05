@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSavedGoods } from '../api/saves.js';
 import NavigateTo from "../utils/navBtn";
-// import { useStore } from "../store/useUserContext.jsx";
 
 export default function Profile() {
-    // const navigate = useNavigate();
-    // const isUserInitializated = useStore((state) => state.user?.isInitialized);
     const [savesGoods, setSavesGoods] = useState([]);
 
     const loadGoods = async () => {
