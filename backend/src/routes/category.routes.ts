@@ -6,8 +6,6 @@ import { authenticateToken } from '../middleware/auth';
 const router = Router();
 const isAdmin = (user: any) => user && user.roleID === 3;
 
-// ===== КАТЕГОРИИ =====
-
 // GET /api/categories — список всех категорий
 router.get('/', authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -112,8 +110,6 @@ router.delete('/:id', authenticateToken, async (req: Request, res: Response) => 
         res.status(500).json({ error: 'Failed to delete category' });
     }
 });
-
-// ===== СВЯЗИ ТОВАРОВ С КАТЕГОРИЯМИ =====
 
 // POST /api/categories/:id/goods — добавить товар в категорию
 router.post('/:id/goods', authenticateToken, async (req: Request, res: Response) => {
