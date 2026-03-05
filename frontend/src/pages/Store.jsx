@@ -255,6 +255,7 @@ export default function Store() {
                         {!showFormStaff && addForm()}
                         {!showForm && staffForm()}
                         <NavigateTo path="orders"/>
+                        <NavigateTo path="categories"/>
                         <NavigateTo path="profile"/>
                     </div>
                 </div>

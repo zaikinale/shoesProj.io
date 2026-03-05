@@ -22,7 +22,7 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
 
 // GET /api/categories/:id — категория + товары в ней
 router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     if (isNaN(id)) return res.status(400).json({ error: 'Invalid category ID' });
 
     try {
@@ -43,7 +43,7 @@ router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// POST /api/categories — создать (только админ)
+// POST /api/categories — создать (только админ)\
 router.post('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     if (!isAdmin(user)) return res.status(403).json({ error: 'Access denied' });
@@ -75,7 +75,7 @@ router.put('/:id', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     if (!isAdmin(user)) return res.status(403).json({ error: 'Access denied' });
 
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     const { description } = req.body;
 
     try {
@@ -98,7 +98,7 @@ router.delete('/:id', authenticateToken, async (req: Request, res: Response) => 
     const user = (req as any).user;
     if (!isAdmin(user)) return res.status(403).json({ error: 'Access denied' });
 
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     try {
         await prisma.category.delete({ where: { id } });
         res.status(204).send();
@@ -115,9 +115,11 @@ router.delete('/:id', authenticateToken, async (req: Request, res: Response) => 
 router.post('/:id/goods', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     if (!isAdmin(user)) return res.status(403).json({ error: 'Access denied' });
-
-    const categoryId = parseInt(req.params.id);
+    
+    const id = parseInt(req.params.id as string);
+    const categoryId = parseInt(req.params.id as string);
     const { goodId } = req.body;
+    
     if (!goodId || isNaN(categoryId)) {
         return res.status(400).json({ error: 'goodId and categoryId are required' });
     }
@@ -147,8 +149,8 @@ router.delete('/:id/goods/:goodId', authenticateToken, async (req: Request, res:
     const user = (req as any).user;
     if (!isAdmin(user)) return res.status(403).json({ error: 'Access denied' });
 
-    const categoryId = parseInt(req.params.id);
-    const goodId = parseInt(req.params.goodId);
+    const categoryId = parseInt(req.params.id as string);
+    const goodId = parseInt(req.params.goodId as string);
 
     try {
         await prisma.category.update({
@@ -171,7 +173,7 @@ router.delete('/:id/goods/:goodId', authenticateToken, async (req: Request, res:
 
 // GET /api/categories/:id/goods — товары конкретной категории
 router.get('/:id/goods', authenticateToken, async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     if (isNaN(id)) return res.status(400).json({ error: 'Invalid category ID' });
 
     try {

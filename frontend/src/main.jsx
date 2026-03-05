@@ -16,6 +16,7 @@ import Logout from './pages/Logout.jsx';
 import Good from './pages/Good.jsx';
 import Profile from './pages/Profile.jsx';
 import Denied from './pages/Denied.jsx';
+import Categories from './pages/Categories.jsx';
 
 import './index.css';
 
@@ -53,6 +54,9 @@ function App() {
                 } />
                 <Route path="/order/:id" element={
                     <ProtectedRoute><Order /></ProtectedRoute>
+                } />
+                <Route path="/categories" element={
+                    <ProtectedRoute><Categories /></ProtectedRoute>
                 } />
                 
                 <Route path="/logout" element={<Logout />} />
