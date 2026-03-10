@@ -11,6 +11,7 @@ import {
     getGoodsByCategory
 } from '../api/categories.js';
 import { getGoods } from '../api/goods.js';
+import NavigateTo from '../utils/navBtn.jsx';
 import { useStore } from '../store/useUserContext';
 
 export default function Categories() {
@@ -194,26 +195,33 @@ export default function Categories() {
 
     return (
         <div className="categories">
-            <header className="categories__header">
-                <h1 className="categories__title">Категории</h1>
-                {view === 'list' && (
-                    <button className="categories__btn" onClick={() => setView('form')}>
-                        + Новая категория
-                    </button>
-                )}
-                {view !== 'list' && (
-                    <button className="categories__btn" onClick={() => {
-                        setView('list');
-                        setSelectedCategory(null);
-                        setForm({ name: '', description: '', goodIds: [] });
-                    }}>
-                        ← Назад
-                    </button>
-                )}
+            <header className="head">
+                <NavigateTo path="caterories"/>
+                {/* <h1 className="">Категории</h1> */}
+                <div className="controls">
+                    <NavigateTo path="store"/>
+                    <NavigateTo path="basket"/>
+                    <NavigateTo path="orders"/>
+                    <NavigateTo path="profile"/>
+                    {view === 'list' && (
+                        <button className="categories__btn" onClick={() => setView('form')}>
+                            + new
+                        </button>
+                    )}
+                    {view !== 'list' && (
+                        <button className="categories__btn" onClick={() => {
+                            setView('list');
+                            setSelectedCategory(null);
+                            setForm({ name: '', description: '', goodIds: [] });
+                        }}>
+                            ← back
+                        </button>
+                    )}
+                </div>
             </header>
 
             {error && <div className="categories__error">{error}</div>}
-            {loading && <div className="categories__loading">Загрузка...</div>}
+            {/* {loading && <div className="categories__loading">Загрузка...</div>} */}
 
             {/* Список категорий */}
             {view === 'list' && (
@@ -246,11 +254,11 @@ export default function Categories() {
 
             {/* Форма создания/редактирования */}
             {(view === 'form' || view === 'edit') && (
-                <form className="categories__form" onSubmit={handleSubmit}>
+                <form className="form" onSubmit={handleSubmit}>
                     <label className="categories__label">
-                        Название *
+                        name
                         <input
-                            className="categories__input"
+                            className=""
                             type="text"
                             value={form.name}
                             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -260,9 +268,9 @@ export default function Categories() {
                     </label>
                     
                     <label className="categories__label">
-                        Описание (материалы, гарантия и т.д.)
+                        description
                         <textarea
-                            className="categories__input"
+                            className=""
                             value={form.description}
                             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                             rows="4"
@@ -272,13 +280,13 @@ export default function Categories() {
                     {/* Выбор товаров */}
                     <div className="categories__goods-select">
                         <label className="categories__label">
-                            Товары в категории
-                            <div className="categories__goods-checkboxes">
+                            Goods in category
+                            <div className="goods_container">
                                 {goods.length === 0 ? (
-                                    <p className="categories__no-goods">Нет доступных товаров</p>
+                                    <p className="categories__no-goods">Don`t have goods</p>
                                 ) : (
                                     goods.map(good => (
-                                        <label key={good.id} className="categories__checkbox-label">
+                                        <label key={good.id} className="good_block">
                                             <input
                                                 type="checkbox"
                                                 checked={form.goodIds.includes(String(good.id))}

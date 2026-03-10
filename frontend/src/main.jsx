@@ -17,6 +17,7 @@ import Good from './pages/Good.jsx';
 import Profile from './pages/Profile.jsx';
 import Denied from './pages/Denied.jsx';
 import Categories from './pages/Categories.jsx';
+import Help from './pages/Help.jsx';
 
 import './index.css';
 
@@ -36,30 +37,43 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />} />
+                
                 <Route path="/login" element={<Login />} />
+                
                 <Route path="/register" element={<Register />} />
+
                 <Route path="/denied" element={<Denied />} />
                 
                 <Route path="/store" element={<Store />} />
+
                 <Route path="/good/:id" element={<Good />} />
 
                 <Route path="/profile" element={
                     <ProtectedRoute><Profile /></ProtectedRoute>
                 } />
+
                 <Route path="/basket" element={
                     <ProtectedRoute><Basket /></ProtectedRoute>
                 } />
+
                 <Route path="/orders" element={
                     <ProtectedRoute><Orders /></ProtectedRoute>
                 } />
+
                 <Route path="/order/:id" element={
                     <ProtectedRoute><Order /></ProtectedRoute>
                 } />
+
                 <Route path="/categories" element={
                     <ProtectedRoute><Categories /></ProtectedRoute>
                 } />
+
+                <Route path="/help" element={
+                    <ProtectedRoute><Help /></ProtectedRoute>
+                } />
                 
                 <Route path="/logout" element={<Logout />} />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

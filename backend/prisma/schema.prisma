@@ -18,6 +18,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  tickets   Ticket[]
+  messages  Message[]
+
   baskets   Basket[]
   orders    Order[]
   tokens    Token[]
@@ -83,6 +86,8 @@ model Order {
   items     OrderItem[]
   status    String      @default("created")
   createdAt DateTime    @default(now())
+
+  tickets   Ticket[]
 }
 
 model OrderItem {
@@ -130,4 +135,36 @@ model Category {
   updatedAt   DateTime @updatedAt
 
   goods       Good[]
+}
+
+model Ticket {
+  id          Int       @id @default(autoincrement())
+  subject     String    
+  category    String    
+  status      String    @default("open") 
+  
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  
+  orderId     Int?      
+  order       Order?    @relation(fields: [orderId], references: [id])
+  
+  messages    Message[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  text      String   @db.Text
+  image     String?  
+  
+  ticketId  Int
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  
+  createdAt DateTime @default(now())
 }

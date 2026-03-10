@@ -41,6 +41,7 @@ export default function Profile() {
                     <NavigateTo path="basket"/>
                     <NavigateTo path="orders"/>
                     <NavigateTo path="logout"/>
+                    <NavigateTo path="help"/>
                 </div>
             </div>
             <aside className="info">

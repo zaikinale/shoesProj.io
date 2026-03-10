@@ -71,7 +71,7 @@ export default function Order() {
                 <div className="controls">
                     <NavigateTo path="orders" />
                     <div className="controls">
-                        <h1>Заказ №{order.id}</h1>
+                        <h2>Заказ №{order.id}</h2>
                         <div className="status-badge" style={{color: currentStatus.color }}>
                             {currentStatus.label}
                         </div>
@@ -79,7 +79,7 @@ export default function Order() {
                 </div>
             </header>
 
-            <main className="body">
+            <main className="container">
                 <div className="head">
                     <div className="controls">
                         <span className="label">Дата оформления:</span>
