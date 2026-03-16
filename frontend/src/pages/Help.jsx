@@ -336,7 +336,6 @@ export default function Help() {
                         <>
                             <div className="message-list">
                                 {selectedTicket.messages?.map(m => {
-                                    // Если автор сообщения имеет роль 2 или 3 — это менеджер
                                     const isMsgFromStaff = m.author?.roleID === 2 || m.author?.roleID === 3;
                                     return (
                                         <div key={m.id} className={isMsgFromStaff ? "message-manager" : "message-user"}>
@@ -361,6 +360,7 @@ export default function Help() {
                                 <div className="controls">
                                     <input 
                                         type="text" 
+                                        className="message-text`"
                                         placeholder="Ссылка на изображение" 
                                         value={newMessage.image}
                                         onChange={e => setNewMessage({...newMessage, image: e.target.value})}

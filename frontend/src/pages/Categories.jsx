@@ -23,11 +23,11 @@ export default function Categories() {
     const [form, setForm] = useState({ 
         name: '', 
         description: '',
-        goodIds: [] // ← добавляем массив выбранных товаров
+        goodIds: [] 
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [view, setView] = useState('list'); // 'list' | 'form' | 'edit' | 'goods'
+    const [view, setView] = useState('list');
 
     const isAdmin = user?.roleID === 3;
 
@@ -81,43 +81,35 @@ export default function Categories() {
         let category;
         
         if (view === 'edit' && selectedCategory) {
-            // === Редактирование ===
             await updateCategory(selectedCategory.id, { 
                 description: form.description 
             });
             category = selectedCategory;
             
-            // Синхронизация товаров
             const currentGoodIds = categoryGoods.map(g => g.id);
             const newGoodIds = form.goodIds.map(id => parseInt(id));
             
-            // Добавляем новые
             for (const goodId of newGoodIds) {
                 if (!currentGoodIds.includes(goodId)) {
                     await addGoodToCategory(category.id, goodId);
                 }
             }
-            // Удаляем лишние
             for (const goodId of currentGoodIds) {
                 if (!newGoodIds.includes(goodId)) {
                     await removeGoodFromCategory(category.id, goodId);
                 }
             }
         } else {
-            // === Создание новой ===
-            // ⚠️ Отправляем ТОЛЬКО name и description
             category = await addCategory({ 
                 name: form.name, 
                 description: form.description 
             });
             
-            // Затем добавляем товары отдельными запросами
             for (const goodId of form.goodIds) {
                 await addGoodToCategory(category.id, parseInt(goodId));
             }
         }
         
-        // Сброс формы
         setForm({ name: '', description: '', goodIds: [] });
         setView('list');
         setSelectedCategory(null);
@@ -164,11 +156,10 @@ export default function Categories() {
         setForm({ 
             name: category.name, 
             description: category.description || '',
-            goodIds: [] // при редактировании загрузим товары отдельно
+            goodIds: []
         });
         setView('edit');
         
-        // Загружаем текущие товары категории
         try {
             const currentGoods = await getGoodsByCategory(category.id);
             setForm(f => ({
@@ -196,7 +187,7 @@ export default function Categories() {
     return (
         <div className="categories">
             <header className="head">
-                <NavigateTo path="caterories"/>
+                <NavigateTo path="categories"/>
                 {/* <h1 className="">Категории</h1> */}
                 <div className="controls">
                     <NavigateTo path="store"/>
@@ -221,9 +212,7 @@ export default function Categories() {
             </header>
 
             {error && <div className="categories__error">{error}</div>}
-            {/* {loading && <div className="categories__loading">Загрузка...</div>} */}
 
-            {/* Список категорий */}
             {view === 'list' && (
                 <ul className="categories__list">
                     {categories.map(cat => (
@@ -252,7 +241,6 @@ export default function Categories() {
                 </ul>
             )}
 
-            {/* Форма создания/редактирования */}
             {(view === 'form' || view === 'edit') && (
                 <form className="form" onSubmit={handleSubmit}>
                     <label className="categories__label">
@@ -277,8 +265,7 @@ export default function Categories() {
                         />
                     </label>
 
-                    {/* Выбор товаров */}
-                    <div className="categories__goods-select">
+                    <div className="select_good_section">
                         <label className="categories__label">
                             Goods in category
                             <div className="goods_container">
@@ -314,7 +301,6 @@ export default function Categories() {
                 </form>
             )}
 
-            {/* Управление товарами в категории */}
             {view === 'goods' && selectedCategory && (
                 <div className="categories__goods-manager">
                     <h2>Товары в «{selectedCategory.name}»</h2>

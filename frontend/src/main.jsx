@@ -18,6 +18,8 @@ import Profile from './pages/Profile.jsx';
 import Denied from './pages/Denied.jsx';
 import Categories from './pages/Categories.jsx';
 import Help from './pages/Help.jsx';
+import Employees from './pages/Employees.jsx'
+import GoodEditor from './pages/GoodEditor.jsx'
 
 import './index.css';
 
@@ -48,6 +50,26 @@ function App() {
 
                 <Route path="/good/:id" element={<Good />} />
 
+                {/* <Route path="/good-editor" element={<GoodEditor />} /> */}
+
+                <Route 
+                    path="/admin/products/add" 
+                    element={
+                        <ProtectedRoute>
+                            <GoodEditor />
+                        </ProtectedRoute>
+                    } 
+                />
+    
+                <Route 
+                    path="/admin/products/edit/:id" 
+                    element={
+                        <ProtectedRoute>
+                            <GoodEditor />
+                        </ProtectedRoute>
+                    } 
+                />
+
                 <Route path="/profile" element={
                     <ProtectedRoute><Profile /></ProtectedRoute>
                 } />
@@ -66,6 +88,10 @@ function App() {
 
                 <Route path="/categories" element={
                     <ProtectedRoute><Categories /></ProtectedRoute>
+                } />
+
+                <Route path="/staff" element={
+                    <ProtectedRoute><Employees /></ProtectedRoute>
                 } />
 
                 <Route path="/help" element={

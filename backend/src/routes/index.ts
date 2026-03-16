@@ -7,6 +7,7 @@ import savesRoutes from './saves.routes'
 import reviewsRoutes from './reviews.routes'
 import categoriesRoutes from './categories.routes'
 import ticketsRoutes from './tiсkets.routes'
+import staffRoutes from './employees.routes'
 const routes = Router();
 
 routes.use('/auth', authRoutes);
@@ -17,5 +18,6 @@ routes.use('/saves', savesRoutes);
 routes.use('/reviews', reviewsRoutes);
 routes.use('/categories', categoriesRoutes);
 routes.use('/tickets', ticketsRoutes);
+routes.use('/staff', staffRoutes);
 
 export default routes;

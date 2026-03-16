@@ -93,3 +93,16 @@ export async function getGoodsByCategory(categoryId) {
     if (!response.ok) throw new Error('Failed to fetch goods by category');
     return response.json();
 }
+
+
+export async function getCategoriesByGoodId(goodId) {
+    const response = await fetch(buildUrl(`categories/by-good/${goodId}`), {
+        method: 'GET',
+        ...BASE_OPTIONS
+    });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch categories');
+    }
+    return response.json();
+}

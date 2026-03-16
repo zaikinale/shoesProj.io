@@ -198,4 +198,29 @@ router.get('/:id/goods', authenticateToken, async (req: Request, res: Response) 
     }
 });
 
+router.get('/by-good/:goodId', authenticateToken, async (req: Request, res: Response) => {
+    const goodId = parseInt(req.params.goodId as string);
+    if (isNaN(goodId)) return res.status(400).json({ error: 'Invalid good ID' });
+
+    try {
+        const categories = await prisma.category.findMany({
+            where: {
+                goods: {
+                    some: { id: goodId }
+                }
+            },
+            select: {
+                id: true,
+                name: true,
+                description: true
+            },
+            orderBy: { name: 'asc' }
+        });
+        res.json(categories);
+    } catch (error: any) {
+        console.error('Get categories by good error:', error.message);
+        res.status(500).json({ error: 'Failed to fetch categories' });
+    }
+});
+
 export default router;

@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import NavigateTo from '../utils/navBtn'
 
 export default function Denied() {
     const location = useLocation();
@@ -8,6 +9,7 @@ export default function Denied() {
         <div className="errorSec">
             <h2 className="status">{status}</h2>
             <p className="errorInfo">{error}</p>
+            <NavigateTo path={'login'}/>
         </div>
     );
 }

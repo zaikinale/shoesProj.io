@@ -84,9 +84,9 @@ input {
   opacity: 0.7;
 }
 
-.store, .basket, .good, .profile, .orders, .categories {
+.store, .basket, .good, .profile, .orders, .categories, .help, .employees {
   width: 100%;
-  height: 100vw;
+  height: 45vw;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
@@ -94,7 +94,7 @@ input {
   gap: 30px;
 }
 
-.help {
+/* .help {
   width: 100%;
   padding: 10px 20px;
   display: flex;
@@ -103,7 +103,7 @@ input {
   gap: 30px;
   position: relative;
 
-}
+} */
 
 .head {
   width: 100%;
@@ -141,6 +141,15 @@ input {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+
+.containerStart {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
+  justify-content: space-around;
+
 }
 
 .card {
@@ -204,11 +213,25 @@ input {
   position: relative;
 }
 
-.formAddGoods {
-    z-index: 100;
+.formStaff {
+  z-index: 100;
   position: absolute;
   top: 60px;
   right: 0; 
+  background-color: #151515;
+  padding: 5px;
+
+}
+
+.addStaffBtn {
+  position: relative;
+}
+
+.formAddGoods {
+  z-index: 100;
+  position: absolute;
+  top: -100px;
+  right: -100px; 
   background-color: #151515;
   padding: 5px;
   /* border-radius: 10px; */
@@ -217,6 +240,12 @@ input {
 .controls, .controllers, .goodsList {
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
@@ -418,6 +447,12 @@ input {
     filter: grayscale(0.3);
 }
 
+.errorSec {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+
 /* Контейнер для toggle в админке */
 .admin-toggle-wrapper {
     padding: 8px 0;
@@ -440,7 +475,7 @@ input {
     width: 40px;
     height: 22px;
     background: #ccc;
-    border-radius: 11px;
+    /* border-radius: 11px; */
     position: relative;
     transition: background 0.2s ease;
 }
@@ -455,7 +490,7 @@ input {
     width: 18px;
     height: 18px;
     background: #fff;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     transition: transform 0.2s ease;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
@@ -544,7 +579,7 @@ input {
     color: #333;
     cursor: pointer;
     padding: 0.6rem 1.2rem;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     font-size: 0.9rem;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -599,7 +634,7 @@ input {
     flex-direction: column;
     padding: 1.25rem;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.2s ease;
@@ -650,7 +685,7 @@ input {
     max-width: 500px;
     padding: 1.5rem;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     background: #fafafa;
 }
 
@@ -667,7 +702,7 @@ input {
 .categories__input {
     padding: 0.75rem;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     background: #fff;
     color: #1a1a1a;
     font-size: 0.95rem;
@@ -710,7 +745,7 @@ textarea.categories__input {
 .categories__goods-section {
     background: #fff;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     padding: 1.25rem;
 }
 
@@ -736,7 +771,7 @@ textarea.categories__input {
     align-items: center;
     padding: 0.75rem;
     border: 1px solid #f0f0f0;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     background: #fafafa;
 }
 
@@ -755,7 +790,7 @@ textarea.categories__input {
     border: 1px solid #fcc;
     color: #c00;
     padding: 1rem;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
 }
@@ -774,7 +809,7 @@ textarea.categories__input {
     font-size: 1.1rem;
     background: #fafafa;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     margin: 2rem;
 }
 
@@ -845,7 +880,7 @@ textarea.categories__input {
 
 .ticket-item {
   padding: 10px 15px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -869,7 +904,7 @@ textarea.categories__input {
   display: flex;
   flex-direction: column;
   padding: 10px 15px;
-  border-radius: 15px;
+  /* border-radius: 15px; */
   margin-bottom: 20px;
 }
 
@@ -879,9 +914,10 @@ textarea.categories__input {
 }
 
 .message-list {
+  box-sizing: border-box;
   padding: 20px;
   background-color: #1a1a1a;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   width: 100%;
   height: 34vw;
   display: flex;
@@ -916,7 +952,7 @@ textarea.categories__input {
 .massage-body  {
   background-color: #666;
   padding: 10px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   max-width: 60%;
 }
 
@@ -924,4 +960,943 @@ textarea.categories__input {
   position: absolute;
   top: 50%;
   left: 50%;
+}
+
+/* ===== Employees Page ===== */
+
+.employees {
+    width: 100%;
+    min-height: 45vw;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.employees__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employees__title {
+    font-size: 32px;
+    margin: 0;
+}
+
+.employees__btn-add {
+    padding: 10px 20px;
+    border: none;
+    background-color: rgb(57, 57, 57);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    width: auto;
+}
+
+.employees__btn-add:hover {
+    background-color: rgb(70, 70, 70);
+}
+
+/* ===== Add Employee Form ===== */
+
+.employees__form {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    padding: 20px;
+    background-color: rgb(21, 21, 21);
+}
+
+.employees__form > * {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+}
+
+.employees__form input:focus,
+.employees__form select:focus {
+    outline: 2px solid rgb(57, 57, 57);
+}
+
+.employees__form-title {
+    width: auto;
+    padding: 0;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.employees__form-btn {
+    background-color: rgb(57, 57, 57);
+    color: white;
+    cursor: pointer;
+}
+
+.employees__form-btn:hover {
+    background-color: rgb(70, 70, 70);
+}
+
+/* ===== Employees List ===== */
+
+.employees__list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.employees__empty {
+    width: 100%;
+    text-align: center;
+    color: gray;
+    padding: 20px;
+}
+
+/* ===== Employee Card ===== */
+
+.employees__card {
+    position: relative;
+    width: 300px;
+    padding: 10px;
+    background-color: rgb(57, 57, 57);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.employees__card > * {
+    width: 100%;
+    text-align: start;
+}
+
+.employees__card-name {
+    font-size: 18px;
+    margin: 0;
+}
+
+.employees__card-email {
+    color: gray;
+    font-size: 14px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.employees__card-role {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+}
+
+.employees__card-role select {
+    padding: 5px;
+    font-size: 14px;
+    background-color: rgb(21, 21, 21);
+    color: white;
+    cursor: pointer;
+}
+
+.employees__card-role select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.employees__card-date {
+    color: gray;
+    font-size: 12px;
+    margin: 0;
+}
+
+.employees__card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.employees__btn-delete {
+    padding: 5px 15px;
+    border: none;
+    background-color: rgb(138, 0, 0);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    width: auto;
+}
+
+.employees__btn-delete:hover {
+    background-color: rgb(160, 0, 0);
+}
+
+.employees__admin-badge {
+    padding: 5px 15px;
+    background-color: rgb(138, 0, 0);
+    color: white;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ===== Loading / Error ===== */
+
+.employees__loading,
+.employees__error {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: gray;
+}
+
+.employees__error {
+    color: rgb(138, 0, 0);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 768px) {
+    .employees {
+        height: auto;
+        min-height: auto;
+    }
+    
+    .employees__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .employees__btn-add {
+        width: 100%;
+    }
+    
+    .employees__card {
+        width: 100%;
+    }
+    
+    .employees__card-actions {
+        justify-content: flex-start;
+    }
+}
+
+
+/* ===== Product Editor - кнопки ===== */
+.good .form .btn-delete {
+    background-color: rgb(138, 0, 0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: auto;
+}
+
+.good .form .btn-delete:hover {
+    background-color: rgb(160, 0, 0);
+}
+
+.good .form .btn-delete:disabled,
+.good .form .btn-add-to-basket:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.good .form .btn-add-to-basket {
+    background-color: rgb(0, 138, 0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: auto;
+}
+
+.good .form .btn-add-to-basket:hover {
+    background-color: rgb(0, 160, 0);
+}
+
+/* ===== Чекбоксы категорий ===== */
+.good .form .cardSmall {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+}
+
+.good .form .cardSmall input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.good .form .cardSmall span {
+    font-size: 14px;
+    color: white;
+}
+
+/* ===== Предпросмотр изображения ===== */
+.good-image .image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: rgb(21, 21, 21);
+}
+
+/* ===== Адаптив для формы ===== */
+@media (max-width: 768px) {
+    .good-content {
+        flex-direction: column;
+    }
+    
+    .good-info {
+        width: 100%;
+    }
+    
+    .good .form .controls {
+        flex-wrap: wrap;
+    }
+}
+
+/* ===== Product Editor — инпуты в стиле Good.jsx ===== */
+
+/* Заголовки и текстовые поля */
+.good-info .good-title-input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgb(57, 57, 57);
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    padding: 5px 0;
+    margin: 0 0 10px 0;
+    font-family: inherit;
+}
+
+.good-info .good-title-input:focus {
+    outline: none;
+    border-bottom-color: rgb(0, 100, 200);
+}
+
+.good-info .good-description-input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgb(57, 57, 57);
+    color: rgb(200, 200, 200);
+    font-size: 16px;
+    padding: 5px 0;
+    margin: 0 0 10px 0;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.good-info .good-description-input:focus {
+    outline: none;
+    border-bottom-color: rgb(0, 100, 200);
+}
+
+/* Цена */
+.good-info .good-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.good-info .price-label {
+    color: rgb(200, 200, 200);
+    font-size: 16px;
+}
+
+.good-info .price-value-input {
+    width: 120px;
+    background: rgb(21, 21, 21);
+    border: none;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 5px 10px;
+    text-align: right;
+}
+
+.good-info .price-value-input:focus {
+    outline: 2px solid rgb(0, 100, 200);
+}
+
+.good-info .price-currency {
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Изображение */
+.good-image .image-url-input {
+    width: 100%;
+    background: rgb(21, 21, 21);
+    border: none;
+    border-top: 1px solid rgb(57, 57, 57);
+    color: rgb(150, 150, 150);
+    font-size: 12px;
+    padding: 8px 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.good-image .image-url-input:focus {
+    outline: none;
+    border-top-color: rgb(0, 100, 200);
+    color: white;
+}
+
+/* Активность */
+.good-info .active-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.good-info .active-toggle input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.good-info .active-toggle span {
+    color: rgb(200, 200, 200);
+    font-size: 14px;
+}
+
+/* Категории */
+.good-info .categories-edit {
+    margin-top: 20px;
+}
+
+.good-info .categories-edit > span {
+    display: block;
+    color: rgb(200, 200, 200);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.good-info .categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.good-info .category-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: rgb(21, 21, 21);
+    cursor: pointer;
+    user-select: none;
+}
+
+.good-info .category-chip input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+}
+
+.good-info .category-chip span {
+    color: white;
+    font-size: 13px;
+}
+
+/* Кнопки в хедере */
+.head .btn-cancel,
+.head .btn-save {
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.head .btn-cancel {
+    background: rgb(57, 57, 57);
+    color: white;
+}
+
+.head .btn-cancel:hover {
+    background: rgb(70, 70, 70);
+}
+
+.head .btn-save {
+    background: rgb(0, 138, 0);
+    color: white;
+}
+
+.head .btn-save:hover {
+    background: rgb(0, 160, 0);
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .good-content {
+        flex-direction: column;
+    }
+    
+    .good-image,
+    .good-info {
+        width: 100%;
+    }
+    
+    .good-info .good-title-input {
+        font-size: 24px;
+    }
+    
+    .good-info .price-value-input {
+        font-size: 20px;
+    }
+    
+    .good-info .price-currency {
+        font-size: 20px;
+    }
+    
+    .head .btn-cancel,
+    .head .btn-save {
+        padding: 8px 15px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+}
+
+/* ===== Image Editor ===== */
+.good-image .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: rgb(21, 21, 21);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.good-image .image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.good-image .image-placeholder {
+    color: rgb(150, 150, 150);
+    font-size: 14px;
+}
+
+.good-image .image-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.good-image .image-status.ok {
+    background: rgb(0, 138, 0);
+    color: white;
+}
+
+.good-image .image-status.error {
+    background: rgb(138, 0, 0);
+    color: white;
+}
+
+.good-image .image-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.good-image .image-url-input {
+    width: 100%;
+    background: rgb(21, 21, 21);
+    border: 1px solid rgb(57, 57, 57);
+    color: white;
+    font-size: 13px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+}
+
+.good-image .image-url-input:focus {
+    outline: none;
+    border-color: rgb(0, 100, 200);
+}
+
+.good-image .image-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.good-image .btn-image-test,
+.good-image .btn-image-clear {
+    flex: 1;
+    padding: 6px 12px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.good-image .btn-image-test {
+    background: rgb(0, 100, 200);
+    color: white;
+}
+
+.good-image .btn-image-test:hover:not(:disabled) {
+    background: rgb(0, 120, 230);
+}
+
+.good-image .btn-image-clear {
+    background: rgb(138, 0, 0);
+    color: white;
+}
+
+.good-image .btn-image-clear:hover:not(:disabled) {
+    background: rgb(160, 0, 0);
+}
+
+.good-image .btn-image-test:disabled,
+.good-image .btn-image-clear:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.good-image .image-hint {
+    margin: 8px 0 0;
+    font-size: 11px;
+    color: rgb(120, 120, 120);
+    text-align: center;
+}
+
+/* ===== Categories Editor ===== */
+.good-info .categories-editor {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgb(57, 57, 57);
+}
+
+.good-info .categories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.good-info .categories-header > span {
+    color: rgb(200, 200, 200);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.good-info .categories-count {
+    background: rgb(0, 100, 200);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Выбранные категории — чипсы */
+.good-info .selected-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.good-info .category-chip.selected {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgb(0, 100, 200);
+    color: white;
+    font-size: 12px;
+    border-radius: 15px;
+}
+
+.good-info .category-chip.selected .chip-remove {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.good-info .category-chip.selected .chip-remove:hover {
+    opacity: 1;
+}
+
+/* Поиск категорий */
+.good-info .category-search-box {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.good-info .category-search-input {
+    width: 100%;
+    background: rgb(21, 21, 21);
+    border: 1px solid rgb(57, 57, 57);
+    color: white;
+    font-size: 13px;
+    padding: 8px 30px 8px 12px;
+    box-sizing: border-box;
+}
+
+.good-info .category-search-input:focus {
+    outline: none;
+    border-color: rgb(0, 100, 200);
+}
+
+.good-info .search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgb(150, 150, 150);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.good-info .search-clear:hover {
+    color: white;
+}
+
+/* Список категорий */
+.good-info .available-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.good-info .category-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgb(21, 21, 21);
+    border: 1px solid rgb(57, 57, 57);
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    border-radius: 4px;
+}
+
+.good-info .category-option:hover {
+    border-color: rgb(0, 100, 200);
+    background: rgb(30, 30, 30);
+}
+
+.good-info .category-option.selected {
+    background: rgb(0, 100, 200);
+    border-color: rgb(0, 120, 230);
+}
+
+.good-info .category-checkbox {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(57, 57, 57);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.good-info .category-option.selected .category-checkbox {
+    background: rgb(0, 138, 0);
+}
+
+.good-info .category-name {
+    flex: 1;
+}
+
+.good-info .category-check {
+    color: rgb(0, 138, 0);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.good-info .show-more-categories {
+    padding: 8px;
+    background: none;
+    border: 1px dashed rgb(57, 57, 57);
+    color: rgb(150, 150, 150);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.good-info .show-more-categories:hover {
+    border-color: rgb(0, 100, 200);
+    color: rgb(0, 100, 200);
+}
+
+.good-info .no-categories {
+    color: rgb(120, 120, 120);
+    font-size: 13px;
+    text-align: center;
+    padding: 10px;
+}
+
+/* ===== Кнопки в хедере ===== */
+.head .btn-cancel,
+.head .btn-save {
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.head .btn-cancel {
+    background: rgb(57, 57, 57);
+    color: white;
+}
+
+.head .btn-cancel:hover {
+    background: rgb(70, 70, 70);
+}
+
+.head .btn-save {
+    background: rgb(0, 138, 0);
+    color: white;
+}
+
+.head .btn-save:hover {
+    background: rgb(0, 160, 0);
+}
+
+/* ===== Адаптив ===== */
+@media (max-width: 768px) {
+    .good-content {
+        flex-direction: column;
+    }
+    
+    .good-image,
+    .good-info {
+        width: 100%;
+    }
+    
+    .good-image .image-wrapper {
+        height: 250px;
+    }
+    
+    .good-info .good-title-input {
+        font-size: 24px;
+    }
+    
+    .good-info .price-value-input {
+        width: 100px;
+        font-size: 20px;
+    }
+    
+    .head .btn-cancel,
+    .head .btn-save {
+        padding: 8px 12px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    
+    .good-info .available-categories {
+        max-height: 150px;
+    }
+}
+
+/* ===== Категории товара — чипсы ===== */
+.good-info .good-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 15px 0;
+}
+
+.good-info .category-chip {
+    padding: 6px 14px;
+    background: rgb(57, 57, 57);
+    color: white;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.good-info .category-chip:hover {
+    background: rgb(0, 100, 200);
+    transform: translateY(-1px);
+}
+
+.good-info .category-chip:active {
+    transform: translateY(0);
+}
+
+/* ===== Улучшения изображения ===== */
+.good-image .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(21, 21, 21);
+    color: rgb(120, 120, 120);
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+}
+
+.good-image .image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: rgb(21, 21, 21);
+}
+
+/* ===== Адаптив для категорий ===== */
+@media (max-width: 768px) {
+    .good-info .good-categories {
+        gap: 6px;
+    }
+    
+    .good-info .category-chip {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
 }
