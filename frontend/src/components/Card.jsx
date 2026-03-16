@@ -531,24 +531,6 @@ export default function Card ({
                     </>
                 )}
 
-                <div className="admin-toggle-wrapper">
-                    <label className={`toggle ${isActive ? 'active' : ''} ${isToggling ? 'loading' : ''}`}>
-                        <input
-                            type="checkbox"
-                            checked={isActive}
-                            onChange={handleToggleActive}
-                            disabled={isToggling}
-                            className="toggle-input"
-                        />
-                        <span className="toggle-track">
-                            <span className="toggle-thumb" />
-                        </span>
-                        <span className="toggle-label">
-                            {isActive ? 'Active' : 'Inactive'}
-                        </span>
-                    </label>
-                </div>
-
                 <div className="controls">
                     {/* <button className="change" onClick={handleChange}>{isChange ? 'Hide form' : 'Change product'}</button> */}
                     <button className="btn" onClick={isChange ? handleСancellation : handleDelete}>
@@ -561,6 +543,23 @@ export default function Card ({
                         >
                             Edit
                     </Link>
+                    <div className="admin-toggle-wrapper">
+                    <label className={`toggle ${isActive ? 'active' : ''} ${isToggling ? 'loading' : ''}`}>
+                        <input
+                            type="checkbox"
+                            checked={isActive}
+                            onChange={handleToggleActive}
+                            disabled={isToggling}
+                            className="toggle-input"
+                        />
+                        <span className="toggle-track">
+                            <span className="toggle-thumb" />
+                        </span>
+                        {/* <span className="toggle-label">
+                            {isActive ? 'Active' : 'Inactive'}
+                        </span> */}
+                    </label>
+                </div>
                 </div>
             </div>
         )   
