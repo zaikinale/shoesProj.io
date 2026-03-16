@@ -155,7 +155,7 @@ input {
 .card {
   position: relative;
   width: 300px;
-  padding: 10px;
+  /* padding: 10px; */
   background-color: rgb(57, 57, 57);
   /* border-radius: 20px; */
   display: flex;
@@ -176,6 +176,14 @@ input {
   padding: 5px;
   background-color: rgb(57, 57, 57);
   /* border-radius: 10px; */
+}
+
+.containerCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px;
 }
 
 .cardSmall > .title {
@@ -203,6 +211,40 @@ input {
   height: 300px;
   object-fit: cover;
   /* border-radius: 10px; */
+}
+
+.card .title {
+  color: black;
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  top: -40px;
+  left: 10px;
+}
+
+.card .desc {
+  display: -webkit-box;
+    -webkit-box-orient: vertical;
+    
+    /* Ограничиваем ровно 2 строками */
+    -webkit-line-clamp: 2;
+    
+    /* Скрываем всё, что не влезло */
+    overflow: hidden;
+    
+    /* Показываем троеточие в конце */
+    text-overflow: ellipsis;
+    
+    /* Переносим длинные слова, чтобы не ломали вёрстку */
+    word-break: break-word;
+    
+    /* Фиксируем высоту строки для точного расчёта */
+    line-height: 1.4;
+    opacity: 0.7;
+    /* Отступы и цвет
+    margin: 0;
+    color: rgb(200, 200, 200);
+    font-size: 14px; */
 }
 
 .formAdd {
@@ -247,6 +289,7 @@ input {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 10px;
 }
 
 .controlsInput {

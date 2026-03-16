@@ -1,4 +1,3 @@
-// pages/Categories.jsx
 import { useEffect, useState } from 'react';
 import {
     getCategories,
@@ -181,14 +180,13 @@ export default function Categories() {
     };
 
     if (!isAdmin) {
-        return <div className="categories__access-denied">Доступ только для администраторов</div>;
+        return <div className="categories__access-denied">Access for administrators only</div>;
     }
 
     return (
         <div className="categories">
             <header className="head">
-                <NavigateTo path="categories"/>
-                {/* <h1 className="">Категории</h1> */}
+                <NavigateTo path="store"/>
                 <div className="controls">
                     <NavigateTo path="store"/>
                     <NavigateTo path="basket"/>
@@ -216,24 +214,24 @@ export default function Categories() {
             {view === 'list' && (
                 <ul className="categories__list">
                     {categories.map(cat => (
-                        <li key={cat.id} className="categories__item">
+                        <li key={cat.id} className="block card">
                             <div className="categories__item-info">
-                                <strong>{cat.name}</strong>
+                                <h3>{cat.name}</h3>
                                 {cat.description && <p>{cat.description}</p>}
-                                <small>Товаров: {cat._count?.goods || 0}</small>
+                                <small>Products in category: {cat._count?.goods || 0}</small>
                             </div>
-                            <div className="categories__item-actions">
-                                <button className="categories__link" onClick={() => {
+                            <div className="controls">
+                                <button className="btn" onClick={() => {
                                     setSelectedCategory(cat);
                                     setView('goods');
                                 }}>
-                                    Товары
+                                    goods
                                 </button>
-                                <button className="categories__link" onClick={() => openEdit(cat)}>
-                                    Редактировать
+                                <button className="btn" onClick={() => openEdit(cat)}>
+                                    edit
                                 </button>
-                                <button className="categories__link categories__link--danger" onClick={() => handleDelete(cat.id)}>
-                                    Удалить
+                                <button className="btn" onClick={() => handleDelete(cat.id)}>
+                                    delete
                                 </button>
                             </div>
                         </li>
@@ -242,9 +240,9 @@ export default function Categories() {
             )}
 
             {(view === 'form' || view === 'edit') && (
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="form card" onSubmit={handleSubmit}>
                     <label className="categories__label">
-                        name
+                        Name
                         <input
                             className=""
                             type="text"
@@ -256,7 +254,7 @@ export default function Categories() {
                     </label>
                     
                     <label className="categories__label">
-                        description
+                        Description
                         <textarea
                             className=""
                             value={form.description}
@@ -265,9 +263,19 @@ export default function Categories() {
                         />
                     </label>
 
-                    <div className="select_good_section">
+                        {form.goodIds.length > 0 && (
+                            <small className="categories__hint">
+                                Products in category: {form.goodIds.length}
+                            </small>
+                        )}
+
+                    <button className="categories__btn categories__btn--primary" type="submit" disabled={loading}>
+                        {loading ? 'Saving...' : 'Save'}
+                    </button>
+
+                    {/* <div className="select_good_section">
                         <label className="categories__label">
-                            Goods in category
+                            Goods for category
                             <div className="goods_container">
                                 {goods.length === 0 ? (
                                     <p className="categories__no-goods">Don`t have goods</p>
@@ -288,25 +296,16 @@ export default function Categories() {
                                 )}
                             </div>
                         </label>
-                        {form.goodIds.length > 0 && (
-                            <small className="categories__hint">
-                                Выбрано товаров: {form.goodIds.length}
-                            </small>
-                        )}
-                    </div>
-
-                    <button className="categories__btn categories__btn--primary" type="submit" disabled={loading}>
-                        {loading ? 'Сохранение...' : 'Сохранить'}
-                    </button>
+                    </div> */}
                 </form>
             )}
 
             {view === 'goods' && selectedCategory && (
                 <div className="categories__goods-manager">
-                    <h2>Товары в «{selectedCategory.name}»</h2>
+                    <h2>Goods in «{selectedCategory.name}»</h2>
 
                     <section className="categories__goods-section">
-                        <h3>Добавить товар</h3>
+                        <h3>Add good</h3>
                         <ul className="categories__goods-list">
                             {goods
                                 .filter(g => !categoryGoods.some(cg => cg.id === g.id))
@@ -317,20 +316,20 @@ export default function Categories() {
                                             className="categories__link"
                                             onClick={() => handleAddGood(good.id)}
                                         >
-                                            + Добавить
+                                            + add
                                         </button>
                                     </li>
                                 ))}
                             {goods.filter(g => !categoryGoods.some(cg => cg.id === g.id)).length === 0 && (
-                                <li className="categories__goods-empty">Все товары добавлены</li>
+                                <li className="categories__goods-empty">All products added</li>
                             )}
                         </ul>
                     </section>
 
                     <section className="categories__goods-section">
-                        <h3>Уже в категории</h3>
+                        <h3>Already in category</h3>
                         {categoryGoods.length === 0 ? (
-                            <p>Нет товаров</p>
+                            <p>No products</p>
                         ) : (
                             <ul className="categories__goods-list">
                                 {categoryGoods.map(good => (
@@ -340,7 +339,7 @@ export default function Categories() {
                                             className="categories__link categories__link--danger"
                                             onClick={() => handleRemoveGood(good.id)}
                                         >
-                                            − Убрать
+                                            − Close
                                         </button>
                                     </li>
                                 ))}

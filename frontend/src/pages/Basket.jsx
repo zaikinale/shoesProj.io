@@ -51,8 +51,8 @@ export default function Basket () {
         
         return (
             <div className="sectionOrder">
-                <p className="totalCount">{`Общее количество товаров: ${totalCount}`}</p>
-                <p className="totalSum">{`Общая сумма: ${totalPrice} ₽`}</p>
+                <p className="totalCount">{`Total number of items: ${totalCount}`}</p>
+                <p className="totalSum">{`Total sum: ${totalPrice} ₽`}</p>
                 <button className="create" onClick={handleCreateOrder}>create order</button>
             </div>
         )

@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useStore } from './store/useUserContext';
 import { ProtectedRoute } from './providers/ProtectedRoute.jsx'
 import { LoadingScreen } from './utils/LoadScreen.jsx';
@@ -49,8 +49,6 @@ function App() {
                 <Route path="/store" element={<Store />} />
 
                 <Route path="/good/:id" element={<Good />} />
-
-                {/* <Route path="/good-editor" element={<GoodEditor />} /> */}
 
                 <Route 
                     path="/admin/products/add" 

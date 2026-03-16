@@ -17,14 +17,14 @@ function Login() {
     e.preventDefault();
     try {
       const responseData = await apiLogin(userLogin, userPassword);
-      console.log("Успешный вход:", responseData);
+      // console.log("Успешный вход:", responseData);
       
       storeLogin(responseData.accessToken, responseData.user);
       
       navigate('/store');
     } catch (error) {
-      console.error("Ошибка входа:", error);
-      setError('Неверный пароль или пользователь не найден.');
+      // console.error("Ошибка входа:", error);
+      setError('Invalid password or user not found.');
     }
   };
 
