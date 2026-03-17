@@ -2164,3 +2164,240 @@ textarea.categories__input {
         width: 100%;
     }
 }
+
+/* ===== Карточка товара — изображение ===== */
+
+/* Обёртка для изображения */
+.card .image-wrapper {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(21, 21, 21);
+    overflow: hidden;
+}
+
+/* Само изображение */
+.card .img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Плейсхолдер при ошибке загрузки */
+.card .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(120, 120, 120);
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Для неактивных товаров */
+.card.inactive .img {
+    opacity: 0.6;
+    filter: grayscale(0.3);
+}
+
+/* Адаптив: уменьшаем высоту на мобильных */
+@media (max-width: 768px) {
+    .card .image-wrapper {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card .image-wrapper {
+        height: 200px;
+    }
+}
+
+
+/* ===== Gallery Section ===== */
+.gallery-section {
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgb(57, 57, 57);
+}
+
+.gallery-section h3 {
+    margin: 0 0 15px 0;
+    color: white;
+    font-size: 20px;
+}
+
+.gallery-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    min-height: 100px;
+}
+
+.gallery-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: rgb(21, 21, 21);
+    border: 2px solid rgb(57, 57, 57);
+    overflow: hidden;
+}
+
+.gallery-item.main {
+    border-color: rgb(0, 138, 0);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px;
+}
+
+.btn-gallery-action {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+
+.btn-gallery-action:hover { color: rgb(0, 100, 200); }
+.btn-gallery-action.btn-delete:hover { color: rgb(255, 100, 100); }
+
+.main-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgb(0, 138, 0);
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+}
+
+.no-images {
+    color: rgb(150, 150, 150);
+    font-size: 14px;
+    padding: 20px;
+    text-align: center;
+}
+
+.gallery-add {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.gallery-add .image-url-input {
+    flex: 1;
+}
+
+.btn-add-image,
+.btn-image-test {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-add-image {
+    background: rgb(0, 100, 200);
+    color: white;
+}
+.btn-add-image:hover { background: rgb(0, 120, 230); }
+.btn-add-image:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-image-test {
+    background: rgb(57, 57, 57);
+    color: white;
+}
+.btn-image-test:hover { background: rgb(70, 70, 70); }
+.btn-image-test:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.gallery-hint {
+    color: rgb(150, 150, 150);
+    font-size: 12px;
+    margin: 0;
+}
+
+/* ===== Image Status Badge ===== */
+.image-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.image-status.ok {
+    background: rgb(0, 138, 0);
+    color: white;
+}
+
+.image-status.error {
+    background: rgb(138, 0, 0);
+    color: white;
+}
+
+/* ===== Buttons in Header ===== */
+.head .btn-cancel,
+.head .btn-save {
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.head .btn-cancel {
+    background: rgb(57, 57, 57);
+    color: white;
+}
+.head .btn-cancel:hover { background: rgb(70, 70, 70); }
+
+.head .btn-save {
+    background: rgb(0, 138, 0);
+    color: white;
+}
+.head .btn-save:hover { background: rgb(0, 160, 0); }
+.head .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .gallery-item {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .gallery-add {
+        flex-direction: column;
+    }
+    
+    .head .btn-cancel,
+    .head .btn-save {
+        padding: 8px 12px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+}

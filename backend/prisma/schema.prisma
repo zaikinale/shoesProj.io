@@ -56,6 +56,18 @@ model Good {
   saves       Save[]
   reviews     Reviews[]
   categories  Category[] 
+  images      ProductImage[]
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  goodId    Int
+  good      Good     @relation(fields: [goodId], references: [id], onDelete: Cascade)
+  url       String
+  isMain    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([goodId])
 }
 
 model Basket {
