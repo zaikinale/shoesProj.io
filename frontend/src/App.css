@@ -1550,7 +1550,7 @@ textarea.categories__input {
     right: 10px;
     padding: 4px 10px;
     font-size: 11px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     font-weight: 500;
 }
 
@@ -1656,7 +1656,7 @@ textarea.categories__input {
     background: rgb(0, 100, 200);
     color: white;
     padding: 2px 8px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     font-size: 11px;
     font-weight: 500;
 }
@@ -1677,7 +1677,7 @@ textarea.categories__input {
     background: rgb(0, 100, 200);
     color: white;
     font-size: 12px;
-    border-radius: 15px;
+    /* border-radius: 15px; */
 }
 
 .good-info .category-chip.selected .chip-remove {
@@ -1758,7 +1758,7 @@ textarea.categories__input {
     cursor: pointer;
     text-align: left;
     transition: all 0.2s;
-    border-radius: 4px;
+    /* border-radius: 4px; */
 }
 
 .good-info .category-option:hover {
@@ -1778,7 +1778,7 @@ textarea.categories__input {
     align-items: center;
     justify-content: center;
     background: rgb(57, 57, 57);
-    border-radius: 4px;
+    /* border-radius: 4px; */
     font-size: 14px;
     font-weight: bold;
     flex-shrink: 0;
@@ -1941,5 +1941,226 @@ textarea.categories__input {
     .good-info .category-chip {
         padding: 5px 10px;
         font-size: 12px;
+    }
+}
+
+/* ===== Unified Categories Styles ===== */
+
+.categories, .category-page {
+    width: 100%;
+    min-height: 45vw;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.categories-title {
+    font-size: 32px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Карточка категории */
+.category-card {
+    background: rgb(57, 57, 57);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+    border: 1px solid rgb(57, 57, 57);
+}
+
+.category-card.admin-card {
+    cursor: default;
+}
+
+.category-card:not(.admin-card) {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-card:not(.admin-card):hover {
+    background: rgb(70, 70, 70);
+    transform: translateY(-2px);
+    border-color: rgb(0, 100, 200);
+}
+
+.category-name {
+    font-size: 20px;
+    margin: 0;
+    color: white;
+}
+
+.category-description {
+    color: rgb(200, 200, 200);
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.category-stats {
+    color: rgb(150, 150, 150);
+    font-size: 14px;
+    margin: 0;
+}
+
+.category-arrow {
+    font-size: 20px;
+    color: rgb(0, 100, 200);
+}
+
+/* Кнопки управления */
+.categories__btn {
+    padding: 10px 20px;
+    background: rgb(57, 57, 57);
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.categories__btn:hover {
+    background: rgb(70, 70, 70);
+}
+
+.categories__btn--primary {
+    background: rgb(0, 138, 0);
+}
+
+.categories__btn--primary:hover {
+    background: rgb(0, 160, 0);
+}
+
+.btn-delete {
+    background: rgb(138, 0, 0);
+}
+
+.btn-delete:hover {
+    background: rgb(160, 0, 0);
+}
+
+/* Категория хедер */
+.category-header {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background: rgb(21, 21, 21);
+}
+
+.category-page .category-title {
+    font-size: 36px;
+    margin: 0 0 10px 0;
+    color: white;
+}
+
+.btn-back {
+    padding: 10px 20px;
+    background: rgb(57, 57, 57);
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: rgb(70, 70, 70);
+}
+
+.no-products, .no-categories {
+    text-align: center;
+    color: rgb(150, 150, 150);
+    font-size: 16px;
+    width: 100%;
+    padding: 40px;
+}
+
+/* Менеджер товаров */
+.categories__goods-manager {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.categories__goods-section {
+    background: rgb(21, 21, 21);
+    padding: 15px;
+}
+
+.categories__goods-section h3 {
+    margin: 0 0 15px 0;
+    color: white;
+    font-size: 18px;
+}
+
+.categories__goods-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.categories__goods-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgb(57, 57, 57);
+}
+
+.categories__link {
+    padding: 5px 15px;
+    background: rgb(0, 100, 200);
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.categories__link--danger {
+    background: rgb(138, 0, 0);
+}
+
+.categories__goods-empty {
+    color: rgb(150, 150, 150);
+    padding: 10px;
+    text-align: center;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-page .category-title {
+        font-size: 24px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search {
+        width: 100%;
     }
 }

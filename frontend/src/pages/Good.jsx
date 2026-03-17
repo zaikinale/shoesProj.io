@@ -155,7 +155,7 @@ export default function Good() {
     };
 
     const handleCategoryClick = (categoryId) => {
-        navigate(`/store?category=${categoryId}`);
+        navigate(`/categories/${categoryId}`);
     };
 
     return (

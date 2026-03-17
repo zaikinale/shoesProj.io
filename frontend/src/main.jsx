@@ -84,9 +84,12 @@ function App() {
                     <ProtectedRoute><Order /></ProtectedRoute>
                 } />
 
-                <Route path="/categories" element={
+                {/* <Route path="/categories" element={
                     <ProtectedRoute><Categories /></ProtectedRoute>
-                } />
+                } /> */}
+
+                <Route path="/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
+                <Route path="/categories/:id" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
 
                 <Route path="/staff" element={
                     <ProtectedRoute><Employees /></ProtectedRoute>

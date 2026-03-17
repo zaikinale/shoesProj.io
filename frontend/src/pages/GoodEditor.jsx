@@ -234,7 +234,7 @@ export default function ProductEditor() {
                         />
 
                         <p className="good-description">
-                            {`Рейтинг: ${calculateAverageRating(reviews)}`}
+                            {`Renting: ${calculateAverageRating(reviews)}`}
                         </p>
 
                         <div className="good-price">
