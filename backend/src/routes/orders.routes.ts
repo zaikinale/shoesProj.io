@@ -4,7 +4,6 @@ import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
-// 1. POST /api/orders
 router.post('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
 
@@ -70,7 +69,6 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// 2. GET /api/orders
 router.get('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
 
@@ -93,7 +91,6 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// 3. GET /api/orders/my
 router.get('/my', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
 
@@ -114,7 +111,6 @@ router.get('/my', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// 4. GET /api/orders/:id
 router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const orderId = parseInt(req.params.id as string);
@@ -157,7 +153,6 @@ router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// 5. PUT /api/orders/:id/status
 router.put('/:id/status', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const orderId = parseInt(req.params.id as string);
@@ -193,7 +188,6 @@ router.put('/:id/status', authenticateToken, async (req: Request, res: Response)
     }
 });
 
-// 6. DELETE /api/orders/:id/cancel
 router.delete('/:id/cancel', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const orderId = parseInt(req.params.id as string);

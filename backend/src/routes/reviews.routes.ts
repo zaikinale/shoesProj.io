@@ -4,7 +4,6 @@ import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
-// POST /api/reviews
 router.post('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { goodId, text, rating, image } = req.body;
@@ -45,7 +44,6 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// GET /api/reviews/check/:goodId
 router.get('/check/:goodId', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const goodId = parseInt(req.params.goodId as string, 10);
@@ -69,7 +67,6 @@ router.get('/check/:goodId', authenticateToken, async (req: Request, res: Respon
     }
 });
 
-// GET /api/reviews/:goodId 
 router.get('/:goodId', async (req: Request, res: Response) => {
     const goodId = parseInt(req.params.goodId as string, 10);
 

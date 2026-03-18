@@ -2565,19 +2565,6 @@ textarea.categories__input {
 }
 
 /* ===== Кнопка добавления товара (админ) ===== */
-/* .btn-add-product {
-    padding: 10px 20px;
-    background: rgb(0, 138, 0);
-    color: white;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-add-product:hover {
-    background: rgb(0, 160, 0);
-} */
 
 .btn-add-product:active {
     transform: scale(0.98);

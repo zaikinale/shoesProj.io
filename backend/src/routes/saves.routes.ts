@@ -6,7 +6,6 @@ import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
-// GET /api/saves 
 router.get('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
 
@@ -24,7 +23,6 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// GET /api/saves/check/:goodId 
 router.get('/check/:goodId', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const goodId = parseInt(req.params.goodId as string, 10);
@@ -45,7 +43,6 @@ router.get('/check/:goodId', authenticateToken, async (req: Request, res: Respon
     }
 });
 
-// POST /api/saves 
 router.post('/', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { goodId } = req.body;
@@ -73,7 +70,6 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
     }
 });
 
-// DELETE /api/saves/:goodId 
 router.delete('/:goodId', authenticateToken, async (req: Request, res: Response) => {
     const user = (req as any).user;
     const goodId = parseInt(req.params.goodId as string, 10);
@@ -99,7 +95,3 @@ router.delete('/:goodId', authenticateToken, async (req: Request, res: Response)
 });
 
 export default router;
-
-
-
-

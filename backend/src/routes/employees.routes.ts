@@ -129,12 +129,10 @@ router.delete('/:id', authenticateToken, async (req: Request, res: Response) => 
         const target = await prisma.user.findUnique({ where: { id } });
         if (!target) return res.status(404).json({ error: 'Employee not found' });
 
-        // Защита: нельзя удалять админов
         if (target.roleID === ADMIN_ROLE_ID) {
             return res.status(403).json({ error: 'Cannot delete administrators' });
         }
 
-        // Защита: нельзя удалить самого себя
         if (target.id === user.id) {
             return res.status(400).json({ error: 'Cannot delete your own account' });
         }

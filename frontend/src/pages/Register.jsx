@@ -19,12 +19,12 @@ export default function Register() {
         e.preventDefault();
         try {
             const user = await register(userName, userLogin, userPassword, userPasswordConf);
-            console.log("Успешный вход:", user);
+            // console.log("Успешный вход:", user);
             setUser(user);
             navigate('/');
         } catch (error) {
             console.error("Ошибка входа:", error);
-            setError('Неверный пароль или пользователь не найден.')
+            setError('Invalid password or user not found.')
         }
     };
 

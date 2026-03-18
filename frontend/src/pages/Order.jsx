@@ -25,26 +25,26 @@ export default function Order() {
         fetchOrder();
     }, [id]);
 
-    if (loading) return <div className="page-loader">Загрузка данных заказа...</div>;
+    if (loading) return <div className="page-loader">Loading order data...</div>;
     if (error) return (
         <div className="error-container">
-            <h2>Ошибка</h2>
+            <h2>Error</h2>
             <p>{error}</p>
-            <button onClick={() => navigate('/orders')} className="btn-primary">Вернуться к списку</button>
+            <button onClick={() => navigate('/orders')} className="btn-primary">Back to list</button>
         </div>
     );
-    if (!order) return <div className="error-container">Заказ не найден</div>;
+    if (!order) return <div className="error-container">Order not found</div>;
 
     const formattedDate = new Date(order.createdAt).toLocaleString('ru-RU', {
         year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
 
     const statusConfig = {
-        created: { label: 'Создан', color: '#3b82f6' },
-        processing: { label: 'В обработке', color: '#f59e0b' },
-        shipped: { label: 'Отправлен', color: '#8b5cf6' },
-        delivered: { label: 'Доставлен', color: '#10b981' },
-        cancelled: { label: 'Отменен', color: '#ef4444' }
+        created: { label: 'Created', color: '#3b82f6' },
+        processing: { label: 'In processing', color: '#f59e0b' },
+        shipped: { label: 'Sent', color: '#8b5cf6' },
+        delivered: { label: 'Delivered', color: '#10b981' },
+        cancelled: { label: 'Canceled', color: '#ef4444' }
     };
 
     const currentStatus = statusConfig[order.status] || { label: order.status, color: '#9ca3af' };
@@ -54,14 +54,14 @@ export default function Order() {
     }, 0);
 
     const handleCancelOrder = async () => {
-        if (!window.confirm('Вы уверены, что хотите отменить этот заказ?')) return;
+        if (!window.confirm('Are you sure you want to cancel this order?')) return;
 
         try {
             await cancelOrder(id);
-            alert('Заказ успешно отменен');
+            alert('Order successfully canceled');
             setOrder({ ...order, status: 'cancelled' });
         } catch (e) {
-            alert(e.message || 'Ошибка сети');
+            alert(e.message || 'Network error');
         }
     };
 
@@ -71,7 +71,7 @@ export default function Order() {
                 <div className="controls">
                     <NavigateTo path="orders" />
                     <div className="controls">
-                        <h2>Заказ №{order.id}</h2>
+                        <h2>Order №{order.id}</h2>
                         <div className="status-badge" style={{color: currentStatus.color }}>
                             {currentStatus.label}
                         </div>
@@ -82,12 +82,12 @@ export default function Order() {
             <main className="container">
                 <div className="head">
                     <div className="controls">
-                        <span className="label">Дата оформления:</span>
+                        <span className="label">Date:</span>
                         <span className="value">{formattedDate}</span>
                     </div>
                 </div>
 
-                <h2 className="section-title">Состав заказа</h2>
+                <h2 className="section-title">Order list</h2>
                 <div className="container">
                     {order.items.map((item) => (
                         <div key={item.id} className="card">
@@ -95,17 +95,17 @@ export default function Order() {
                                 {item.good?.image ? (
                                     <img src={item.good.image} alt={item.good.title} className="img" />
                                 ) : (
-                                    <div className="no-image">Нет фото</div>
+                                    <div className="no-image">No image</div>
                                 )}
                             </div>
                             <div className="product-details">
                                 <h3 className="product-title">{item.good?.title || 'Товар удален'}</h3>
                                 <p className="product-desc">{item.good?.description || '-'}</p>
-                                <span className="qty-badge">{`Количество ${item.quantity}`}</span>
+                                <span className="qty-badge">{`Count ${item.quantity}`}</span>
                                 <div className="product-price-block">
                                     <span className="price-per-item">{item.good?.price} ₽ / шт.</span>
                                     <br/>
-                                    <span className="total-item-price">{`Итоговая сумма: ${(item.good?.price || 0) * item.quantity} ₽`}</span>
+                                    <span className="total-item-price">{`Total sum: ${(item.good?.price || 0) * item.quantity} ₽`}</span>
                                 </div>
                             </div>
                         </div>
@@ -114,18 +114,18 @@ export default function Order() {
 
                 <div className="head">
                     <div className="controls">
-                        <span>Итоговая сумма: </span>
+                        <span>Total sum: </span>
                         <span>{totalAmount} ₽</span>
                     </div>
 
                     <div className="controls">
                         {order.status === 'created' && (
                             <button onClick={handleCancelOrder} className="btn-danger">
-                                Отменить заказ
+                                Cancel order
                             </button>
                         )}
                         <Link to="/orders" className="btn-secondary">
-                            К списку заказов
+                            Go to orders
                         </Link>
                     </div>
                 </div>
