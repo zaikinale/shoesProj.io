@@ -6,6 +6,7 @@ import Card from "../components/Card.jsx";
 import { useStore } from '../store/useUserContext.jsx';
 import NavigateTo from '../utils/navBtn.jsx'
 import SearchIcon from '../assets/search.svg'
+import Logotype from '../assets/logo.svg'
 
 export default function Store() {
     const user = useStore((state) => state.user);
@@ -221,6 +222,7 @@ export default function Store() {
             <section className="store">
                 <div className="head">
                     <div className="controls">
+                        <img className='logo' src={Logotype} alt="" />
                         <div className="controlsInput">
                             <img src={SearchIcon} alt="search"/>
                             <input
@@ -251,6 +253,7 @@ export default function Store() {
             <section className="store">
                 <div className="head">
                     <div className="controls">
+                        <img className='logo' src={Logotype} alt="" />
                         <div className="controlsInput">
                             <img src={SearchIcon} alt="search"/>
                             <input
@@ -281,6 +284,7 @@ export default function Store() {
             <section className="store">
                 <div className="head">
                     <div className="controls">
+                    <img className='logo' src={Logotype} alt="" />
                         <div className="controlsInput">
                             <img src={SearchIcon} alt="search"/>
                             <input
@@ -320,6 +324,7 @@ export default function Store() {
         <section className="store">
             <div className="head">
                 <div className="controls">
+                    <img className='logo' src={Logotype} alt="" />
                     <div className="controlsInput">
                         <img src={SearchIcon} alt="search"/>
                         <input

@@ -16,7 +16,6 @@ h1 {
 select {
   border: 0;
   padding: 5px;
-  /* border-radius: 5px; */
   font-size: 16px;
 }
 
@@ -544,6 +543,11 @@ input {
     font-size: 12px;
     font-weight: 500;
     color: #666;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
 }
 
 .toggle.loading { opacity: 0.7; cursor: wait; }
@@ -1402,7 +1406,6 @@ textarea.categories__input {
     color: white;
 }
 
-/* Активность */
 .good-info .active-toggle {
     display: flex;
     align-items: center;
@@ -2474,7 +2477,7 @@ textarea.categories__input {
 }
 
 .gallery-thumbs .thumb.active {
-    border-color: rgb(0, 100, 200); /* Цвет активной миниатюры */
+    border-color: rgb(0, 100, 200);
 }
 
 .gallery-thumbs .thumb img {
@@ -2483,7 +2486,6 @@ textarea.categories__input {
     object-fit: cover;
 }
 
-/* Плейсхолдер */
 .good-image .image-placeholder {
     width: 100%;
     height: 400px;
@@ -2570,7 +2572,6 @@ textarea.categories__input {
     transform: scale(0.98);
 }
 
-/* ===== Адаптив ===== */
 @media (max-width: 768px) {
     .category-nav {
         gap: 6px;
