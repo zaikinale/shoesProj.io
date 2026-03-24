@@ -112,18 +112,18 @@ export default function Employees() {
                 <div className="head">
                     <NavigateTo path="store" />
                     <div className="controllers">
-                        <NavigateTo path="profile" />
+                        {/* <NavigateTo path="profile" /> */}
+                        <button 
+                            className="" 
+                            onClick={() => setIsFormOpen(!isFormOpen)}
+                        >
+                            {isFormOpen ? 'Cancel' : '+ Add Employee'}
+                        </button>
                     </div>
                 </div>
 
                 <div className="head addStaffBtn">
-                    <h2>Staff Management</h2>
-                    <button 
-                        className="" 
-                        onClick={() => setIsFormOpen(!isFormOpen)}
-                    >
-                        {isFormOpen ? 'Cancel' : '+ Add Employee'}
-                    </button>
+                    {/* <h2>Staff Management</h2> */}
 
                     {isFormOpen && (
                     <form className="form formStaff" onSubmit={handleAddEmployee}>

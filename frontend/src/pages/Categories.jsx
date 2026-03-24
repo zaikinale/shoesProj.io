@@ -379,14 +379,14 @@ export default function Categories() {
                 <header className="head">
                     <NavigateTo path="store"/>
                     <div className="controls">
-                        <NavigateTo path="basket"/>
-                        <NavigateTo path="orders"/>
-                        <NavigateTo path="profile"/>
                         {view === 'list' && isAdmin && (
                             <button className="categories__btn" onClick={() => setView('form')}>
                                 + new
                             </button>
                         )}
+                        {/* <NavigateTo path="basket"/> */}
+                        {/* <NavigateTo path="orders"/> */}
+                        {/* <NavigateTo path="profile"/> */}
                         {view !== 'list' && (
                             <button className="categories__btn" onClick={handleBack}>
                                 ← back

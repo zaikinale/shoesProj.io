@@ -96,9 +96,9 @@ export default function Help() {
     return (
         <section className="help">
             <div className="head">
-                <NavigateTo path="orders" />
+                <NavigateTo path="store" />
                 <div className="controllers">
-                    <NavigateTo path="store" />
+                    <NavigateTo path="orders" />
                     <NavigateTo path="profile" />
                     {!isStaff && (
                         <button onClick={() => setIsFormOpen(!isFormOpen)}>

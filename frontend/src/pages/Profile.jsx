@@ -35,13 +35,13 @@ export default function Profile() {
     return (
         <section className="profile">
             <div className="head">
-                <NavigateTo path="profile"/>
+                <NavigateTo path="store"/>
                 <div className="controls">
-                    <NavigateTo path="store"/>
+                    {/* <NavigateTo path="store"/> */}
                     <NavigateTo path="basket"/>
                     <NavigateTo path="orders"/>
-                    <NavigateTo path="logout"/>
                     <NavigateTo path="help"/>
+                    <NavigateTo path="logout"/>
                 </div>
             </div>
             <aside className="info">
