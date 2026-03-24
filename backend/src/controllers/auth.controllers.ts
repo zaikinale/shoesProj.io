@@ -5,7 +5,7 @@ import { prisma } from '../utils/prismaClient';
 import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from '../config/env';
 
 const generateAndSaveTokens = async (userId: number, res: Response) => {
-    const accessToken = jwt.sign({ userId }, JWT_ACCESS_SECRET!, { expiresIn: '15m' });
+    const accessToken = jwt.sign({ userId }, JWT_ACCESS_SECRET!, { expiresIn: '60m' });
     
     const refreshToken = jwt.sign({ userId }, JWT_REFRESH_SECRET!, { expiresIn: '7d' });
 
