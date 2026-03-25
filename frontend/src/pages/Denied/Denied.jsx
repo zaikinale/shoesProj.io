@@ -1,26 +1,9 @@
-// import { useLocation } from 'react-router-dom';
-// import NavigateTo from '../utils/navBtn'
-
-// export default function Denied() {
-//     const location = useLocation();
-//     const { status, error } = location.state || {};
-
-//     return (
-//         <div className="errorSec">
-//             <h2 className="status">{status}</h2>
-//             <p className="errorInfo">{error}</p>
-//             <NavigateTo path={'login'}/>
-//         </div>
-//     );
-// }
-
 import { useLocation } from 'react-router-dom';
 import NavigateTo from '../../utils/navBtn';
 import styles from './Denied.module.css';
 
 export default function Denied() {
     const location = useLocation();
-    // Добавим значения по умолчанию на случай, если state пустой
     const { status = "403", error = "Доступ запрещен" } = location.state || {};
 
     return (

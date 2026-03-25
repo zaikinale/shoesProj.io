@@ -133,58 +133,36 @@
 //         </section>
 //     );
 // }
-import { useState, useEffect } from 'react';
+
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useOrder } from '../../hooks/useOrder.js';
 import NavigateTo from '../../utils/navBtn.jsx';
-import { getOrderById, cancelOrder } from '../../api/orders.js';
 import styles from './Order.module.css';
 
 export default function Order() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [order, setOrder] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchOrder = async () => {
-            try {
-                const data = await getOrderById(id);
-                setOrder(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchOrder();
-    }, [id]);
+    
+    // Вся логика теперь здесь
+    const { 
+        order, 
+        loading, 
+        error, 
+        totalAmount, 
+        formattedDate, 
+        handleCancelOrder 
+    } = useOrder(id);
 
     if (loading) return <div className={styles.loader}>Загрузка данных...</div>;
+    
     if (error || !order) return (
         <div className={styles.errorContainer}>
             <h2>{error || 'Заказ не найден'}</h2>
-            <button onClick={() => navigate('/orders')} className={styles.btnSecondary}>Назад к списку</button>
+            <button onClick={() => navigate('/orders')} className={styles.btnSecondary}>
+                Назад к списку
+            </button>
         </div>
     );
-
-    const formattedDate = new Date(order.createdAt).toLocaleString('ru-RU', {
-        day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
-    });
-
-    const totalAmount = order.items.reduce((sum, item) => {
-        return sum + (item.good?.price || 0) * item.quantity;
-    }, 0);
-
-    const handleCancelOrder = async () => {
-        if (!window.confirm('Отменить этот заказ?')) return;
-        try {
-            await cancelOrder(id);
-            setOrder({ ...order, status: 'cancelled' });
-        } catch (e) {
-            alert(e.message || 'Ошибка сети');
-        }
-    };
 
     return (
         <div className={styles.page}>
@@ -204,14 +182,14 @@ export default function Order() {
 
             <main className={styles.container}>
                 <div className={styles.layout}>
-                    {/* ЛЕВАЯ КОЛОНКА: ТОВАРЫ */}
+                    {/* ТОВАРЫ */}
                     <section className={styles.mainContent}>
                         <h1 className={styles.title}>Состав заказа</h1>
                         <div className={styles.itemsList}>
                             {order.items.map((item) => (
                                 <div key={item.id} className={styles.itemCard}>
                                     <div className={styles.itemImage}>
-                                        <img src={item.good?.image} alt="" />
+                                        <img src={item.good?.image} alt={item.good?.title} />
                                     </div>
                                     <div className={styles.itemInfo}>
                                         <h3 className={styles.itemTitle}>{item.good?.title || 'Товар удален'}</h3>
@@ -229,7 +207,7 @@ export default function Order() {
                         </div>
                     </section>
 
-                    {/* ПРАВАЯ КОЛОНКА: ИНФО */}
+                    {/* САЙДБАР С ИНФО */}
                     <aside className={styles.sidebar}>
                         <div className={styles.summaryCard}>
                             <div className={`${styles.statusBadge} ${styles[`status--${order.status}`]}`}>

@@ -85,36 +85,79 @@ export class GoodService {
         });
     }
 
-    static async update(id: number, data: any) {
-        const { categoryIds, images, ...rest } = data;
+    // static async update(id: number, data: any) {
+    //     const { categoryIds, images, ...rest } = data;
         
-        return prisma.$transaction(async (tx) => {
-            await tx.good.update({
-                where: { id },
-                data: {
-                    ...rest,
-                    categories: categoryIds ? { set: categoryIds.map((id: number) => ({ id })) } : undefined
-                }
-            });
+    //     return prisma.$transaction(async (tx) => {
+    //         await tx.good.update({
+    //             where: { id },
+    //             data: {
+    //                 ...rest,
+    //                 categories: categoryIds ? { set: categoryIds.map((id: number) => ({ id })) } : undefined
+    //             }
+    //         });
 
-            if (images !== undefined) {
-                await tx.productImage.deleteMany({ where: { goodId: id } });
+    //         if (images !== undefined) {
+    //             await tx.productImage.deleteMany({ where: { goodId: id } });
+    //             await tx.productImage.createMany({
+    //                 data: images.map((img: any, i: number) => ({
+    //                     goodId: id,
+    //                     url: img.url.trim(),
+    //                     isMain: i === 0
+    //                 }))
+    //             });
+    //         }
+
+    //         return tx.good.findUnique({
+    //             where: { id },
+    //             include: { categories: true, images: true }
+    //         });
+    //     });
+    // }
+
+    static async update(id: number, data: any) {
+    // В старом коде поля извлекались вручную — это самый надежный метод для Prisma.
+    // Вытаскиваем только то, что есть в схеме, остальное (isInBasket и т.д.) просто игнорируем.
+    const { title, description, price, image, isActive, categoryIds, images } = data;
+    
+    return prisma.$transaction(async (tx) => {
+        await tx.good.update({
+            where: { id: Number(id) },
+            data: {
+                // Передаем только валидные для модели Good поля
+                title: title?.trim(),
+                description: description?.trim() || '',
+                price: price !== undefined ? Math.floor(Number(price)) : undefined,
+                image: image?.trim() || null,
+                isActive: isActive ?? true,
+                // Обновляем связи с категориями
+                categories: categoryIds 
+                    ? { set: categoryIds.map((id: number) => ({ id })) } 
+                    : undefined
+            }
+        });
+
+        // Пересобираем галерею
+        if (images !== undefined) {
+            await tx.productImage.deleteMany({ where: { goodId: id } });
+            if (images.length > 0) {
                 await tx.productImage.createMany({
                     data: images.map((img: any, i: number) => ({
                         goodId: id,
                         url: img.url.trim(),
-                        isMain: i === 0
+                        isMain: img.isMain ?? (i === 0)
                     }))
                 });
             }
+        }
 
-            return tx.good.findUnique({
-                where: { id },
-                include: { categories: true, images: true }
-            });
+        // Возвращаем обновленный объект с включенными связями
+        return tx.good.findUnique({
+            where: { id },
+            include: { categories: true, images: true }
         });
-    }
-
+    });
+}
     static async softDelete(id: number) {
         return prisma.good.update({ where: { id }, data: { isActive: false } });
     }

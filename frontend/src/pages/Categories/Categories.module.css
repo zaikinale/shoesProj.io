@@ -1,14 +1,25 @@
+/* 1. Общие стили лейаута */
 .page {
     background: #080809;
     min-height: 100vh;
     color: #fff;
+    font-family: sans-serif;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 2. Шапка и поиск */
 .header {
     background: rgba(13, 13, 15, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    position: sticky; top: 0; z-index: 100;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .headerInner {
@@ -32,21 +43,30 @@
 }
 
 .searchWrapper input {
-    background: none; border: none; color: #fff; outline: none; width: 100%;
+    background: none;
+    border: none;
+    color: #fff;
+    outline: none;
+    width: 100%;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+/* 3. Сетки (Категории и Товары) */
+.categoriesGrid, .goodsGrid {
+    display: grid;
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .categoriesGrid {
-    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
 }
 
+.goodsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px; /* Чуть больше для товаров */
+}
+
+/* 4. Карточка категории */
 .catCard {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -69,6 +89,7 @@
 .catContent p { color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; }
 
 .count {
+    display: inline-block;
     font-size: 0.8rem;
     background: rgba(59, 130, 246, 0.1);
     color: #3b82f6;
@@ -77,6 +98,7 @@
     font-weight: 700;
 }
 
+/* 5. Админка (Кнопки и Действия) */
 .adminActions {
     margin-top: 25px;
     display: flex;
@@ -106,11 +128,198 @@
     border-radius: 14px;
     font-weight: 700;
     cursor: pointer;
+    transition: opacity 0.2s;
 }
 
-.goodsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
+.btnAdd:hover { opacity: 0.9; }
+
+/* 6. Форма создания/редактирования */
+.formCard {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 600px;
+    margin: 20px 0;
+    border: 1px solid #333;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    color: #b3b3b3;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.formGroup input, 
+.formGroup textarea {
+    background: #252525;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.formGroup input:focus, 
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #4dabf7;
+}
+
+/* 7. Селектор товаров внутри формы */
+.goodsSelector { margin-top: 24px; }
+.goodsSelector label { display: block; margin-bottom: 12px; color: #fff; font-weight: 600; }
+
+.goodsScroll {
+    background: #252525;
+    border: 1px solid #444;
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.checkItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-bottom: 1px solid #333;
+}
+
+.checkItem:last-child { border-bottom: none; }
+.checkItem:hover { background: #333; }
+
+.checkItem input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #4dabf7;
+}
+
+.checkText {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.checkPrice { color: #4dabf7; font-weight: 600; }
+
+/* 8. Кнопка сохранения и Скроллбар */
+.btnSave {
+    width: 100%;
     margin-top: 30px;
+    background: #228be6;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btnSave:hover { background: #1c7ed6; }
+.btnSave:active { transform: scale(0.98); }
+.btnSave:disabled { background: #444; cursor: not-allowed; }
+
+.goodsScroll::-webkit-scrollbar { width: 6px; }
+.goodsScroll::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+/* Разметка менеджера */
+.managerLayout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.managerSection {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #333;
+}
+
+.sectionTitle {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #4dabf7;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.managerList {
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.managerItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #252525;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.managerItem:hover {
+    border-color: #444;
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.itemName {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.itemPrice {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* Кнопки управления */
+.btnAddMini, .btnRemoveMini {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.btnAddMini { background: #2f9e44; color: white; }
+.btnRemoveMini { background: #e03131; color: white; }
+
+.btnAddMini:hover, .btnRemoveMini:hover { transform: scale(1.1); }
+
+/* Адаптив для менеджера */
+@media (max-width: 900px) {
+    .managerLayout { grid-template-columns: 1fr; }
 }
