@@ -1,11 +1,14 @@
+/* src/index.css */
+
+/* 1. Базовые настройки шрифтов и поведения */
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Вместо жестких цветов используем переменные */
+  color: var(--text-main);
+  background-color: var(--bg-main);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,71 +16,64 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  /* font-weight: 500; */
-  color: white;
-  /* color: #646cff; */
-  text-decoration: inherit;
+/* 2. Глобальный сброс отступов */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-/* a:hover {
-  color: #535bf2;
-} */
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* Убираем display: flex и place-items: center, 
+     если ты не хочешь, чтобы весь контент всегда был строго по центру экрана */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-p {
-  margin: 0;
-}
-
-img {
-  /* border-radius: 10px; */
+/* 3. Оформление ссылок */
+a {
+  color: inherit; /* Ссылка наследует цвет текста или переменной */
+  text-decoration: none;
+  transition: var(--transition);
 }
 
-textarea {
-  border: 0;
-  resize: none;
+a:hover {
+  opacity: 0.8;
 }
 
-button, select, .search, .btn {
-  /* border-radius: 8px; */
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+/* 4. Общие стили для интерактивных элементов */
+button, select, input, textarea {
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-main);
+  border-radius: var(--radius-sm); /* Используем нашу переменную */
+  transition: var(--transition);
+  outline: none;
 }
-/* button:hover, select:hover {
-  border-color: #646cff;
-} */
-/* button:focus, select:focus,
-button:focus-visible, select:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-} */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  /* a:hover { */
-    /* color: #747bff;
-  } */
-  /* button {
-    background-color: #f9f9f9;
-  } */
+button {
+  cursor: pointer;
+  padding: 0.6em 1.2em;
+  font-weight: 500;
 }
+
+button:hover {
+  background-color: var(--bg-card);
+  border-color: var(--primary);
+}
+
+button:active {
+  transform: scale(0.98); /* Легкий эффект нажатия */
+}
+
+/* 5. Картинки */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* 6. Убираем дублирование медиа-запросов */
+/* Цвета для светлой темы теперь управляются через [data-theme='light'] 
+   в variables.css, поэтому здесь их дублировать не нужно. */

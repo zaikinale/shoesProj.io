@@ -1,0 +1,116 @@
+.page {
+    background: #080809;
+    min-height: 100vh;
+    color: #fff;
+}
+
+.header {
+    background: rgba(13, 13, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky; top: 0; z-index: 100;
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.searchWrapper {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 400px;
+}
+
+.searchWrapper input {
+    background: none; border: none; color: #fff; outline: none; width: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.categoriesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.catCard {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.catCard:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: #3b82f6;
+    transform: translateY(-5px);
+}
+
+.catContent h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.catContent p { color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; }
+
+.count {
+    font-size: 0.8rem;
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.adminActions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 15px;
+}
+
+.adminActions button {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: #aaa;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.adminActions button:hover { background: #333; color: #fff; }
+
+.btnAdd {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.goodsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}

@@ -1,0 +1,113 @@
+.page {
+    background: #080809;
+    min-height: 100vh;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+.header {
+    background: rgba(13, 13, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky; top: 0; z-index: 100;
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.navGroup { display: flex; align-items: center; gap: 10px; }
+.breadcrumb { color: #555; font-weight: 600; }
+
+.btnAdd {
+    background: #3b82f6; color: #fff; border: none; padding: 10px 20px;
+    border-radius: 12px; font-weight: 700; cursor: pointer;
+}
+
+.btnCancel {
+    background: rgba(255, 255, 255, 0.05); color: #888; border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px; border-radius: 12px; cursor: pointer;
+}
+
+.container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+/* Форма */
+.formSection { margin-bottom: 50px; animation: slideDown 0.3s ease-out; }
+
+.addForm {
+    background: #111113; border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 30px; border-radius: 24px;
+}
+
+.formGrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px; margin: 20px 0;
+}
+
+.formGrid input, .formGrid select {
+    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px; border-radius: 10px; color: #fff; outline: none;
+}
+
+.btnSubmit {
+    background: #fff; color: #000; border: none; padding: 12px 30px;
+    border-radius: 12px; font-weight: 700; cursor: pointer;
+}
+
+/* Сетки карточек */
+.layout { display: flex; flex-direction: column; gap: 40px; }
+
+.sectionTitle {
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+}
+
+.sectionTitle span { color: #555; font-size: 0.9rem; }
+
+.grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px; padding: 20px; transition: border 0.3s;
+}
+
+.card:hover { border-color: rgba(255, 255, 255, 0.15); }
+
+.adminCard { background: linear-gradient(145deg, rgba(59, 130, 246, 0.05), transparent); }
+
+.cardHeader { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+
+.badge {
+    background: rgba(59, 130, 246, 0.1); color: #3b82f6;
+    padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;
+}
+
+.email { color: #888; font-size: 0.9rem; margin-bottom: 15px; }
+.date { color: #444; font-size: 0.8rem; }
+
+.btnDelete {
+    background: none; border: none; color: #ef4444; font-size: 0.8rem;
+    cursor: pointer; padding: 5px; opacity: 0.6;
+}
+
+.btnDelete:hover { opacity: 1; }
+
+.roleSelect {
+    width: 100%; background: #000; border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc; padding: 8px; border-radius: 8px; font-size: 0.85rem;
+}
+
+.loader { text-align: center; padding: 100px; color: #555; }
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

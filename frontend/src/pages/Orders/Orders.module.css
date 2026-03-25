@@ -1,0 +1,73 @@
+.page {
+    background: #0a0a0a;
+    min-height: 100vh;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Шапка (один в один с Basket) */
+.header {
+    background: rgba(15, 15, 15, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav {
+    display: flex;
+    gap: 10px;
+}
+
+/* Контейнер */
+.container {
+    max-width: 1000px; /* Для списка заказов лучше чуть уже, чем для корзины */
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+}
+
+.ordersList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Состояния */
+.statusMsg, .empty {
+    text-align: center;
+    padding: 80px 0;
+    color: #555;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 24px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.empty p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Адаптив */
+@media (max-width: 600px) {
+    .title {
+        font-size: 1.6rem;
+    }
+}

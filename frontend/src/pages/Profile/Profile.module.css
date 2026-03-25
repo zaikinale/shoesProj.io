@@ -1,0 +1,136 @@
+.page {
+    background: #080809;
+    min-height: 100vh;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+.header {
+    background: rgba(13, 13, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky; top: 0; z-index: 100;
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 40px;
+}
+
+/* Карточка пользователя */
+.userCard {
+    background: #111113;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 32px;
+    padding: 40px;
+    text-align: center;
+    position: sticky;
+    top: 100px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.greeting { font-size: 1.5rem; font-weight: 800; margin-bottom: 30px; }
+
+.detailItem {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.detailItem span { color: #555; font-size: 0.8rem; text-transform: uppercase; font-weight: 700; }
+.detailItem p { margin-top: 5px; font-weight: 500; }
+
+.profileActions { display: flex; flex-direction: column; gap: 10px; }
+
+.btnSecondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #888;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btnSecondary:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+/* Сетка избранного */
+.sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sectionTitle span {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.savedGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.smallCard {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.3s;
+}
+
+.smallCard:hover { transform: translateY(-5px); border-color: #3b82f6; }
+
+.imgWrapper { width: 100%; height: 150px; overflow: hidden; }
+.imgWrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+.cardInfo { padding: 15px; }
+.cardInfo h3 { color: #fff; font-size: 1rem; margin-bottom: 10px; }
+.viewMore { color: #3b82f6; font-size: 0.8rem; font-weight: 700; }
+
+.emptySaves { text-align: center; padding: 60px; color: #555; grid-column: 1 / -1; }
+.link { color: #3b82f6; text-decoration: none; margin-top: 10px; display: block; }
+
+@media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .userCard { position: static; }
+}

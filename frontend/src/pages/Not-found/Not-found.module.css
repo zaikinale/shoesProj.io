@@ -1,0 +1,84 @@
+.page {
+    background-color: #0a0a0b;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+.errorCard {
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    z-index: 1;
+}
+
+.glitchContainer {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.status {
+    font-size: clamp(6rem, 15vw, 10rem);
+    font-weight: 900;
+    line-height: 1;
+    margin: 0;
+    background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -5px;
+}
+
+.glitchShadow {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    font-size: clamp(6rem, 15vw, 10rem);
+    font-weight: 900;
+    color: #3b82f6;
+    z-index: -1;
+    filter: blur(25px);
+    opacity: 0.5;
+}
+
+.title {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.errorInfo {
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* Стилизация кнопки из NavigateTo */
+.actions :global(button) {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 32px;
+    border-radius: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.actions :global(button:hover) {
+    background: #fff;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}

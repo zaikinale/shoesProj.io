@@ -1,0 +1,151 @@
+.basketItem {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.basketItem:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateX(5px);
+}
+
+/* Чекбокс */
+.basketItem__selection {
+    display: flex;
+    align-items: center;
+}
+
+.basketItem__checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #3b82f6;
+    cursor: pointer;
+}
+
+/* Картинка */
+.basketItem__imageWrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.basketItem__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Текстовый блок */
+.basketItem__info {
+    flex: 1;
+    min-width: 0; /* Чтобы текст не распирал флекс */
+}
+
+.basketItem__title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px 0;
+}
+
+.basketItem__desc {
+    color: #888;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Счётчик — делаем его аккуратным */
+.basketItem__counter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.basketItem__countBtn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.basketItem__countBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.basketItem__quantity {
+    font-weight: 700;
+    font-size: 1rem;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* Цена — убираем кашу */
+.basketItem__priceBlock {
+    text-align: right;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.basketItem__price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+}
+
+.basketItem__unitPrice {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+/* Кнопка удаления */
+.basketItem__delete {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #444;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1.2rem;
+}
+
+.basketItem__delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+}

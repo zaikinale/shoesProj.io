@@ -5,22 +5,23 @@ import { useStore } from './store/useUserContext';
 import { ProtectedRoute } from './providers/ProtectedRoute.jsx'
 import { LoadingScreen } from './utils/LoadScreen.jsx';
 
-import Login from './pages/Login.jsx';
-import Store from './pages/Store.jsx';
-import Orders from './pages/Orders.jsx';
-import Order from './pages/Order.jsx';
-import Basket from './pages/Basket.jsx';
-import Register from './pages/Register.jsx';
-import NotFound from './pages/Not-found.jsx';
-import Logout from './pages/Logout.jsx';
-import Good from './pages/Good.jsx';
-import Profile from './pages/Profile.jsx';
-import Denied from './pages/Denied.jsx';
-import Categories from './pages/Categories.jsx';
-import Help from './pages/Help.jsx';
-import Employees from './pages/Employees.jsx'
-import GoodEditor from './pages/GoodEditor.jsx'
+import Login from './pages/Login/Login.jsx';
+import Store from './pages/Store/Store.jsx';
+import Orders from './pages/Orders/Orders.jsx';
+import Order from './pages/Order/Order.jsx';
+import Basket from './pages/Basket/Basket.jsx';
+import Register from './pages/Register/Register.jsx';
+import NotFound from './pages/Not-found/Not-found.jsx';
+import Logout from './pages/Logout/Logout.jsx';
+import Good from './pages/Good/Good.jsx';
+import Profile from './pages/Profile/Profile.jsx';
+import Denied from './pages/Denied/Denied.jsx';
+import Categories from './pages/Categories/Categories.jsx';
+import Help from './pages/Help/Help.jsx';
+import Employees from './pages/Employees/Employees.jsx'
+import GoodEditor from './pages/GoodEditor/GoodEditor.jsx'
 
+import './styles/variables.css'
 import './index.css';
 
 function App() {

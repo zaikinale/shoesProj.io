@@ -1,0 +1,68 @@
+.page { background: #080809; min-height: 100vh; color: #fff; font-family: 'Inter', sans-serif; }
+
+.header {
+    background: rgba(13, 13, 15, 0.8); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky; top: 0; z-index: 100;
+}
+
+.headerInner {
+    max-width: 1200px; margin: 0 auto; display: flex;
+    justify-content: space-between; align-items: center; padding: 15px 20px;
+}
+
+.navGroup { display: flex; align-items: center; gap: 10px; }
+.breadcrumb { color: #555; font-weight: 600; }
+
+.actions { display: flex; gap: 12px; }
+.btnSave { background: #3b82f6; color: #fff; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+.btnCancel { background: rgba(255,255,255,0.05); color: #888; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; }
+
+.container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+.grid { display: grid; grid-template-columns: 400px 1fr; gap: 40px; }
+
+/* Карточки */
+.card, .mainImageCard, .galleryCard {
+    background: #111113; border: 1px solid rgba(255,255,255,0.05);
+    padding: 25px; border-radius: 24px; margin-bottom: 25px;
+}
+
+.card h3, .mainImageCard h3, .galleryCard h3 { font-size: 0.9rem; color: #555; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+
+/* Визуал */
+.previewBox {
+    width: 100%; aspect-ratio: 1; background: #000; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px;
+}
+.previewBox img { width: 100%; height: 100%; object-fit: contain; }
+.placeholder { color: #333; font-weight: 700; }
+
+.galleryGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+.galleryItem { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; }
+.galleryItem img { width: 100%; height: 100%; object-fit: cover; }
+.galleryItem button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); border: none; color: #fff; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 12px; }
+
+.addGallery { display: flex; gap: 10px; }
+.addGallery input { flex: 1; background: #000; border: 1px solid #222; color: #fff; padding: 8px; border-radius: 8px; }
+.addGallery button { background: #222; border: none; color: #fff; width: 35px; border-radius: 8px; cursor: pointer; }
+
+/* Поля ввода */
+.titleInput { background: none; border: none; border-bottom: 1px solid #222; color: #fff; font-size: 1.8rem; font-weight: 800; width: 100%; margin-bottom: 20px; outline: none; }
+.titleInput:focus { border-color: #3b82f6; }
+
+.descInput { background: #0a0a0b; border: 1px solid #222; color: #ccc; width: 100%; padding: 15px; border-radius: 12px; min-height: 120px; outline: none; margin-bottom: 20px; }
+
+.row { display: flex; gap: 20px; }
+.inputGroup { flex: 1; }
+.inputGroup label { display: block; color: #444; font-size: 0.8rem; margin-bottom: 8px; }
+.inputGroup input, .inputGroup select { width: 100%; background: #0a0a0b; border: 1px solid #222; color: #fff; padding: 12px; border-radius: 10px; }
+
+/* Категории */
+.searchInput { width: 100%; background: #0a0a0b; border: 1px solid #222; padding: 10px; border-radius: 10px; color: #fff; margin-bottom: 15px; }
+.catGrid { display: flex; flex-wrap: wrap; gap: 8px; }
+.catChip { background: rgba(255,255,255,0.03); border: 1px solid #222; color: #777; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+.activeCat { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; color: #3b82f6; font-weight: 700; }
+
+.loader { text-align: center; padding: 100px; color: #555; }
+
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
