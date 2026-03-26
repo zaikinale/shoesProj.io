@@ -15,14 +15,18 @@ const Login = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
     if (status === 'error') setStatus('idle');
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await login(formData.login, formData.password);
-      navigate('/store');
+    
+      setTimeout(() => {
+        navigate('/store', { replace: true });
+      }, 0);
+
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 

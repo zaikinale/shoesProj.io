@@ -7,17 +7,19 @@ export const useAuth = () => {
     const storeLogin = useStore((state) => state.login);
 
     const login = async (email, password) => {
-        setStatus('loading');
-        try {
-            const response = await apiLogin(email, password);
-            storeLogin(response.accessToken, response.user);
-            setStatus('success');
-            return response;
-        } catch (err) {
-            setStatus('error');
-            throw err;
-        }
-    };
+    setStatus('loading');
+    try {
+        const response = await apiLogin(email, password);
+        
+        storeLogin({ ...response.user, token: response.accessToken }); 
+        
+        setStatus('success');
+        return response;
+    } catch (err) {
+        setStatus('error');
+        throw err;
+    }
+};
 
     return { login, status, setStatus };
 };
