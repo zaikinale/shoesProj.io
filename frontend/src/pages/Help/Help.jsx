@@ -7,45 +7,27 @@ import styles from './Help.module.css';
 export default function Help() {
     const user = useStore((state) => state.user);
     const { 
-        tickets, selectedTicket, userOrders, isStaff, 
-        loadOrders, selectTicket, createTicket, sendMessage 
-    } = useHelp(user?.roleID);
+        tickets, selectedTicket, userOrders, isStaff, typingUser,
+        loadOrders, selectTicket, createTicket, sendMessage, sendTypingStatus 
+    } = useHelp(user?.roleID, user?.username);
     
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        subject: "", category: "Problems with the application", orderId: "", firstMessage: "", image: ""
-    });
+    const [formData, setFormData] = useState({ subject: "", category: "tech", orderId: "", firstMessage: "", image: "" });
     const [newMessage, setNewMessage] = useState({ text: "", image: "" });
-
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        if (formData.category === "Problems with the order") {
-            loadOrders();
-        }
+        if (formData.category === "order") loadOrders();
     }, [formData.category, loadOrders]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [selectedTicket?.messages]);
-
-    const handleSelect = async (id) => {
-        await selectTicket(id);
-        setIsFormOpen(false);
-    };
-
-    const onSubmitTicket = async (e) => {
-        e.preventDefault();
-        try {
-            await createTicket(formData);
-            setIsFormOpen(false);
-            setFormData({ subject: "", category: "Problems with the application", orderId: "", firstMessage: "", image: "" });
-        } catch (error) {
-            alert(error.message);
-        }
-    };
+    }, [selectedTicket?.messages?.length, typingUser]);
 
     const onSend = async () => {
+        // Проверка: либо текст, либо картинка должны быть заполнены
+        if (!newMessage.text.trim() && !newMessage.image.trim()) return;
+        
         const success = await sendMessage(newMessage.text, newMessage.image);
         if (success) setNewMessage({ text: "", image: "" });
     };
@@ -55,11 +37,10 @@ export default function Help() {
             <header className={styles.header}>
                 <NavigateTo path="store" />
                 <div className={styles.nav}>
-                    <NavigateTo path="orders" />
-                    <NavigateTo path="profile" />
+                    <NavigateTo path="orders" /><NavigateTo path="profile" />
                     {!isStaff && (
-                        <button className={styles.btnNew} onClick={() => {setIsFormOpen(!isFormOpen);}}>
-                            {isFormOpen ? "Закрыть" : "+ Новое"}
+                        <button className={styles.btnNew} onClick={() => setIsFormOpen(!isFormOpen)}>
+                            {isFormOpen ? "Назад" : "+ Новый тикет"}
                         </button>
                     )}
                 </div>
@@ -71,12 +52,15 @@ export default function Help() {
                         <div className={styles.sidebarHeader}>{isStaff ? "Все запросы" : "Мои тикеты"}</div>
                         <div className={styles.ticketList}>
                             {tickets.map(t => (
-                                <div 
-                                    key={t.id} 
-                                    className={`${styles.ticketCard} ${selectedTicket?.id === t.id ? styles.activeCard : ''}`}
-                                    onClick={() => handleSelect(t.id)}
-                                >
-                                    <span className={styles.tDate}>{new Date(t.createdAt).toLocaleDateString()}</span>
+                                <div key={t.id} 
+                                     className={`${styles.ticketCard} ${selectedTicket?.id === t.id ? styles.activeCard : ''}`}
+                                     onClick={() => { selectTicket(t.id); setIsFormOpen(false); }}>
+                                    <div className={styles.tHeader}>
+                                        <span className={t.category?.includes("order") ? styles.badgeOrder : styles.badgeTech}>
+                                            {t.category?.includes("order") ? 'Заказ' : 'Тех'}
+                                        </span>
+                                        <span className={styles.tDate}>{new Date(t.createdAt).toLocaleDateString()}</span>
+                                    </div>
                                     <div className={styles.tSubject}>{t.subject}</div>
                                     {isStaff && <div className={styles.tAuthor}>от: {t.user?.username}</div>}
                                 </div>
@@ -86,77 +70,92 @@ export default function Help() {
 
                     <section className={styles.chatArea}>
                         {isFormOpen ? (
-                            <form className={styles.ticketForm} onSubmit={onSubmitTicket}>
-                                <h2>Новое обращение</h2>
-                                <select 
-                                    value={formData.category} 
-                                    onChange={e => setFormData({...formData, category: e.target.value})}
-                                >
-                                    <option value="Problems with the application">Проблемы с приложением</option>
-                                    <option value="Problems with the order">Проблема с заказом</option>
-                                </select>
-
-                                {formData.category === "Problems with the order" && (
-                                    <select required onChange={e => setFormData({...formData, orderId: e.target.value})}>
-                                        <option value="">Выберите заказ</option>
-                                        {userOrders.map(o => (
-                                            <option key={o.id} value={o.id}>Заказ №{o.id} ({o.status})</option>
-                                        ))}
-                                    </select>
-                                )}
-
-                                <textarea 
-                                    placeholder="Опишите вашу проблему..." 
-                                    required
-                                    value={formData.firstMessage}
-                                    onChange={e => setFormData({...formData, firstMessage: e.target.value})}
-                                />
-                                <input 
-                                    type="text" 
-                                    placeholder="Ссылка на скриншот (необязательно)" 
-                                    value={formData.image}
-                                    onChange={e => setFormData({...formData, image: e.target.value})}
-                                />
-                                <button type="submit" className={styles.btnSubmit}>Создать тикет</button>
-                            </form>
+                            <div className={styles.formScroll}>
+                                <div className={styles.formContainer}>
+                                    <form className={styles.ticketForm} onSubmit={async (e) => {
+                                        e.preventDefault();
+                                        await createTicket(formData);
+                                        setIsFormOpen(false);
+                                        setFormData({ subject: "", category: "tech", orderId: "", firstMessage: "", image: "" });
+                                    }}>
+                                        <h2>Новое обращение</h2>
+                                        <div className={styles.inputGroup}>
+                                            <label>Категория</label>
+                                            <div className={styles.chips}>
+                                                <button type="button" className={formData.category === 'tech' ? styles.activeChip : ''} onClick={() => setFormData({...formData, category: 'tech', orderId: ''})}>Техническая</button>
+                                                <button type="button" className={formData.category === 'order' ? styles.activeChip : ''} onClick={() => setFormData({...formData, category: 'order'})}>По заказу</button>
+                                            </div>
+                                        </div>
+                                        {formData.category === "order" && (
+                                            <div className={styles.inputGroup}>
+                                                <label>Выберите заказ</label>
+                                                <select required onChange={e => setFormData({...formData, orderId: e.target.value})}>
+                                                    <option value="">Номер заказа...</option>
+                                                    {userOrders.map(o => <option key={o.id} value={o.id}>№{o.id} — {o.status}</option>)}
+                                                </select>
+                                            </div>
+                                        )}
+                                        <div className={styles.inputGroup}>
+                                            <label>Сообщение</label>
+                                            <textarea required value={formData.firstMessage} onChange={e => setFormData({...formData, firstMessage: e.target.value})} placeholder="Опишите проблему..." />
+                                        </div>
+                                        <div className={styles.inputGroup}>
+                                            <label>Скриншот (URL)</label>
+                                            <input type="text" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} placeholder="https://..." />
+                                            {formData.image && <img src={formData.image} className={styles.previewImg} alt="Preview" />}
+                                        </div>
+                                        <button type="submit" className={styles.btnSubmit}>Создать</button>
+                                    </form>
+                                </div>
+                            </div>
                         ) : selectedTicket ? (
                             <div className={styles.messenger}>
                                 <div className={styles.messageList}>
-                                    {selectedTicket.messages?.map(m => {
-                                        const isMsgFromStaff = m.author?.roleID === 2 || m.author?.roleID === 3;
-                                        return (
-                                            <div key={m.id} className={isMsgFromStaff ? styles.messageManager : styles.messageUser}>
-                                                <div className={styles.massageBody}>
-                                                    {m.text}
-                                                    {m.image && <img src={m.image} alt="attach" className={styles.msgImg} />}
-                                                </div>
-                                                <div className={styles.date}>
-                                                    {new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                                </div>
+                                    {selectedTicket.messages?.map(m => (
+                                        <div key={m.id} className={(m.author?.roleID === 2 || m.author?.roleID === 3) ? styles.messageManager : styles.messageUser}>
+                                            <div className={styles.massageBody}>
+                                                {m.text && <p>{m.text}</p>}
+                                                {/* Рендеринг изображения в сообщении */}
+                                                {m.image && (
+                                                    <a href={m.image} target="_blank" rel="noreferrer">
+                                                        <img src={m.image} alt="attach" className={styles.msgImg} />
+                                                    </a>
+                                                )}
                                             </div>
-                                        )
-                                    })}
+                                            <div className={styles.date}>{new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                                        </div>
+                                    ))}
+                                    {typingUser && (
+                                        <div className={styles.typingIndicator}>
+                                            <div className={styles.dots}><span></span><span></span><span></span></div>
+                                            <small>{typingUser} печатает...</small>
+                                        </div>
+                                    )}
                                     <div ref={messagesEndRef} />
                                 </div>
                                 <div className={styles.inputSection}>
                                     <textarea 
-                                        placeholder="Написать ответ..."
-                                        value={newMessage.text}
-                                        onChange={e => setNewMessage({...newMessage, text: e.target.value})}
+                                        value={newMessage.text} 
+                                        onChange={(e) => { 
+                                            setNewMessage({...newMessage, text: e.target.value}); 
+                                            sendTypingStatus(e.target.value.length > 0); 
+                                        }} 
+                                        onBlur={() => sendTypingStatus(false)}
+                                        placeholder="Введите сообщение..." 
                                     />
                                     <div className={styles.inputBottom}>
                                         <input 
-                                            placeholder="Ссылка на фото" 
-                                            value={newMessage.image}
-                                            onChange={e => setNewMessage({...newMessage, image: e.target.value})}
+                                            className={styles.imgInput}
+                                            placeholder="URL изображения (опционально)" 
+                                            value={newMessage.image} 
+                                            onChange={e => setNewMessage({...newMessage, image: e.target.value})} 
                                         />
                                         <button onClick={onSend} className={styles.btnSend}>Отправить</button>
                                     </div>
+                                    {newMessage.image && <img src={newMessage.image} className={styles.smallPreview} alt="Small Preview" />}
                                 </div>
                             </div>
-                        ) : (
-                            <div className={styles.placeholder}>Выберите тикет или создайте новый</div>
-                        )}
+                        ) : <div className={styles.placeholder}>Выберите диалог</div>}
                     </section>
                 </div>
             </main>

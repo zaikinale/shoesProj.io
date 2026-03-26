@@ -16,11 +16,17 @@
     transform: translateX(5px);
 }
 
+.basketItem__controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 /* Чекбокс */
-.basketItem__selection {
+/* .basketItem__selection {
     display: flex;
     align-items: center;
-}
+} */
 
 .basketItem__checkbox {
     width: 20px;

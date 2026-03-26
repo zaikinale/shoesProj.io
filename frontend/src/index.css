@@ -74,6 +74,12 @@ img {
   display: block;
 }
 
+.btn {
+  background: none;
+  border: 0;
+  margin: 0 10px;
+}
+
 /* 6. Убираем дублирование медиа-запросов */
 /* Цвета для светлой темы теперь управляются через [data-theme='light'] 
    в variables.css, поэтому здесь их дублировать не нужно. */

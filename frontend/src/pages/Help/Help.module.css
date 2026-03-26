@@ -189,3 +189,115 @@
 .inputBottom { display: flex; gap: 12px; margin-top: 10px; }
 .placeholder { margin: auto; color: #444; font-weight: 600; }
 .msgImg { max-width: 100%; border-radius: 10px; margin-top: 10px; }
+
+/* --- ТВОИ СТИЛИ (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ) --- */
+/* ... здесь весь твой код из промпта ... */
+
+/* --- ДОПОЛНЕНИЯ ДЛЯ ФОРМЫ И КАТЕГОРИЙ --- */
+
+/* Категории в сайдбаре (Бейджи) */
+.tHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.badgeTech { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.badgeOrder { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+.tSubject {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #efefef;
+}
+
+.tAuthor {
+    font-size: 0.8rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Красивая форма создания */
+.formContainer {
+    width: 100%;
+    max-width: 500px;
+    background: #16161a;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid #1e1e22;
+    margin: auto;
+}
+
+.formContainer h2 {
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.inputGroup label {
+    font-size: 0.75rem;
+    color: #555;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-left: 5px;
+}
+
+/* Переключатель категорий (Chips) */
+.chips {
+    display: flex;
+    gap: 10px;
+    background: #0d0d0f;
+    padding: 5px;
+    border-radius: 14px;
+    border: 1px solid #1e1e22;
+}
+
+.chips button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #555;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.activeChip {
+    background: #1e1e22 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.inputGroup select, 
+.inputGroup input, 
+.inputGroup textarea {
+    background: #0d0d0f;
+    border: 1px solid #1e1e22;
+    padding: 12px;
+    border-radius: 12px;
+    color: #fff;
+    outline: none;
+}
+
+.inputGroup select:focus, 
+.inputGroup input:focus {
+    border-color: #3b82f6;
+}

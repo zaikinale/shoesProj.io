@@ -56,7 +56,7 @@ export default function Basket() {
 
                                 <div className={styles.totalRow}>
                                     <span className={styles.totalLabel}>Итого: </span>
-                                    <span className={styles.totalValue}>{totals.price.toLocaleString()} ₽</span>
+                                    <span className={styles.totalValue}>{totals.price} ₽</span>
                                 </div>
 
                                 <button 
