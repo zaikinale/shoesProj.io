@@ -6,7 +6,9 @@ import styles from './Register.module.css';
 
 export default function Register() {
     const navigate = useNavigate();
-    const setUser = useStore((state) => state.setUser);
+    
+    const login = useStore((state) => state.login);
+    
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const { 
@@ -16,7 +18,7 @@ export default function Register() {
         status, 
         error 
     } = useRegistration((user) => {
-        setUser(user);
+        login(user);
         navigate('/');
     });
 
