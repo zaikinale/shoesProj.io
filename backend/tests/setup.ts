@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
-
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'test_secret';
+import { JWT_ACCESS_SECRET } from '../src/config/env';
 
 export const getAuthToken = (userId: number, roleID: number = 1) => {
-    return jwt.sign({ userId, roleID }, JWT_ACCESS_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ userId, roleID }, JWT_ACCESS_SECRET!, { expiresIn: '1h' });
 };
 
 export const getAuthCookie = (userId: number, roleID: number = 1) => {

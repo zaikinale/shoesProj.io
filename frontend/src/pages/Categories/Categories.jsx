@@ -16,7 +16,7 @@ export default function Categories() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useStore();
-    const { categories, selectedCategory, categoryGoods, loading, error, deleteCat, refresh } = useCategories(id);
+    const { categories, selectedCategory, categoryGoods, deleteCat, refresh } = useCategories(id);
 
     const [view, setView] = useState(id ? 'client' : 'list');
     const [allGoods, setAllGoods] = useState([]);

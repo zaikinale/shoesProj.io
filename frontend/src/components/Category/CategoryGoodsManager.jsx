@@ -1,6 +1,6 @@
 import styles from '../../pages/Categories/Categories.module.css';
 
-const CategoryGoodsManager = ({ category, categoryGoods, allGoods, onAdd, onRemove }) => {
+const CategoryGoodsManager = ({ categoryGoods, allGoods, onAdd, onRemove }) => {
     const availableGoods = allGoods.filter(
         g => !categoryGoods.some(cg => cg.id === g.id)
     );

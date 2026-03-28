@@ -71,9 +71,5 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = 3001;
-server.listen(PORT, () => {
-    console.log(`🚀 Server & Sockets running on port ${PORT}`);
-});
-
 export default app;
+export { server, io };

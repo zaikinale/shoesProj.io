@@ -55,7 +55,7 @@ describe('useAuth Hook', () => {
     await act(async () => {
       try {
         await result.current.login('wrong', 'wrong');
-      } catch (e) { /* ignore */ }
+      } catch { /* ignore */ }
     });
 
     expect(result.current.status).toBe('error');

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { buildUrl, BASE_OPTIONS } from '../utils/apiBase.js';
 
-export const useStore = create((set, get) => ({
+export const useStore = create((set) => ({
     user: null,            
     isInitialized: false,   
 
