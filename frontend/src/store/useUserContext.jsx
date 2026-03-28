@@ -4,6 +4,12 @@ import { buildUrl, BASE_OPTIONS } from '../utils/apiBase.js';
 export const useStore = create((set, get) => ({
     user: null,            
     isInitialized: false,   
+
+    /** После успешного PATCH /auth/profile — обновляем store из ответа API */
+    setUserPublic: (userData) => {
+        if (!userData) return;
+        set({ user: userData });
+    },
     
     login: (userData) => {
         if (!userData) return;

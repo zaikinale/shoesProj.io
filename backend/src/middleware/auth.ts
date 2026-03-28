@@ -1,28 +1,31 @@
-import { Request, Response, NextFunction } from 'express';
+import type { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_ACCESS_SECRET } from '../config/env';
 import { prisma } from '../utils/prismaClient';
+import type { AuthenticatedRequest } from '../types/auth';
 
-export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies?.accessToken;
+/** RequestHandler + внутренний cast — совместимо с Router и ts-node */
+export const authenticateToken: RequestHandler = async (req, res, next) => {
+    const authReq = req as AuthenticatedRequest;
+    const token = authReq.cookies?.accessToken;
 
     if (!token) {
-        (req as any).user = null;
+        authReq.user = null;
         return next();
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_ACCESS_SECRET!) as { userId: number, roleID: number };
-        
+        const decoded = jwt.verify(token, JWT_ACCESS_SECRET!) as { userId: number; roleID: number };
+
         const user = await prisma.user.findUnique({
             where: { id: decoded.userId },
-            select: { id: true, roleID: true, email: true, username: true }
+            select: { id: true, roleID: true, email: true, username: true },
         });
 
-        (req as any).user = user;
+        authReq.user = user;
         next();
-    } catch (err: any) {
-        (req as any).user = null;
+    } catch {
+        authReq.user = null;
         next();
     }
 };

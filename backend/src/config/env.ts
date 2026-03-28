@@ -9,4 +9,7 @@ const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-export { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, PORT };
+const NODE_ENV = process.env.NODE_ENV ?? 'development';
+const isProduction = NODE_ENV === 'production';
+
+export { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, PORT, NODE_ENV, isProduction };

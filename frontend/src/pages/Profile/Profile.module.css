@@ -134,3 +134,104 @@
     .layout { grid-template-columns: 1fr; }
     .userCard { position: static; }
 }
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+}
+
+.modal {
+    background: #111113;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 28px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+}
+
+.modalTitle {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 600;
+}
+
+.input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.formError {
+    color: #f87171;
+    font-size: 0.9rem;
+    margin: 0;
+    text-align: left;
+}
+
+.modalActions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.btnPrimary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btnPrimary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btnGhost {
+    background: transparent;
+    color: #888;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btnGhost:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+}

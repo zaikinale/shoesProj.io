@@ -1,8 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import type { RequestHandler } from 'express';
+import type { AuthenticatedRequest } from '../types/auth';
 
-export const authorizeRoles = (...allowedRoles: number[]) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        const user = (req as any).user;
+export const authorizeRoles = (...allowedRoles: number[]): RequestHandler => {
+    return (req, res, next) => {
+        const authReq = req as AuthenticatedRequest;
+        const user = authReq.user;
 
         if (!user || !allowedRoles.includes(user.roleID)) {
             return res.status(403).json({ error: 'Access denied: Insufficient permissions' });
