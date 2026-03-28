@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from "socket.io-client";
 import { getTickets, getTicketById, createTicket as apiCreateTicket, sendMessage as apiSendMessage } from '../api/tickets';
 import { getOrdersUser } from '../api/orders';
-
-const SOCKET_URL = "http://localhost:3001";
+import { getBackendOrigin } from '../utils/apiBase';
 
 export const useHelp = (userRole, username) => {
     const [tickets, setTickets] = useState([]);
@@ -17,7 +16,19 @@ export const useHelp = (userRole, username) => {
     const isStaff = userRole === 2 || userRole === 3;
 
     useEffect(() => {
-        socketRef.current = io(SOCKET_URL);
+        const url = getBackendOrigin();
+        socketRef.current = io(url, {
+            withCredentials: true,
+            // Сначала polling, затем upgrade — стабильнее за прокси / dev
+            transports: ['polling', 'websocket'],
+        });
+
+        socketRef.current.on("connect", () => {
+            console.debug("[socket] подключено к", url);
+        });
+        socketRef.current.on("connect_error", (err) => {
+            console.error("[socket] ошибка подключения:", err.message);
+        });
 
         socketRef.current.on("receive_message", (msg) => {
             setSelectedTicket(prev => {
@@ -66,14 +77,14 @@ export const useHelp = (userRole, username) => {
             setSelectedTicket(data);
             setTypingUser(null);
             // Сообщаем серверу, в какой мы комнате
-            socketRef.current.emit("join_ticket", id);
+            socketRef.current?.emit("join_ticket", id);
         } catch (e) { console.error(e); }
     };
 
     const sendTypingStatus = (isTyping) => {
         if (selectedTicket && isTyping !== isTypingRef.current) {
             isTypingRef.current = isTyping;
-            socketRef.current.emit("typing", { 
+            socketRef.current?.emit("typing", { 
                 ticketId: selectedTicket.id, 
                 username, 
                 isTyping 
@@ -96,7 +107,7 @@ export const useHelp = (userRole, username) => {
             };
 
             // 3. Отправляем другим через сокет
-            socketRef.current.emit("send_message", messageData);
+            socketRef.current?.emit("send_message", messageData);
 
             // 4. Обновляем у себя
             setSelectedTicket(prev => ({ 
