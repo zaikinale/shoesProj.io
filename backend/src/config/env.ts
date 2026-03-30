@@ -12,4 +12,15 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const isProduction = NODE_ENV === 'production';
 
-export { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, PORT, NODE_ENV, isProduction };
+/** Origin фронтенда для CORS и Socket.IO (можно несколько через запятую). */
+const FRONTEND_ORIGIN =
+    process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+
+export {
+    JWT_ACCESS_SECRET,
+    JWT_REFRESH_SECRET,
+    PORT,
+    NODE_ENV,
+    isProduction,
+    FRONTEND_ORIGIN,
+};
