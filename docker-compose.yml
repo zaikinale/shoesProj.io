@@ -1,20 +1,16 @@
-# Локальная PostgreSQL для разработки и тестов интеграции.
-# Поднимите: docker compose up -d
-# DATABASE_URL для backend см. корневой README.md
-
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: shoesproj-postgres
+    container_name: e7d-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: shoes
-      POSTGRES_PASSWORD: shoes
-      POSTGRES_DB: shoesdb
+      POSTGRES_USER: e7d
+      POSTGRES_PASSWORD: e7d
+      POSTGRES_DB: e7ddb
     ports:
       - '5432:5432'
     volumes:
-      - shoesproj_pgdata:/var/lib/postgresql/data
+      - e7d_pgdata:/var/lib/postgresql/data
 
 volumes:
-  shoesproj_pgdata:
+  e7d_pgdata:

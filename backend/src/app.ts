@@ -46,7 +46,7 @@ app.use(
 );
 app.use(express.json({ limit: '10mb' }));
 
-// Твой дебаг-роут (вернул, как просил)
+// Дебаг-роут
 app.get('/debug-auth', (req, res) => {
     res.json({ 
         cookies_header: req.headers.cookie, 
@@ -76,8 +76,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('send_message', (data) => {
-        // Здесь 'data' должен содержать { ticketId, text, image, ... }
-        // Эмиттим всем в комнате тикета
         socket.to(`ticket_${data.ticketId}`).emit('receive_message', data);
     });
 
