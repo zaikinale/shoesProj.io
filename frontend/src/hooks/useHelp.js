@@ -19,7 +19,6 @@ export const useHelp = (userRole, username) => {
         const url = getBackendOrigin();
         socketRef.current = io(url, {
             withCredentials: true,
-            // Сначала polling, затем upgrade — стабильнее за прокси / dev
             transports: ['polling', 'websocket'],
         });
 
@@ -32,7 +31,6 @@ export const useHelp = (userRole, username) => {
 
         socketRef.current.on("receive_message", (msg) => {
             setSelectedTicket(prev => {
-                // Если ID тикета совпадает, добавляем сообщение
                 if (prev?.id === msg.ticketId) {
                     if (prev.messages?.some(m => m.id === msg.id)) return prev;
                     return { ...prev, messages: [...(prev.messages || []), msg] };
@@ -42,8 +40,6 @@ export const useHelp = (userRole, username) => {
         });
 
         socketRef.current.on("display_typing", (data) => {
-            // Чтобы статус "печатает" не мигал у всех, 
-            // сервер должен слать ticketId, а мы его тут проверять
             setTypingUser(data.isTyping ? data.username : null);
         });
 
@@ -76,7 +72,6 @@ export const useHelp = (userRole, username) => {
             const data = await getTicketById(id);
             setSelectedTicket(data);
             setTypingUser(null);
-            // Сообщаем серверу, в какой мы комнате
             socketRef.current?.emit("join_ticket", id);
         } catch (e) { console.error(e); }
     };
@@ -93,23 +88,18 @@ export const useHelp = (userRole, username) => {
     };
 
     const sendMessage = async (text, image) => {
-        if (!text && !image) return; // Можно отправить просто картинку без текста
+        if (!text && !image) return;
         try {
-            // 1. Сохраняем в БД
             const sent = await apiSendMessage(selectedTicket.id, { text, image });
-            
-            // 2. Формируем полный объект для сокета
-            // ВАЖНО: берем данные из 'sent', но явно добавляем ticketId и image
-            const messageData = { 
-                ...sent, 
+
+            const messageData = {
+                ...sent,
                 ticketId: selectedTicket.id,
-                image: image // Гарантируем, что ссылка на фото улетит в сокет
+                image: image
             };
 
-            // 3. Отправляем другим через сокет
             socketRef.current?.emit("send_message", messageData);
 
-            // 4. Обновляем у себя
             setSelectedTicket(prev => ({ 
                 ...prev, 
                 messages: [...(prev.messages || []), messageData] 

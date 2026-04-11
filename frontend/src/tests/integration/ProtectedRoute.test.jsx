@@ -14,7 +14,6 @@ describe('ProtectedRoute component', () => {
   });
 
   it('должен редиректить на страницу входа/отказа, если пользователя нет', () => {
-    // Имитируем: юзера нет
     useStore.mockImplementation((selector) => selector({ 
       user: null, 
       isInitialized: true 
@@ -23,22 +22,16 @@ describe('ProtectedRoute component', () => {
     render(
       <MemoryRouter initialEntries={['/protected']}>
         <Routes>
-          {/* Защищенный роут */}
           <Route path="/protected" element={
             <ProtectedRoute><div>Private Content</div></ProtectedRoute>
           } />
-          
-          {/* ОБЯЗАТЕЛЬНО: Роут, на который летит редирект */}
-          {/* Если твой ProtectedRoute редиректит на /denied, пишем path="/denied" */}
           <Route path="/denied" element={<div>Login Page</div>} />
           <Route path="/login" element={<div>Login Page</div>} />
         </Routes>
       </MemoryRouter>
     );
 
-    // Проверяем, что мы оказались на странице, где есть текст 'Login Page'
     expect(screen.getByText('Login Page')).toBeInTheDocument();
-    // И что приватный контент не отрисовался
     expect(screen.queryByText('Private Content')).not.toBeInTheDocument();
   });
 

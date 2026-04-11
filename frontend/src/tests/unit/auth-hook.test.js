@@ -6,7 +6,6 @@ import * as authApi from '../../api/auth.js';
 
 vi.mock('../../api/auth.js');
 
-// Мокаем файл контекста
 vi.mock('../../store/useUserContext', () => ({
   useStore: vi.fn()
 }));
@@ -16,7 +15,6 @@ describe('useAuth Hook', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // Настраиваем мок, чтобы он отвечал на вызовы типа useStore(state => state.login)
     useStore.mockImplementation((selector) => selector({ 
       login: mockStoreLogin,
       user: null,
@@ -43,7 +41,6 @@ describe('useAuth Hook', () => {
     });
 
     expect(authApi.login).toHaveBeenCalledWith('admin', '123');
-    // Проверяем, что функция login из стора была вызвана
     expect(mockStoreLogin).toHaveBeenCalled();
     expect(result.current.status).toBe('success');
   });

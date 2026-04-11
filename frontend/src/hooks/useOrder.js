@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getOrderById, cancelOrder as apiCancelOrder } from '../api/orders.js';
 
 export const useOrder = (id) => {
@@ -6,7 +6,7 @@ export const useOrder = (id) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchOrder = async () => {
+    const fetchOrder = useCallback(async () => {
         try {
             setLoading(true);
             const data = await getOrderById(id);
@@ -16,17 +16,17 @@ export const useOrder = (id) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
 
     useEffect(() => {
         if (id) fetchOrder();
-    }, [id]);
+    }, [id, fetchOrder]);
 
     const handleCancelOrder = async () => {
         if (!window.confirm('Отменить этот заказ?')) return false;
         try {
             await apiCancelOrder(id);
-            setOrder(prev => ({ ...prev, status: 'cancelled' }));
+            setOrder((prev) => ({ ...prev, status: 'cancelled' }));
             return true;
         } catch (e) {
             alert(e.message || 'Ошибка сети');
@@ -34,13 +34,17 @@ export const useOrder = (id) => {
         }
     };
 
-    const totalAmount = order?.items?.reduce((sum, item) => {
-        return sum + (item.good?.price || 0) * item.quantity;
-    }, 0) || 0;
+    const totalAmount =
+        order?.items?.reduce((sum, item) => {
+            return sum + (item.good?.price || 0) * item.quantity;
+        }, 0) || 0;
 
-    const formattedDate = order?.createdAt 
+    const formattedDate = order?.createdAt
         ? new Date(order.createdAt).toLocaleString('ru-RU', {
-            day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+              day: 'numeric',
+              month: 'long',
+              hour: '2-digit',
+              minute: '2-digit',
           })
         : '';
 
@@ -51,6 +55,6 @@ export const useOrder = (id) => {
         totalAmount,
         formattedDate,
         handleCancelOrder,
-        refresh: fetchOrder
+        refresh: fetchOrder,
     };
 };

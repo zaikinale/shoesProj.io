@@ -1,79 +1,75 @@
-![CI Status](https://github.com/zaikinale/e7d/actions/workflows/ci.yml/badge.svg)
+# E&D — Full-stack E-commerce Platform
+[![CI](https://github.com/zaikinale/shoesProj.io/actions/workflows/ci.yml/badge.svg)](https://github.com/zaikinale/shoesProj.io/actions/workflows/ci.yml)
 
-# E7D - интернет-магазин и лояльность
+Современная платформа для онлайн-ритейла с архитектурой монорепозитория. Проект включает в себя полнофункциональный интернет-магазин, систему управления заказами, многоуровневую модель доступа (RBAC) и модуль техподдержки в реальном времени.
 
-Монорепозиторий клиент–сервер: каталог обуви, корзина, заказы, избранное, отзывы, категории, тикеты поддержки в реальном времени (Socket.IO) и роли пользователей (клиент, менеджер, администратор).
+## Основные возможности
+
+- **E-commerce Core:** Полный цикл покупки — каталог с фильтрацией по категориям, динамическая корзина, оформление заказов, избранное и система отзывов.
+- **RBAC (Role-Based Access Control):** Три уровня доступа (`Client`, `Manager`, `Admin`) с физическим разделением прав на уровне UI и защитой эндпоинтов на стороне API.
+- **Real-time Support:** Модуль тикетов на **Socket.IO** с поддержкой изолированных комнат, индикацией набора текста и мгновенным обменом сообщениями.
+- **Security:** Авторизация через **JWT (Access/Refresh)** в HttpOnly Cookie, шифрование паролей через bcrypt и защита заголовков Helmet.
+- **Data Integrity:** Строгая типизация схем БД через **Prisma ORM** и валидация всех входящих запросов с помощью **Zod**.
 
 ## Технологический стек
 
 | Слой | Технологии |
 |------|------------|
-| **Frontend** | React 18, Vite, React Router, Zustand, CSS Modules / BEM, Vitest, Testing Library, MSW |
-| **Backend** | Node.js, **Express 5** (TypeScript), Prisma ORM, PostgreSQL, Zod, JWT (access/refresh), bcrypt, Helmet, Socket.IO |
-
-> На бэкенде используется **Express**, а не FastAPI — весь HTTP API реализован на Node.js.
+| **Frontend** | React 18, Vite, React Router 7, Zustand, CSS Modules / BEM |
+| **Backend** | Node.js, Express 5, Prisma ORM, PostgreSQL, Socket.IO |
+| **Testing** | Vitest, MSW (Frontend) / Jest, Supertest (Backend) |
+| **DevOps** | Docker Compose, GitHub Actions (CI/CD) |
 
 ## Архитектура
 
-- **Монорепозиторий:** каталоги `frontend/` и `backend/` с отдельными `package.json` и зависимостями.
-- **Клиент–сервер:** SPA на Vite обращается к REST API под префиксом `/api`; для тикетов дополнительно используется WebSocket.
-- **Frontend:** формы и запросы инкапсулированы в **кастомных хуках** (`useProfileForm`, `usePasswordForm`, `useCategories` и др.), глобальное состояние сессии — **Zustand** (`src/store/useUserContext.jsx`).
-- **Backend:** маршруты Express, контроллеры и сервисы; типизация запросов с **`AuthenticatedRequest`** для защищённых эндпоинтов; валидация входных данных через **Zod** и централизованный `errorHandler`.
+Проект организован как **монорепозиторий**:
 
-Подробности по API и безопасности — в [backend/README.md](backend/README.md). По фронтенду — в [frontend/README.md](frontend/README.md).
+- **`/frontend`**: Single Page Application с упором на переиспользование логики. Бизнес-логика, формы и запросы инкапсулированы в **кастомных хуках**, а состояние сессии вынесено в облегченный стор **Zustand**.
+- **`/backend`**: RESTful API с централизованной обработкой ошибок. Для тестирования используется подмена БД через `jest-mock-extended`, что позволяет прогонять тесты без привязки к рантайму PostgreSQL.
 
-## Требования
+## Качество и CI/CD
 
-- Node.js 20+ (LTS)
-- Docker и Docker Compose (для PostgreSQL) **или** локально установленный PostgreSQL 14+
+В репозитории настроен автоматизированный пайплайн **GitHub Actions**, который выполняется при каждом пуше в ветку `main`:
+1. **Linting:** Проверка статического анализатора (ESLint).
+2. **Type Check:** Валидация типов данных TypeScript.
+3. **Testing:** Запуск Unit и Integration тестов для фронтенда и бэкенда.
+4. **Build:** Проверка корректности сборки артефактов.
 
 ## Быстрый старт
 
-### 1. База данных (Docker)
+### Требования
+- Node.js 20+ (LTS)
+- Docker & Docker Compose
 
-Из корня репозитория:
-
+### 1. Подготовка и запуск БД
 ```bash
 docker compose up -d
 ```
 
-Строка подключения для `backend/.env`:
-
-```env
-DATABASE_URL="postgresql://e7d:e7d@localhost:5432/e7ddb"
-```
-
-### 2. Backend
-
+### 2. Настройка и запуск Backend
 ```bash
+
 cd backend
 cp .env.example .env
-# Укажите DATABASE_URL и секреты JWT в .env
-
+# Укажите DATABASE_URL и JWT секреты в .env
 npm ci
 npx prisma migrate dev
 npm run dev
 ```
 
-HTTP API и Socket.IO поднимаются через `src/server.ts`; порт задаётся `PORT` в `.env` (см. `backend/src/config/env.ts` и `server.ts`).
+### 3. Настройка и запуск Frontend
+```Bash
 
-### 3. Frontend
-
-```bash
 cd frontend
 npm ci
 npm run dev
 ```
 
-Vite dev-server: `http://localhost:5173`. В `frontend` при необходимости задайте прокси или базовый URL API в конфигурации проекта (см. `src/utils/apiBase`).
+## Структура проекта
+```plaintext
 
-## Скрипты качества (локально)
-
-| Команда | Где | Назначение |
-|---------|-----|------------|
-| `npm run lint` | `frontend/` | ESLint |
-| `npm run test:run` | `frontend/` | Vitest (unit/integration) |
-| `npm run build` | `frontend/`, `backend/` | Production-сборка |
-| `npm test` | `backend/` | Jest + Supertest |
-
-При пуше в ветку `main` те же шаги выполняются в **GitHub Actions** (файл [.github/workflows/ci.yml](.github/workflows/ci.yml)).
+├── frontend/     # SPA клиентское приложение
+├── backend/      # REST API и WebSocket сервер
+├── docker-compose.yml
+└── .github/      # Конфигурация CI/CD пайплайнов
+```

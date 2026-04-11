@@ -3,10 +3,8 @@ import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { useStore } from '../../store/useUserContext';
 
-// Настраиваем мок-сервер
 const server = setupServer(
   http.get('*/auth/me', () => {
-    // Имитируем ошибку авторизации
     return new HttpResponse(null, { status: 401 });
   })
 );
@@ -17,7 +15,6 @@ afterAll(() => server.close());
 
 describe('Auth Restoration Flow', () => {
   it('должен сбрасывать юзера в null, если сервер вернул 401', async () => {
-    // Предзаполним стор, как будто юзер был
     useStore.setState({ user: { id: 1 }, isInitialized: true });
     localStorage.setItem('token', 'invalid-token');
 

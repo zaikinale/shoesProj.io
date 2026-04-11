@@ -2,7 +2,6 @@ import { prisma } from '../utils/prismaClient';
 
 export class OrderService {
     static async createOrder(userId: number) {
-        // 1. Получаем корзину
         const basket = await prisma.basket.findUnique({
             where: { userId },
             include: { items: { include: { good: true } } }
@@ -10,14 +9,12 @@ export class OrderService {
 
         if (!basket || basket.items.length === 0) throw new Error('BASKET_EMPTY');
 
-        // 2. Проверяем активность товаров
         const inactiveGoods = basket.items.filter(item => !item.good.isActive);
         if (inactiveGoods.length > 0) {
             const titles = inactiveGoods.map(i => i.good.title).join(', ');
             throw new Error(`INACTIVE_GOODS: ${titles}`);
         }
 
-        // 3. Транзакция: Создаем заказ -> Копируем товары -> Чистим корзину
         return prisma.$transaction(async (tx) => {
             const newOrder = await tx.order.create({
                 data: { userId, status: 'created' }

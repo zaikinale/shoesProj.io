@@ -25,7 +25,6 @@ export default function Help() {
     }, [selectedTicket?.messages?.length, typingUser]);
 
     const onSend = async () => {
-        // Проверка: либо текст, либо картинка должны быть заполнены
         if (!newMessage.text.trim() && !newMessage.image.trim()) return;
         
         const success = await sendMessage(newMessage.text, newMessage.image);

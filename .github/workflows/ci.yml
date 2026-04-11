@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   frontend:
     name: Frontend (lint, test, build)
@@ -45,6 +49,8 @@ jobs:
         working-directory: backend
 
     env:
+      CI: true
+      NODE_ENV: test
       JWT_ACCESS_SECRET: ci-jwt-access-secret-min-32-chars-long
       JWT_REFRESH_SECRET: ci-jwt-refresh-secret-min-32-chars-long
       DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
@@ -69,5 +75,5 @@ jobs:
       - name: TypeScript build
         run: npm run build
 
-      - name: Jest
-        run: npm test
+      - name: Jest (API, моки Prisma)
+        run: npm test -- --runInBand

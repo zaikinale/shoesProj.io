@@ -1,4 +1,4 @@
-// Поддержка VITE_API_URL и устаревшего VITE_API_BACKEND из .env
+// Базовый URL API: VITE_API_URL или запасной VITE_API_BACKEND
 const RAW_BASE_URL = (
     import.meta.env.VITE_API_URL ||
     import.meta.env.VITE_API_BACKEND ||

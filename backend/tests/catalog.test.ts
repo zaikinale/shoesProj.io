@@ -1,7 +1,7 @@
 import { prismaMock } from './__helpers__/prismaMock';
 import request from 'supertest';
 import app from '../src/app';
-import { getAuthCookie, getAuthToken } from './setup'; // Добавил getAuthToken
+import { getAuthCookie, getAuthToken } from './setup';
 import { prisma } from '../src/utils/prismaClient';
 
 describe('Catalog (Goods & Categories)', () => {
@@ -25,7 +25,7 @@ describe('Catalog (Goods & Categories)', () => {
         const res = await request(app)
             .post('/api/categories')
             .set('Cookie', [cookie])
-            .set('Authorization', `Bearer ${token}`) // Дублируем в заголовок
+            .set('Authorization', `Bearer ${token}`)
             .send({ name: 'New Category' });
 
         expect(res.status).toBe(403); 
@@ -47,7 +47,7 @@ describe('Catalog (Goods & Categories)', () => {
         const res = await request(app)
             .post('/api/categories')
             .set('Cookie', [cookie])
-            .set('Authorization', `Bearer ${token}`) // Дублируем в заголовок
+            .set('Authorization', `Bearer ${token}`)
             .send({ name: 'Games' });
 
         expect(res.status).toBe(201);

@@ -1,4 +1,4 @@
-import { prismaMock } from './__helpers__/prismaMock'; // СТРОГО ПЕРВАЯ
+import { prismaMock } from './__helpers__/prismaMock';
 import request from 'supertest';
 import app from '../src/app';
 import { prisma } from '../src/utils/prismaClient';

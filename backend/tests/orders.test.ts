@@ -1,29 +1,37 @@
-import { prismaMock } from './__helpers__/prismaMock'; // Всегда ПЕРВЫЙ импорт
+import { prismaMock } from './__helpers__/prismaMock';
 import request from 'supertest';
 import app from '../src/app';
-import bcrypt from 'bcrypt';
+import { getAuthCookie, getAuthToken } from './setup';
 import { prisma } from '../src/utils/prismaClient';
 
-describe('Auth Module', () => {
-    it('POST /api/auth/login - success', async () => {
-        const password = 'password123';
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Мокаем юзера с правильным хешем
+describe('Orders API', () => {
+    it('GET /api/orders/my — список заказов пользователя', async () => {
         prismaMock.user.findUnique.mockResolvedValue({
             id: 1,
-            email: 'test@test.com',
-            password: hashedPassword,
-            roleID: 1
+            roleID: 1,
+            email: 'u@test.com',
+            username: 'u',
         } as any);
 
-        const res = await request(app)
-            .post('/api/auth/login')
-            .send({ email: 'test@test.com', password: password });
+        prismaMock.order.findMany.mockResolvedValue([
+            {
+                id: 1,
+                userId: 1,
+                status: 'created',
+                items: [],
+            },
+        ] as any);
 
-        // Если здесь упадет, значит в контроллере ошибка или не то имя куки
+        const token = getAuthToken(1, 1);
+        const cookie = getAuthCookie(1, 1);
+
+        const res = await request(app)
+            .get('/api/orders/my')
+            .set('Cookie', [cookie])
+            .set('Authorization', `Bearer ${token}`);
+
         expect(res.status).toBe(200);
-        expect(res.headers['set-cookie']).toBeDefined();
+        expect(Array.isArray(res.body)).toBe(true);
     });
 
     afterAll(async () => {

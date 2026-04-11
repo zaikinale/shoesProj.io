@@ -9,7 +9,7 @@ export class GoodController {
             const id = parseInt(req.params.id as string);
             const user = (req as any).user;
             const good = await GoodService.getById(id, user?.id, isAdmin(user));
-            
+
             if (!good) return res.status(404).json({ error: 'Good not found' });
             res.json(good);
         } catch (error) {
@@ -37,28 +37,16 @@ export class GoodController {
         }
     }
 
-    // static async update(req: Request, res: Response) {
-    //     if (!isAdmin((req as any).user)) return res.status(403).json({ error: 'Forbidden' });
-    //     try {
-    //         const updated = await GoodService.update(parseInt(req.params.id as string), req.body);
-    //         res.json(updated);
-    //     } catch (error) {
-    //         res.status(500).json({ error: 'Update failed' });
-    //     }
-    // }
     static async update(req: Request, res: Response) {
         if (!isAdmin((req as any).user)) return res.status(403).json({ error: 'Forbidden' });
         try {
             const id = parseInt(req.params.id as string);
-        
-        // Извлекаем только то, что реально может измениться в таблице Goods
-        // Удаляем id и служебные поля, если они пришли с фронта
             const { id: _id, createdAt, updatedAt, ...updateData } = req.body;
 
             const updated = await GoodService.update(id, updateData);
             res.json(updated);
         } catch (error) {
-            console.error(error); // ОБЯЗАТЕЛЬНО добавьте это, чтобы видеть ошибку в терминале
+            console.error(error);
             res.status(500).json({ error: 'Update failed' });
         }
     }

@@ -11,7 +11,6 @@ import { FRONTEND_ORIGIN } from './config/env';
 const app = express();
 const server = http.createServer(app);
 
-// Несколько origin из .env: FRONTEND_ORIGIN=http://localhost:5173,http://127.0.0.1:5173
 const allowedOrigins = FRONTEND_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean);
 const corsOriginHandler = (
     origin: string | undefined,
@@ -46,7 +45,6 @@ app.use(
 );
 app.use(express.json({ limit: '10mb' }));
 
-// Дебаг-роут
 app.get('/debug-auth', (req, res) => {
     res.json({ 
         cookies_header: req.headers.cookie, 
@@ -62,7 +60,6 @@ app.use((_req, res) => {
 
 app.use(errorHandler);
 
-// Socket Logic
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 

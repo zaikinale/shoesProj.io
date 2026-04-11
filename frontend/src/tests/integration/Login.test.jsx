@@ -25,7 +25,6 @@ describe('Login Page Integration', () => {
       </MemoryRouter>
     );
 
-    // Используем селекторы по имени, так как label в коде не связан с input через id
     const loginInput = container.querySelector('input[name="login"]');
     const passwordInput = container.querySelector('input[name="password"]');
 

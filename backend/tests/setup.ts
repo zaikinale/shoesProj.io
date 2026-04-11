@@ -7,7 +7,5 @@ export const getAuthToken = (userId: number, roleID: number = 1) => {
 
 export const getAuthCookie = (userId: number, roleID: number = 1) => {
     const token = getAuthToken(userId, roleID);
-    // Пробуем два варианта имени куки. 
-    // Если в контроллере req.cookies.token, то сработает второй.
     return `accessToken=${token}; token=${token}`;
 };

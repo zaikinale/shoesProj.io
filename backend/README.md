@@ -1,119 +1,47 @@
-# Backend (Express + Prisma)
+# E&D — Full-stack E-commerce Platform
+[![CI](https://github.com/zaikinale/shoesProj.io/actions/workflows/ci.yml/badge.svg)](https://github.com/zaikinale/shoesProj.io/actions/workflows/ci.yml)
 
-Серверная часть: REST API, JWT в cookie, Prisma + PostgreSQL, валидация Zod, real-time события Socket.IO (тикеты).
+Современная платформа для онлайн-ритейла с архитектурой монорепозитория. Проект включает в себя полнофункциональный интернет-магазин, систему управления заказами, многоуровневую модель доступа (RBAC) и модуль техподдержки в реальном времени.
 
-## Запуск
+## 🚀 Основные возможности
 
+- **E-commerce Core:** Полный цикл покупки — каталог с фильтрацией по категориям, динамическая корзина, оформление заказов, избранное и система отзывов.
+- **RBAC (Role-Based Access Control):** Три уровня доступа (`Client`, `Manager`, `Admin`) с физическим разделением прав на уровне UI и защитой эндпоинтов на стороне API.
+- **Real-time Support:** Модуль тикетов на **Socket.IO** с поддержкой изолированных комнат, индикацией набора текста и мгновенным обменом сообщениями.
+- **Security:** Авторизация через **JWT (Access/Refresh)** в HttpOnly Cookie, шифрование паролей через bcrypt и защита заголовков Helmet.
+- **Data Integrity:** Строгая типизация схем БД через **Prisma ORM** и валидация всех входящих запросов с помощью **Zod**.
+
+## 🛠 Технологический стек
+
+| Слой | Технологии |
+|------|------------|
+| **Frontend** | React 18, Vite, React Router 7, Zustand, CSS Modules / BEM |
+| **Backend** | Node.js, Express 5, Prisma ORM, PostgreSQL, Socket.IO |
+| **Testing** | Vitest, MSW (Frontend) / Jest, Supertest (Backend) |
+| **DevOps** | Docker Compose, GitHub Actions (CI/CD) |
+
+## 🏗 Архитектура
+
+Проект организован как **монорепозиторий**:
+
+- **`/frontend`**: Single Page Application с упором на переиспользование логики. Бизнес-логика, формы и запросы инкапсулированы в **кастомных хуках**, а состояние сессии вынесено в облегченный стор **Zustand**.
+- **`/backend`**: RESTful API с централизованной обработкой ошибок. Для тестирования используется подмена БД через `jest-mock-extended`, что позволяет прогонять тесты без привязки к рантайму PostgreSQL.
+
+## 🧪 Качество и CI/CD
+
+В репозитории настроен автоматизированный пайплайн **GitHub Actions**, который выполняется при каждом пуше в ветку `main`:
+1. **Linting:** Проверка статического анализатора (ESLint).
+2. **Type Check:** Валидация типов данных TypeScript.
+3. **Testing:** Запуск Unit и Integration тестов для фронтенда и бэкенда.
+4. **Build:** Проверка корректности сборки артефактов.
+
+## 🚦 Быстрый старт
+
+### Требования
+- Node.js 20+ (LTS)
+- Docker & Docker Compose
+
+### 1. Подготовка и запуск БД
 ```bash
-cp .env.example .env
-npm ci
-npx prisma migrate dev
-npm run dev
-```
-
-Production-сборка: `npm run build`, старт: `npm start` (точка входа `dist/server.js`).
-
-## Переменные окружения
-
-| Переменная | Описание |
-|------------|----------|
-| `DATABASE_URL` | Строка подключения PostgreSQL |
-| `JWT_ACCESS_SECRET` | Секрет подписи access-токена |
-| `JWT_REFRESH_SECRET` | Секрет подписи refresh-токена |
-| `PORT` | Порт HTTP/Socket.IO (по умолчанию в коде конфигурации — 3001, если не задан) |
-| `NODE_ENV` | `development` / `production` |
-
-Файл-пример: [.env.example](.env.example).
-
-## API Endpoints (префикс `/api`)
-
-### Auth (`/api/auth`)
-
-| Метод | Путь | Описание |
-|-------|------|----------|
-| POST | `/register` | Регистрация |
-| POST | `/login` | Вход, выдача токенов |
-| POST | `/refresh` | Обновление access по refresh |
-| GET | `/me` | Текущий пользователь (защищено) |
-| PATCH | `/profile` | Обновление профиля (защищено) |
-| POST | `/change-password` | Смена пароля (защищено) |
-| POST | `/logout` | Выход (защищено) |
-
-### Товары (`/api/goods`)
-
-CRUD и список; создание/изменение/удаление — роли менеджер (2) и администратор (3).
-
-### Корзина (`/api/basket`)
-
-Просмотр, добавление, изменение количества, удаление позиций, очистка (аутентифицированный пользователь).
-
-### Заказы (`/api/orders`)
-
-Создание, «мои заказы», детали; смена статуса и список всех — для ролей 2 и 3.
-
-### Избранное (`/api/saves`)
-
-Список, проверка по `goodId`, добавление, удаление по `goodId`.
-
-### Отзывы (`/api/reviews`)
-
-По товару, создание, проверка «оставлял ли пользователь отзыв».
-
-### Категории (`/api/categories`)
-
-Список, по id, товары категории; админские POST/PUT/DELETE и привязка товаров — роль администратора (3).
-
-### Тикеты (`/api/tickets`)
-
-Список, создание, сообщения, закрытие (аутентифицированный пользователь).
-
-### Персонал (`/api/staff`)
-
-Управление сотрудниками и ролями — только администратор (3).
-
-Сводка маршрутов в коде: [src/routes/index.ts](src/routes/index.ts).
-
-## Security
-
-- **JWT:** access и refresh; access проверяется в middleware `authenticateToken` (чтение cookie, верификация через `jsonwebtoken` и секрет из `config/env`).
-- **Аутентификация:** после `authenticateToken` в `req` доступен объект пользователя или `null`; цепочка `requireAuth` возвращает 401, если пользователь не найден.
-- **Типизация:** для обработчиков, где нужен гарантированно заполненный пользователь, используется интерфейс **`AuthenticatedRequest`** ([src/types/auth.ts](src/types/auth.ts)) и приведение `req as AuthenticatedRequest` в контроллерах и middleware ролей.
-- **Роли:** `authorizeRoles(...roleIDs)` проверяет `roleID` пользователя из БД (403 при недостаточных правах).
-- **HTTP:** Helmet, CORS с учётом credentials, ограничение размера JSON.
-
-Схемы валидации входящих тел запросов (например, auth) — в `src/validators/` на **Zod**; ошибки `ZodError` приводятся к ответу клиента в [middleware/errorHandler.ts](src/middleware/errorHandler.ts).
-
-## Database (Prisma)
-
-- Схема: [prisma/schema.prisma](prisma/schema.prisma).
-- Основные сущности: `User`, `Role`, `Token`, `Good`, `ProductImage`, `Category`, `Basket` / `BasketItem`, `Order` / `OrderItem`, `Save`, `Reviews`, `Ticket`, `Message`.
-
-### Миграции
-
-После изменения `schema.prisma`:
-
-```bash
-npx prisma migrate dev --name описание_изменения
-```
-
-Применить существующие миграции на чистой БД:
-
-```bash
-npx prisma migrate deploy
-```
-
-Генерация клиента (в CI выполняется перед `tsc`):
-
-```bash
-npx prisma generate
-```
-
-Опционально: `npx prisma studio` — GUI для данных.
-
-## Тесты
-
-```bash
-JWT_ACCESS_SECRET=test JWT_REFRESH_SECRET=test DATABASE_URL="postgresql://user:pass@localhost:5432/db" npm test
-```
-
-Используются **Jest**, **Supertest** и мок Prisma (`jest-mock-extended`). В CI переменные задаются в workflow.
+# Поднятие PostgreSQL
+docker compose up -d
