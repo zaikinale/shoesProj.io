@@ -27,30 +27,75 @@ export class GoodService {
         return { ...good, isInBasket, basketItemId };
     }
 
+    // static async getAll(userId?: number, isAdmin: boolean = false) {
+    //     const goods = await prisma.good.findMany({
+    //         where: isAdmin ? {} : { isActive: true },
+    //         include: {
+    //             categories: true,
+    //             images: { select: { id: true, url: true, isMain: true }, take: 1 },
+    //         },
+    //         orderBy: { createdAt: 'desc' },
+    //     });
+
+    //     if (!userId) return goods.map((g) => ({ ...g, isInBasket: false, basketItemId: null }));
+
+    //     const basketItems = await prisma.basketItem.findMany({
+    //         where: { basket: { userId } },
+    //         select: { id: true, goodId: true },
+    //     });
+
+    //     const basketMap = new Map(basketItems.map((i) => [i.goodId, i.id]));
+
+    //     return goods.map((good) => ({
+    //         ...good,
+    //         isInBasket: basketMap.has(good.id),
+    //         basketItemId: basketMap.get(good.id) || null,
+    //     }));
+    // }
     static async getAll(userId?: number, isAdmin: boolean = false) {
-        const goods = await prisma.good.findMany({
-            where: isAdmin ? {} : { isActive: true },
-            include: {
-                categories: true,
-                images: { select: { id: true, url: true, isMain: true }, take: 1 },
-            },
-            orderBy: { createdAt: 'desc' },
-        });
+    // 1. Основной запрос товаров
+    const goods = await prisma.good.findMany({
+        where: isAdmin ? {} : { isActive: true },
+        include: {
+            categories: true,
+            images: { select: { id: true, url: true, isMain: true }, take: 1 },
+        },
+        orderBy: { createdAt: 'desc' },
+    });
 
-        if (!userId) return goods.map((g) => ({ ...g, isInBasket: false, basketItemId: null }));
+    // Если юзер не авторизован, возвращаем товары с дефолтными флагами
+    if (!userId) {
+        return goods.map((g) => ({ 
+            ...g, 
+            isInBasket: false, 
+            basketItemId: null, 
+            isSaved: false 
+        }));
+    }
 
-        const basketItems = await prisma.basketItem.findMany({
+    // 2. Параллельно получаем данные о корзине и сохранениях юзера
+    const [basketItems, userSaves] = await Promise.all([
+        prisma.basketItem.findMany({
             where: { basket: { userId } },
             select: { id: true, goodId: true },
-        });
+        }),
+        prisma.save.findMany({
+            where: { userId },
+            select: { goodId: true }
+        })
+    ]);
 
-        const basketMap = new Map(basketItems.map((i) => [i.goodId, i.id]));
+    // 3. Создаем структуры данных для O(1) поиска
+    const basketMap = new Map(basketItems.map((i) => [i.goodId, i.id]));
+    const savedIdsSet = new Set(userSaves.map((s) => s.goodId));
 
-        return goods.map((good) => ({
-            ...good,
-            isInBasket: basketMap.has(good.id),
-            basketItemId: basketMap.get(good.id) || null,
-        }));
+    // 4. Собираем итоговый массив
+    return goods.map((good) => ({
+        ...good,
+        isInBasket: basketMap.has(good.id),
+        basketItemId: basketMap.get(good.id) || null,
+        isSaved: savedIdsSet.has(good.id)
+    }));
     }
 
     static async create(data: any) {

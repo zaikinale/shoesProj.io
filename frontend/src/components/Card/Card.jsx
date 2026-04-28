@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { updateGood } from '../../api/goods.js';
 import { addGood as addToBasket, deleteGood as deleteFromBasket } from '../../api/basket.js';
-import { checkIfSaved, removeSavedGood, saveGood } from '../../api/saves.js';
+import { removeSavedGood, saveGood } from '../../api/saves.js';
 
 import styles from './Card.module.css';
 
@@ -20,6 +20,7 @@ export default function Card(props) {
         images,
         type,
         isInBasket,
+        isSaved: isSavedProp,
         refreshGoods,
         basketItemId,
         isActive: initialActive,
@@ -28,25 +29,12 @@ export default function Card(props) {
     const displayDesc = desc || description || '';
 
     const [inBasket, setInBasket] = useState(isInBasket);
-    const [isSave, setIsSave] = useState(false);
+    const [isSave, setIsSave] = useState(isSavedProp ?? false);
     const [isActive, setIsActive] = useState(initialActive ?? true);
     const [isToggling, setIsToggling] = useState(false);
 
     const displayImage =
         images?.find((img) => img.isMain)?.url || images?.[0]?.url || image || null;
-
-    const loadGoods = useCallback(async () => {
-        try {
-            const resp = await checkIfSaved(id);
-            setIsSave(resp);
-        } catch (error) {
-            console.error('Error loading is save status good: ', error);
-        }
-    }, [id]);
-
-    useEffect(() => {
-        if (type === 'user') loadGoods();
-    }, [type, loadGoods]);
 
     const handleToggleActive = async (e) => {
         e.preventDefault();
@@ -66,14 +54,18 @@ export default function Card(props) {
 
     const handleToggleSave = async (e) => {
         e.preventDefault();
+        const prevStatus = isSave;
+        
+        setIsSave(!prevStatus);
+        
         try {
-            if (isSave) {
+            if (prevStatus) {
                 await removeSavedGood(id);
             } else {
                 await saveGood(id);
             }
-            loadGoods();
         } catch (error) {
+            setIsSave(prevStatus);
             console.error('Error toggling save: ', error);
         }
     };
