@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-/** Убираем HTML-теги из username (снижение риска хранения XSS в БД). */
 function stripHtmlTags(raw: string): string {
     return raw.replace(/<[^>]*>/g, '').trim();
 }

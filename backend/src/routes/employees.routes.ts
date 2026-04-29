@@ -3,10 +3,11 @@ import { EmployeeController } from '../controllers/employee.controller';
 import { authenticateToken } from '../middleware/auth';
 import { requireAuth } from '../middleware/requireAuth';
 import { authorizeRoles } from '../middleware/role';
+import { UserRole } from '../types/roles';
 
 const router = Router();
 
-router.use(authenticateToken, requireAuth, authorizeRoles(3));
+router.use(authenticateToken, requireAuth, authorizeRoles(UserRole.ADMIN));
 
 router.get('/', EmployeeController.getAll);
 router.post('/', EmployeeController.create);

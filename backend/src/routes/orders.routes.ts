@@ -3,6 +3,7 @@ import { OrderController } from '../controllers/order.controller';
 import { authenticateToken } from '../middleware/auth';
 import { requireAuth } from '../middleware/requireAuth';
 import { authorizeRoles } from '../middleware/role';
+import { UserRole } from '../types/roles';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.post('/', OrderController.create);
 router.get('/my', OrderController.getMy);
 router.get('/:id', OrderController.getById);
 router.delete('/:id/cancel', OrderController.cancel);
-router.get('/', authorizeRoles(2, 3), OrderController.getAll);
-router.put('/:id/status', authorizeRoles(2, 3), OrderController.updateStatus);
+router.get('/', authorizeRoles(UserRole.ADMIN, UserRole.MODERATOR), OrderController.getAll);
+router.put('/:id/status', authorizeRoles(UserRole.ADMIN, UserRole.MODERATOR), OrderController.updateStatus);
 
 export default router;

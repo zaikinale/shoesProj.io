@@ -1,4 +1,3 @@
-/** Ошибка API с HTTP-кодом для централизованного middleware. */
 export class AppError extends Error {
     readonly statusCode: number;
     readonly details?: unknown;

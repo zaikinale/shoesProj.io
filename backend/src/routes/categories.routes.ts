@@ -3,6 +3,7 @@ import { CategoryController } from '../controllers/category.controller';
 import { authenticateToken } from '../middleware/auth';
 import { requireAuth } from '../middleware/requireAuth';
 import { authorizeRoles } from '../middleware/role';
+import { UserRole } from '../types/roles';
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.get('/:id', CategoryController.getOne);
 router.get('/:id/goods', CategoryController.getGoods);
 router.get('/by-good/:goodId', CategoryController.getByGood);
 
-router.use(requireAuth, authorizeRoles(3));
+router.use(requireAuth, authorizeRoles(UserRole.ADMIN));
 
 router.post('/', CategoryController.create);
 router.put('/:id', CategoryController.update);
