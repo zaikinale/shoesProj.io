@@ -32,6 +32,13 @@ export default function Help() {
         if (success) setNewMessage({ text: "", image: "" });
     };
 
+    const handleKeyDown = async () => {
+        if (event.key === 'Enter') {
+            console.log('Нажат Enter!');
+            onSend()
+        }
+    }
+
     // console.log(selectedTicket.messages)
 
     return (
@@ -148,6 +155,7 @@ export default function Help() {
                                         }} 
                                         onBlur={() => sendTypingStatus(false)}
                                         placeholder="Введите сообщение..." 
+                                        onKeyDown={handleKeyDown}
                                     />
                                     <div className={styles.inputBottom}>
                                         <input 

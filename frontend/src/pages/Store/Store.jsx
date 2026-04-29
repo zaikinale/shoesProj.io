@@ -60,9 +60,6 @@ export default function Store() {
                                 <button onClick={() => navigate('/admin/products/add')} className={styles.store__btnPlus}>+ Товар</button>
                                 <button onClick={() => navigate('/staff')}>Сотрудники</button>
                                 <button onClick={() => navigate('/categories')}>Категории</button>
-                                <button onClick={() => navigate('/orders')}>Заказы</button>
-                                <button onClick={() => navigate('/help')}>Поддержка</button>
-                                <button onClick={() => navigate('/profile')}>Профиль</button>
                             </>
                         )}
 
