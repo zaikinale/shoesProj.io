@@ -64,3 +64,17 @@ export async function sendMessage(ticketId, data) {
     }
     return response.json();
 }
+
+export async function markAsRead(id) {
+    const response = await fetch(`${BASE_URL}/${id}/read`, {
+        method: 'PATCH',
+        ...BASE_OPTIONS
+    });
+    
+    if (!response.ok) {
+        console.error('Failed to mark messages as read');
+        return null;
+    }
+    
+    return response.json();
+}

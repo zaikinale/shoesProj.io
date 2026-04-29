@@ -12,7 +12,7 @@ router.use(authenticateToken, requireAuth);
 router.post('/', OrderController.create);
 router.get('/my', OrderController.getMy);
 router.get('/:id', OrderController.getById);
-router.delete('/:id/cancel', OrderController.cancel);
+router.delete('/:id/cancel', authorizeRoles(UserRole.ADMIN), OrderController.cancel);
 router.get('/', authorizeRoles(UserRole.ADMIN, UserRole.MANAGER), OrderController.getAll);
 router.put('/:id/status', authorizeRoles(UserRole.ADMIN, UserRole.MANAGER), OrderController.updateStatus);
 

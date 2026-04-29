@@ -140,7 +140,6 @@
 .date {
     font-size: 0.7rem;
     opacity: 0.4;
-    margin-top: 6px;
 }
 
 /* 5. Поле ввода (Зафиксировано внизу) */
@@ -189,11 +188,6 @@
 .inputBottom { display: flex; gap: 12px; margin-top: 10px; }
 .placeholder { margin: auto; color: #444; font-weight: 600; }
 .msgImg { max-width: 100%; border-radius: 10px; margin-top: 10px; }
-
-/* --- ТВОИ СТИЛИ (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ) --- */
-/* ... здесь весь твой код из промпта ... */
-
-/* --- ДОПОЛНЕНИЯ ДЛЯ ФОРМЫ И КАТЕГОРИЙ --- */
 
 /* Категории в сайдбаре (Бейджи) */
 .tHeader {
@@ -300,4 +294,16 @@
 .inputGroup select:focus, 
 .inputGroup input:focus {
     border-color: #3b82f6;
+}
+
+.info {
+    margin-top: 6px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.status {
+    opacity: 0.5;
+    font-size: 12px;
 }

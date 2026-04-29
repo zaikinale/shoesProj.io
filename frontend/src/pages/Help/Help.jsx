@@ -32,6 +32,8 @@ export default function Help() {
         if (success) setNewMessage({ text: "", image: "" });
     };
 
+    // console.log(selectedTicket.messages)
+
     return (
         <div className={styles.page}>
             <header className={styles.header}>
@@ -123,7 +125,10 @@ export default function Help() {
                                                     </a>
                                                 )}
                                             </div>
-                                            <div className={styles.date}>{new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                                            <div className={styles.info}>
+                                                {m.viewed && <span className={styles.status}>Просмотренно</span>}
+                                                <div className={styles.date}>{new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                                            </div>
                                         </div>
                                     ))}
                                     {typingUser && (

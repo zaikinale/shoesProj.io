@@ -192,5 +192,6 @@ model Message {
   authorId  Int
   author    User     @relation(fields: [authorId], references: [id])
   
+  viewed    Boolean  @default(false)
   createdAt DateTime @default(now())
 }

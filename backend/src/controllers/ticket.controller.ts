@@ -18,7 +18,9 @@ export class TicketController {
         try {
             const user = (req as any).user;
             const id = parseInt(req.params.id as string);
+            
             const ticket = await TicketService.getById(id, user.id, isStaff(user));
+            
             res.json(ticket);
         } catch (error: any) {
             const status = error.message === 'NOT_FOUND' ? 404 : 403;
