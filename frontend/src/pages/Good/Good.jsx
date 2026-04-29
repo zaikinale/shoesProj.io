@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGood } from '../../hooks/useGood.js';
 import { useReviews } from '../../hooks/useReviews.js';
-import NavigateTo from '../../utils/navBtn.jsx';
 import BookMarkActive from '../../assets/bookmark_active.svg';
 import BookMarkUnActive from '../../assets/bookmark_unactive.svg';
 import styles from './Good.module.css';
@@ -41,8 +40,12 @@ export default function Good() {
         <div className={styles.page}>
             <header className={styles.header}>
                 <div className={styles.headerInner}>
-                    <NavigateTo path="store" />
-                    <nav className={styles.nav}><NavigateTo path="basket" /><NavigateTo path="orders" /><NavigateTo path="profile" /></nav>
+                    <button className="btn" onClick={() => navigate('/store')}>Главная</button>
+                    <nav className={styles.nav}>
+                        <button className="btn" onClick={() => navigate('/basket')}>Корзина</button>
+                        <button className="btn" onClick={() => navigate('/orders')}>Заказы</button>
+                        <button className="btn" onClick={() => navigate('/profile')}>Профиль</button>
+                    </nav>
                 </div>
             </header>
 

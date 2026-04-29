@@ -9,7 +9,6 @@ import CategoryList from '../../components/Category/CategoryList';
 import ClientCategoryView from '../../components/Category/ClientCategoryView';
 import CategoryAdminForm from '../../components/Category/CategoryAdminForm';
 import CategoryGoodsManager from '../../components/Category/CategoryGoodsManager';
-import NavigateTo from '../../utils/navBtn.jsx';
 import styles from './Categories.module.css';
 
 export default function Categories() {
@@ -82,9 +81,11 @@ export default function Categories() {
         <div className={styles.page}>
             <header className={styles.header}>
                 <div className={styles.headerInner}>
-                    <NavigateTo path="store" />
+                    <button className='btn' onClick={() => navigate('/store')}>Главная</button>
                     <nav className={styles.nav}>
-                        <NavigateTo path="basket" /> <NavigateTo path="orders" /> <NavigateTo path="profile" />
+                        <button className='btn' onClick={() => navigate('/basket')}>Корзина</button>
+                        <button className='btn' onClick={() => navigate('/orders')}>Заказы</button>
+                        <button className='btn' onClick={() => navigate('/profile')}>Профиль</button>
                     </nav>
                 </div>
             </header>

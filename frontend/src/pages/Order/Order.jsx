@@ -1,6 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useOrder } from '../../hooks/useOrder.js';
-import NavigateTo from '../../utils/navBtn.jsx';
 import styles from './Order.module.css';
 
 export default function Order() {
@@ -33,13 +32,12 @@ export default function Order() {
             <header className={styles.header}>
                 <div className={styles.headerInner}>
                     <div className={styles.navGroup}>
-                        <NavigateTo path="orders" />
-                        <span className={styles.orderId}>№{String(id).slice(-6).toUpperCase()}</span>
+                        <span className={styles.orderId}>Заказ №{String(id).slice(-6).toUpperCase()}</span>
                     </div>
                     <nav className={styles.nav}>
-                        <NavigateTo path="store" />
-                        <NavigateTo path="basket" />
-                        <NavigateTo path="profile" />
+                        <button className="btn" onClick={() => navigate('/store')}>Главная</button>
+                        <button className="btn" onClick={() => navigate('/basket')}>Корзина</button>
+                        <button className="btn" onClick={() => navigate('/profile')}>Профиль</button>
                     </nav>
                 </div>
             </header>

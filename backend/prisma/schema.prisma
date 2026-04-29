@@ -8,6 +8,12 @@ datasource db {
   url      = env("DATABASE_URL") 
 }
 
+enum UserRole {
+  ADMIN
+  MANAGER
+  USER
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   username  String
@@ -34,6 +40,9 @@ model Token {
   userId       Int
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Role {

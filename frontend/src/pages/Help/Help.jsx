@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router";
 import { useStore } from "../../store/useUserContext";
 import { useHelp } from "../../hooks/useHelp";
-import NavigateTo from "../../utils/navBtn";
 import styles from './Help.module.css';
 
 export default function Help() {
+    const navigate = useNavigate()
     const user = useStore((state) => state.user);
     const { 
         tickets, selectedTicket, userOrders, isStaff, typingUser,
@@ -34,9 +35,10 @@ export default function Help() {
     return (
         <div className={styles.page}>
             <header className={styles.header}>
-                <NavigateTo path="store" />
+                        <button className="btn" onClick={() => navigate('/store')}>Главная</button>
                 <div className={styles.nav}>
-                    <NavigateTo path="orders" /><NavigateTo path="profile" />
+                    <button className="btn" onClick={() => navigate('/orders')}>Заказы</button>
+                    <button className="btn" onClick={() => navigate('/profile')}>Профиль</button>
                     {!isStaff && (
                         <button className={styles.btnNew} onClick={() => setIsFormOpen(!isFormOpen)}>
                             {isFormOpen ? "Назад" : "+ Новый тикет"}
@@ -52,8 +54,8 @@ export default function Help() {
                         <div className={styles.ticketList}>
                             {tickets.map(t => (
                                 <div key={t.id} 
-                                     className={`${styles.ticketCard} ${selectedTicket?.id === t.id ? styles.activeCard : ''}`}
-                                     onClick={() => { selectTicket(t.id); setIsFormOpen(false); }}>
+                                    className={`${styles.ticketCard} ${selectedTicket?.id === t.id ? styles.activeCard : ''}`}
+                                    onClick={() => { selectTicket(t.id); setIsFormOpen(false); }}>
                                     <div className={styles.tHeader}>
                                         <span className={t.category?.includes("order") ? styles.badgeOrder : styles.badgeTech}>
                                             {t.category?.includes("order") ? 'Заказ' : 'Тех'}

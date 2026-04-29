@@ -11,8 +11,8 @@ router.use(authenticateToken);
 
 router.get('/', GoodController.getAll);
 router.get('/:id', GoodController.getOne);
-router.post('/', requireAuth, authorizeRoles(UserRole.ADMIN, UserRole.MODERATOR), GoodController.create);
-router.put('/:id', requireAuth, authorizeRoles(UserRole.ADMIN, UserRole.MODERATOR), GoodController.update);
-router.delete('/:id', requireAuth, authorizeRoles(UserRole.ADMIN, UserRole.MODERATOR), GoodController.delete);
+router.post('/', requireAuth, authorizeRoles(UserRole.ADMIN, UserRole.MANAGER), GoodController.create);
+router.put('/:id', requireAuth, authorizeRoles(UserRole.ADMIN, UserRole.MANAGER), GoodController.update);
+router.delete('/:id', requireAuth, authorizeRoles(UserRole.ADMIN, UserRole.MANAGER), GoodController.delete);
 
 export default router;

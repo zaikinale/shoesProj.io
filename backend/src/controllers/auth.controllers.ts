@@ -47,21 +47,30 @@ export const refresh = async (req: Request, res: Response) => {
         const { refreshToken } = req.cookies;
         if (!refreshToken) return res.status(401).json({ error: 'No refresh token' });
 
-        const userData = jwt.verify(refreshToken, JWT_REFRESH_SECRET!) as { userId: number };
-        
         const tokenFromDb = await tokenService.findToken(refreshToken);
-        if (!tokenFromDb) return res.status(401).json({ error: 'Token not in DB' });
+        
+        if (!tokenFromDb || tokenFromDb.expiresAt < new Date()) {
+            if (tokenFromDb) await tokenService.removeToken(refreshToken);
+            tokenService.clearCookies(res);
+            return res.status(401).json({ error: 'Session expired' });
+        }
+
+        const userData = jwt.verify(refreshToken, JWT_REFRESH_SECRET!) as { userId: number };
 
         const user = await prisma.user.findUnique({ where: { id: userData.userId } });
         if (!user) return res.status(401).json({ error: 'User not found' });
 
         const tokens = tokenService.generateTokens(user.id, user.roleID);
+        
+        await tokenService.removeToken(refreshToken);
         await tokenService.saveToken(user.id, tokens.refreshToken);
+
         tokenService.setTokensToCookies(res, tokens.accessToken, tokens.refreshToken);
 
         return res.json({ message: 'Tokens refreshed' });
     } catch (e) {
-        return res.status(401).json({ error: 'Token expired or invalid' });
+        tokenService.clearCookies(res);
+        return res.status(401).json({ error: 'Invalid token session' });
     }
 };
 

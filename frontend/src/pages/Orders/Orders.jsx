@@ -1,10 +1,11 @@
+import { useNavigate } from 'react-router';
 import { useStore } from '../../store/useUserContext.jsx';
 import { useOrders } from '../../hooks/useOrders.js';
 import OrderList from '../../components/OrderList/OrderList.jsx';
-import NavigateTo from '../../utils/navBtn.jsx';
 import styles from './Orders.module.css';
 
 export default function Orders() {
+    const navigate = useNavigate();
     const userRole = useStore((state) => state.user?.roleID);
     
     const { orders, loading, error, isAdmin, refresh } = useOrders(userRole);
@@ -14,13 +15,11 @@ export default function Orders() {
             <header className={styles.header}>
                 <div className={styles.headerInner}>
                     <div className={styles.navGroup}>
-                        <NavigateTo path="orders" />
-                        <span className={styles.breadcrumb}>/ Заказы</span>
+                        <span className={styles.breadcrumb}>Заказы</span>
                     </div>
                     <nav className={styles.nav}>
-                        <NavigateTo path="store" />
-                        {!isAdmin && <NavigateTo path="basket" />}
-                        <NavigateTo path="profile" />
+                        <button className="btn" onClick={() => navigate('/store')}>Главная</button>
+                        <button className="btn" onClick={() => navigate('/profile')}>Профиль</button>
                     </nav>
                 </div>
             </header>

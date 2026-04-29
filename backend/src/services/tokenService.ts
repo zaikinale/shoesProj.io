@@ -5,7 +5,7 @@ import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from '../config/env';
 
 const COOKIE_SETTINGS = {
     httpOnly: true,
-    secure: false, 
+    secure: process.env.NODE_ENV === 'production', 
     sameSite: 'lax' as const,
     path: '/',
 };
@@ -18,18 +18,31 @@ export const tokenService = {
     },
 
     async saveToken(userId: number, refreshToken: string) {
-        await prisma.token.deleteMany({ where: { userId } });
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 7); 
+
         return await prisma.token.create({
-            data: { refreshToken, userId }
+            data: { 
+                refreshToken, 
+                userId,
+                expiresAt 
+            }
         });
     },
 
     async findToken(refreshToken: string) {
-        return await prisma.token.findUnique({ where: { refreshToken } });
+        return await prisma.token.findUnique({ 
+            where: { refreshToken },
+            include: { user: true } 
+        });
     },
 
     async removeToken(refreshToken: string) {
-        return await prisma.token.deleteMany({ where: { refreshToken } });
+        return await prisma.token.delete({ where: { refreshToken } });
+    },
+
+    async removeAllUserTokens(userId: number) {
+        return await prisma.token.deleteMany({ where: { userId } });
     },
 
     setTokensToCookies(res: Response, accessToken: string, refreshToken: string) {
@@ -38,7 +51,7 @@ export const tokenService = {
     },
 
     clearCookies(res: Response) {
-        res.clearCookie('accessToken', COOKIE_SETTINGS);
-        res.clearCookie('refreshToken', COOKIE_SETTINGS);
+        res.clearCookie('accessToken', { ...COOKIE_SETTINGS, path: '/' });
+        res.clearCookie('refreshToken', { ...COOKIE_SETTINGS, path: '/' });
     }
 };

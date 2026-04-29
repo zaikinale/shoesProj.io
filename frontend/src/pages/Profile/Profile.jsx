@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { getSavedGoods } from '../../api/saves.js';
-import NavigateTo from "../../utils/navBtn";
 import { useStore } from '../../store/useUserContext.jsx';
 import { useProfileForm } from '../../hooks/useProfileForm';
 import { usePasswordForm } from '../../hooks/usePasswordForm';
 import styles from './Profile.module.css';
 
 export default function Profile() {
+    const navigate = useNavigate();
     const { user, setUserPublic } = useStore();
     const [savesGoods, setSavesGoods] = useState([]);
     const [modal, setModal] = useState(null);
@@ -27,10 +28,12 @@ export default function Profile() {
         <div className={styles.page}>
             <header className={styles.header}>
                 <div className={styles.headerInner}>
-                    <NavigateTo path="store" />
+                    <button className="btn" onClick={() => navigate('/store')}>Главная</button>
                     <nav className={styles.nav}>
-                        <NavigateTo path="basket" /><NavigateTo path="orders" />
-                        <NavigateTo path="help" /><NavigateTo path="logout" />
+                        <button className="btn" onClick={() => navigate('/basket')}>Корзина</button>
+                        <button className="btn" onClick={() => navigate('/orders')}>Заказы</button>
+                        <button className="btn" onClick={() => navigate('/help')}>Помощь</button>
+                        <button className="btn" onClick={() => navigate('/logout')}>Выйти</button>
                     </nav>
                 </div>
             </header>

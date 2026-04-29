@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useStaff } from '../../hooks/useStaff';
-import NavigateTo from '../../utils/navBtn.jsx';
+import { useNavigate } from 'react-router-dom';
 import styles from './Employees.module.css';
 
 export default function Employees() {
+    const navigate = useNavigate();
     const { 
         employees, roles, loading, error, 
         addStaff, updateRole, removeStaff 
@@ -61,7 +62,7 @@ export default function Employees() {
             <header className={styles.header}>
                 <div className={styles.headerInner}>
                     <div className={styles.navGroup}>
-                        <NavigateTo path="store" />
+                        <button className='btn' onClick={() => navigate('/store')}>Главная</button>
                         <span className={styles.breadcrumb}>/ Персонал</span>
                     </div>
                     <button 

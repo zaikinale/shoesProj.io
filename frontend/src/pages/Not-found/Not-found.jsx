@@ -1,7 +1,9 @@
-import NavigateTo from '../../utils/navBtn.jsx';
+import { useNavigate } from "react-router";
 import styles from './Not-found.module.css';
 
 export default function NotFound() {
+    const navigate = useNavigate();
+
     return (
         <div className={styles.page}>
             <div className={styles.errorCard}>
@@ -14,7 +16,7 @@ export default function NotFound() {
                     Похоже, этот адрес больше не существует или был перемещен.
                 </p>
                 <div className={styles.actions}>
-                    <NavigateTo path="" /> 
+                    <button className="btn" onClick={() => navigate('/store')}>на главную</button>
                 </div>
             </div>
         </div>

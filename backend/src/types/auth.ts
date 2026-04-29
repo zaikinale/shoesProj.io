@@ -1,4 +1,5 @@
 import type { Request } from 'express';
+import { UserRole } from './roles';
 
 export type PublicAuthUser = {
     id: number;
@@ -9,4 +10,10 @@ export type PublicAuthUser = {
 
 export interface AuthenticatedRequest extends Request {
     user: PublicAuthUser | null;
+}
+
+export interface TokenPayload {
+    userId: number;
+    roleID: number;
+    roleName: UserRole;
 }

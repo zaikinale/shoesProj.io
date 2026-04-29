@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useBasket } from '../../hooks/useBasket.js';
 import BasketCard from '../../components/BasketCard/BasketCard.jsx';
-import NavigateTo from '../../utils/navBtn.jsx';
+// import NavigateTo from '../../utils/navBtn.jsx';
 import styles from './Basket.module.css';
 
 export default function Basket() {
@@ -23,9 +23,12 @@ export default function Basket() {
                 <div className={styles.headerInner}>
                     <div className={styles.headerTitle}>Корзина</div>
                     <nav className={styles.nav}>
-                        <NavigateTo path="store" />
+                        {/* <NavigateTo path="store" />
                         <NavigateTo path="orders" />
-                        <NavigateTo path="profile" />
+                        <NavigateTo path="profile" /> */}
+                        <button className='btn' onClick={() => navigate('/store')}>Главная</button>
+                        <button className='btn' onClick={() => navigate('/orders')}>Заказы</button>
+                        <button className='btn' onClick={() => navigate('/profile')}>Профиль</button>
                     </nav>
                 </div>
             </header>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGoodEditor } from '../../hooks/useGoodEditor.js';
-import NavigateTo from '../../utils/navBtn.jsx';
 import styles from './GoodEditor.module.css';
 
 export default function GoodEditor() {
@@ -61,7 +60,7 @@ export default function GoodEditor() {
             <header className={styles.header}>
                 <div className={styles.headerInner}>
                     <div className={styles.navGroup}>
-                        <NavigateTo path="store" />
+                        <button className="btn" onClick={() => navigate('/store')}>Главная</button>
                         <span className={styles.breadcrumb}>/ {isEditMode ? 'Редактирование' : 'Новый товар'}</span>
                     </div>
                     <div className={styles.actions}>

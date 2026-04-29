@@ -4,7 +4,6 @@ import { JWT_ACCESS_SECRET } from '../config/env';
 import { prisma } from '../utils/prismaClient';
 import type { AuthenticatedRequest } from '../types/auth';
 
-/** RequestHandler + внутренний cast — совместимо с Router и ts-node */
 export const authenticateToken: RequestHandler = async (req, res, next) => {
     const authReq = req as AuthenticatedRequest;
     const token = authReq.cookies?.accessToken;
