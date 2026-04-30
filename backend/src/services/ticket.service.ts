@@ -1,16 +1,11 @@
 import { prisma } from '../utils/prismaClient';
 
 export class TicketService {
-    /**
-     * Получение всех тикетов. 
-     * Для персонала — все, для пользователя — только его собственные.
-     */
     static async getAll(userId: number, isStaff: boolean) {
         return prisma.ticket.findMany({
             where: isStaff ? {} : { userId },
             include: {
                 user: { select: { username: true } },
-                // Считаем количество только НОВЫХ (непрочитанных нами) сообщений
                 _count: { 
                     select: { 
                         messages: { 
@@ -25,10 +20,7 @@ export class TicketService {
             orderBy: { updatedAt: 'desc' }
         });
     }
-
-    /**
-     * Получение одного тикета и автоматическая пометка сообщений как прочитанных.
-     */
+    
     static async getById(id: number, userId: number, isStaff: boolean) {
         const ticket = await prisma.ticket.findUnique({
             where: { id },
@@ -44,8 +36,6 @@ export class TicketService {
         if (!ticket) throw new Error('NOT_FOUND');
         if (ticket.userId !== userId && !isStaff) throw new Error('FORBIDDEN');
 
-        // Помечаем входящие сообщения прочитанными при открытии тикета.
-        // Запускаем без await, чтобы не блокировать отдачу данных пользователю.
         this.markAsRead(id, userId).catch(err => 
             console.error("Ошибка при обновлении статуса прочтения:", err)
         );
@@ -53,9 +43,6 @@ export class TicketService {
         return ticket;
     }
 
-    /**
-     * Создание нового тикета.
-     */
     static async create(userId: number, data: { subject: string, category: string, orderId?: number }) {
         const { subject, category, orderId } = data;
         return prisma.ticket.create({
@@ -69,9 +56,6 @@ export class TicketService {
         });
     }
 
-    /**
-     * Добавление сообщения в тикет.
-     */
     static async addMessage(ticketId: number, userId: number, isStaff: boolean, data: { text: string, image?: string }) {
         const ticket = await prisma.ticket.findUnique({ where: { id: ticketId } });
         if (!ticket) throw new Error('NOT_FOUND');
@@ -84,12 +68,10 @@ export class TicketService {
                     image: data.image || null,
                     ticketId,
                     authorId: userId
-                    // viewed по умолчанию false из схемы БД
                 },
                 include: { author: { select: { username: true, roleID: true } } }
             });
 
-            // Обновляем время тикета, чтобы он поднялся в списке getAll
             await tx.ticket.update({
                 where: { id: ticketId },
                 data: { updatedAt: new Date() }
@@ -98,11 +80,7 @@ export class TicketService {
             return message;
         });
     }
-
-    /**
-     * Логика пометки сообщений прочитанными.
-     * Обновляет только те сообщения, которые написаны ДРУГИМ пользователем.
-     */
+    
     static async markAsRead(ticketId: number, userId: number) {
         return await prisma.message.updateMany({
             where: {
@@ -116,9 +94,6 @@ export class TicketService {
         });
     }
 
-    /**
-     * Закрытие тикета.
-     */
     static async close(id: number, userId: number, isStaff: boolean) {
         const ticket = await prisma.ticket.findUnique({ where: { id } });
         if (!ticket) throw new Error('NOT_FOUND');

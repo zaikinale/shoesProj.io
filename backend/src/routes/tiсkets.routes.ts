@@ -13,5 +13,6 @@ router.post('/', TicketController.create);
 router.get('/:id', TicketController.getOne);
 router.post('/:id/messages', TicketController.addMessage);
 router.patch('/:id/close', TicketController.close);
+router.patch('/:id/read', TicketController.markAsRead);
 
 export default router;

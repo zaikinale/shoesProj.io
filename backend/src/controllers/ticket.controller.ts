@@ -58,6 +58,20 @@ export class TicketController {
         }
     }
 
+    static async markAsRead(req: Request, res: Response) {
+    try {
+        const user = (req as any).user;
+        const ticketId = parseInt(req.params.id as string);
+
+        await TicketService.markAsRead(ticketId, user.id); 
+
+        return res.status(200).json({ message: "Messages marked as read" });
+    } catch (error) {
+        console.error('Error marking as read:', error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
     static async close(req: Request, res: Response) {
         try {
             const user = (req as any).user;

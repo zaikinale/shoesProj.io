@@ -5,17 +5,33 @@ import { useHelp } from "../../hooks/useHelp";
 import styles from './Help.module.css';
 
 export default function Help() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const user = useStore((state) => state.user);
+
+    // Добавили user.id третьим аргументом и достали markAsRead
     const { 
         tickets, selectedTicket, userOrders, isStaff, typingUser,
-        loadOrders, selectTicket, createTicket, sendMessage, sendTypingStatus 
-    } = useHelp(user?.roleID, user?.username);
+        loadOrders, selectTicket, createTicket, sendMessage, sendTypingStatus,
+        markAsRead 
+    } = useHelp(user?.roleID, user?.username, user?.id);
     
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [formData, setFormData] = useState({ subject: "", category: "tech", orderId: "", firstMessage: "", image: "" });
     const [newMessage, setNewMessage] = useState({ text: "", image: "" });
     const messagesEndRef = useRef(null);
+
+    // Автоматическое прочтение при выборе тикета или получении сообщения
+    useEffect(() => {
+        if (selectedTicket?.id && selectedTicket.messages?.length > 0) {
+            const messages = selectedTicket.messages;
+            const lastMessage = messages[messages.length - 1];
+
+            // Если последнее сообщение прислал не текущий пользователь и оно не прочитано
+            if (lastMessage.authorId !== user?.id && !lastMessage.viewed) {
+                markAsRead(selectedTicket.id);
+            }
+        }
+    }, [selectedTicket?.id, selectedTicket?.messages?.length, user?.id, markAsRead]);
 
     useEffect(() => {
         if (formData.category === "order") loadOrders();
@@ -29,22 +45,23 @@ export default function Help() {
         if (!newMessage.text.trim() && !newMessage.image.trim()) return;
         
         const success = await sendMessage(newMessage.text, newMessage.image);
-        if (success) setNewMessage({ text: "", image: "" });
+        if (success) {
+            setNewMessage({ text: "", image: "" });
+            sendTypingStatus(false);
+        }
     };
 
-    const handleKeyDown = async () => {
-        if (event.key === 'Enter') {
-            console.log('Нажат Enter!');
-            onSend()
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            onSend();
         }
-    }
-
-    // console.log(selectedTicket.messages)
+    };
 
     return (
         <div className={styles.page}>
             <header className={styles.header}>
-                        <button className="btn" onClick={() => navigate('/store')}>Главная</button>
+                <button className="btn" onClick={() => navigate('/store')}>Главная</button>
                 <div className={styles.nav}>
                     <button className="btn" onClick={() => navigate('/orders')}>Заказы</button>
                     <button className="btn" onClick={() => navigate('/profile')}>Профиль</button>
@@ -69,6 +86,10 @@ export default function Help() {
                                         <span className={t.category?.includes("order") ? styles.badgeOrder : styles.badgeTech}>
                                             {t.category?.includes("order") ? 'Заказ' : 'Тех'}
                                         </span>
+                                        {/* Индикатор количества непрочитанных */}
+                                        {t._count?.messages > 0 && (
+                                            <span className={styles.unreadBadge}>{t._count.messages}</span>
+                                        )}
                                         <span className={styles.tDate}>{new Date(t.createdAt).toLocaleDateString()}</span>
                                     </div>
                                     <div className={styles.tSubject}>{t.subject}</div>
@@ -125,7 +146,6 @@ export default function Help() {
                                         <div key={m.id} className={(m.author?.roleID === 2 || m.author?.roleID === 3) ? styles.messageManager : styles.messageUser}>
                                             <div className={styles.massageBody}>
                                                 {m.text && <p>{m.text}</p>}
-                                                {/* Рендеринг изображения в сообщении */}
                                                 {m.image && (
                                                     <a href={m.image} target="_blank" rel="noreferrer">
                                                         <img src={m.image} alt="attach" className={styles.msgImg} />
@@ -133,7 +153,12 @@ export default function Help() {
                                                 )}
                                             </div>
                                             <div className={styles.info}>
-                                                {m.viewed && <span className={styles.status}>Просмотренно</span>}
+                                                {/* Показываем статус только для сообщений текущего пользователя */}
+                                                {m.authorId === user?.id && (
+                                                    <span className={m.viewed ? styles.statusViewed : styles.statusSent}>
+                                                        {m.viewed ? 'Просмотрено ✓✓' : 'Отправлено ✓'}
+                                                    </span>
+                                                )}
                                                 <div className={styles.date}>{new Date(m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
                                             </div>
                                         </div>
@@ -154,13 +179,13 @@ export default function Help() {
                                             sendTypingStatus(e.target.value.length > 0); 
                                         }} 
                                         onBlur={() => sendTypingStatus(false)}
-                                        placeholder="Введите сообщение..." 
                                         onKeyDown={handleKeyDown}
+                                        placeholder="Введите сообщение..." 
                                     />
                                     <div className={styles.inputBottom}>
                                         <input 
                                             className={styles.imgInput}
-                                            placeholder="URL изображения (опционально)" 
+                                            placeholder="URL изображения (https://...)" 
                                             value={newMessage.image} 
                                             onChange={e => setNewMessage({...newMessage, image: e.target.value})} 
                                         />
@@ -169,7 +194,7 @@ export default function Help() {
                                     {newMessage.image && <img src={newMessage.image} className={styles.smallPreview} alt="Small Preview" />}
                                 </div>
                             </div>
-                        ) : <div className={styles.placeholder}>Выберите диалог</div>}
+                        ) : <div className={styles.placeholder}>Выберите диалог для начала общения</div>}
                     </section>
                 </div>
             </main>
